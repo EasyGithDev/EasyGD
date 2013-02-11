@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EasyGd - a PHP framework for use GD easier
  *
@@ -28,6 +29,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Easy;
 
 /**
@@ -61,7 +63,7 @@ class Color {
     public function __construct($hexa, $alpha = 0) {
         if (!preg_match('/^#?([a-f0-9]{6})$/i', $hexa))
             throw new Exception('Hexa must be an hexadecimal value');
-  
+
         if (!is_int($alpha))
             throw new Exception('Alpha must be integer [0-127]');
 
@@ -134,7 +136,8 @@ class Color {
     }
 
     public static function __callStatic($name, $arguments) {
-        return new Color(constant(__NAMESPACE__ . '\Color::' . $name));
+        if (defined(__NAMESPACE__ . '\Color::' . $name))
+            return new Color(constant(__NAMESPACE__ . '\Color::' . $name));
     }
 
 }
