@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EasyGd - a PHP framework for use GD easier
  *
@@ -28,6 +29,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Easy;
 
 /**
@@ -147,7 +149,7 @@ class Image {
         $fileDest = $info['dirname'] . '/' . $info['filename'] . image_type_to_extension($this->imageType);
         $this->manage($function, $param_array, $quality);
         $param_array[1] = $fileDest;
-        
+
         call_user_func_array($function, $param_array);
 
         return $this;
@@ -271,6 +273,39 @@ class Image {
 
         imagefill($this->img, $x, $y, $this->colors["$color"]);
         return $this;
+    }
+
+    public function __call($name, $arguments) {
+
+        switch ($name) {
+            case 'TOP_LEFT' :
+                return Position::create();
+                break;
+            case 'TOP_MIDDLE' :
+                return Position::create(intval($this->getWidth() / 2), 0);
+                break;
+            case 'TOP_RIGHT' :
+                return Position::create($this->getWidth(), 0);
+                break;
+            case 'MIDDLE_LEFT' :
+                return Position::create(0, intval($this->getHeight() / 2));
+                break;
+            case 'MIDDLE_MIDDLE' :
+                return Position::create(intval($this->getWidth() / 2), intval($this->getHeight() / 2));
+                break;
+            case 'MIDDLE_RIGHT' :
+                return Position::create($this->getWidth(), intval($this->getHeight() / 2));
+                break;
+            case 'BOTTOM_LEFT' :
+                return Position::create(0, $this->getHeight());
+                break;
+            case 'BOTTOM_MIDDLE' :
+                return Position::create(intval($this->getWidth() / 2), $this->getHeight());
+                break;
+            case 'BOTTOM_RIGHT' :
+                return Position::create($this->getWidth(), $this->getHeight());
+                break;
+        }
     }
 
 }
