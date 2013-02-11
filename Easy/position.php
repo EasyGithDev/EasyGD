@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EasyGd - a PHP framework for use GD easier
  *
@@ -28,6 +29,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Easy;
 
 /**
@@ -37,17 +39,17 @@ namespace Easy;
  * @since   1.0.0
  */
 class Position {
-    const POSITION_TOP_LEFT = 1;
-    const POSITION_TOP_MIDDLE = 2;
-    const POSITION_TOP_RIGHT = 3;
+    const TOP_LEFT = 1;
+    const TOP_MIDDLE = 2;
+    const TOP_RIGHT = 3;
 
-    const POSITION_MIDDLE_LEFT = 4;
-    const POSITION_MIDDLE_MIDDLE = 5;
-    const POSITION_MIDDLE_RIGHT = 6;
+    const MIDDLE_LEFT = 4;
+    const MIDDLE_MIDDLE = 5;
+    const MIDDLE_RIGHT = 6;
 
-    const POSITION_BOTTOM_LEFT = 7;
-    const POSITION_BOTTOM_MIDDLE = 8;
-    const POSITION_BOTTOM_RIGHT = 9;
+    const BOTTOM_LEFT = 7;
+    const BOTTOM_MIDDLE = 8;
+    const BOTTOM_RIGHT = 9;
 
     protected $x;
     protected $y;
@@ -77,6 +79,10 @@ class Position {
 
     public function setY($y) {
         $this->y = $y;
+    }
+
+    public function __toString() {
+        return '(' . $this->x . ',' . $this->y . ')';
     }
 
 }
