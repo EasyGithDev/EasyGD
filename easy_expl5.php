@@ -2,8 +2,8 @@
 
 require 'autoload.php';
 
-$filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
-//$filename = 'http://www.php.net/images/logos/php-med-trans.png';
+//$filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
+$filename = 'http://www.php.net/images/logos/php-med-trans.png';
 //$filename = 'http://intechgriti.in/wp-content/uploads/2012/06/php-frameworks.gif';
 
 /*
@@ -47,9 +47,17 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
 /*
  * 
  * How to crop an image
- * 
+ * Original script : http://www.php.net/manual/en/function.imagecopy.php
  */
-//Easy\Transformation::crop($image, Easy\Position::create(245, 135), Easy\Dimension::create(45, 50))->show();
+
+/*
+$filename = 'http://static.php.net/www.php.net/images/php.gif';
+Easy\Transformation::crop(
+        Easy\Image::createFrom($filename), 
+        Easy\Position::create(20, 13), 
+        Easy\Dimension::create(80, 40))
+        ->show();
+*/
 
 
 /*
