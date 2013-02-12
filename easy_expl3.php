@@ -27,6 +27,20 @@ $image = Easy\Image::create($dimension, Easy\Color::Blue())
 );
 //$image->show();
 
+/*
+ * 
+ * How to draw a string vertically into an image
+ * 
+ */
+$image = Easy\Image::create(Easy\Dimension::create(100, 100))->addText(
+        Easy\Text::create('gd library')
+                ->setSize(3)
+                ->setColor(Easy\Color::White())
+                ->setdrawtype(Easy\Text::TEXT_DRAW_VERTICAL)
+                ->setPosition(Easy\Position::create(40, 80))
+);
+//$image->show();
+
 
 /*
  * 
