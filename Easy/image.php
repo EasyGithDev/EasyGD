@@ -275,6 +275,11 @@ class Image {
         return $this;
     }
 
+    public function drawLine(Position $p1, Position $p2, Color $color) {
+        $this->setColor($color);
+        imageline($this->img, $p1->getX(), $p1->getY(), $p2->getX(), $p2->getY(), $this->colors["$color"]);
+    }
+
     public function __call($name, $arguments) {
 
         switch ($name) {
