@@ -18,7 +18,6 @@ echo '<pre>',  print_r($histo->getHisto(), 1),'</pre>';
 echo '<pre>',  print_r($histo->getAverage(), 1),'</pre>';
 echo '<pre>',  print_r($histo->getSigma(), 1),'</pre>';
 
-
 $histo->save();
 
 ?>
