@@ -132,6 +132,20 @@ class Image {
         }
     }
 
+    /**
+     * Dont use this function in production
+     * 
+     * @param type $quality
+     * @return the image string 
+     */
+    public function src($quality = NULL) {
+        $tmp = 'easy' . image_type_to_extension($this->imageType);
+        $this->save($tmp, $quality);
+        $content = self::getDataSource($tmp);
+        unlink($tmp);
+        return $content;
+    }
+
     public function show($header = true, $quality = NULL) {
 
         if ($header)
