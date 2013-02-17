@@ -4,7 +4,8 @@ set_time_limit(0);
 
 require 'autoload.php';
 
-$text = \Easy\TrueType::create('Copyright (C) 2013 Florent Brusciano', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+$text = \Easy\TrueType::create('Copyright (C) 2013 Florent Brusciano', 
+        \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
         ->setSize(5)
         ->setColor(Easy\Color::White())
         ->setPosition(Easy\Position::create(40, 190));
