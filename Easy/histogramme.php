@@ -38,9 +38,8 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Histogramme {
+class Histogramme implements \SplObserver {
 
-    private $image;
     private $histo = array(
         'red' => array(),
         'green' => array(),
@@ -67,15 +66,32 @@ class Histogramme {
     );
     private $max_height = 256;
 
-    public function __construct(Image $image) {
-        $this->image = $image;
+    public function __construct() {
         foreach ($this->histo as $k => &$v) {
             $v = array_fill(0, 256, 0);
         }
     }
 
-    public function create(Image $image) {
-        return new self($image);
+    public function computeSigma() {
+        $var = array(
+            'red' => 0,
+            'green' => 0,
+            'blue' => 0,
+            'alpha' => 0
+        );
+
+        $div = floatval(1 / $pixels);
+        foreach ($this->histo as $k => $v) {
+            $sum = 0;
+            $sum2 = 0;
+            for ($i = 0; $i < 255; $i++) {
+                $sum += $v[$i] * $i;
+                $sum2 += $v[$i] * $i * $i;
+            }
+            $this->average[$k] = round($sum * $div);
+            $var[$k] = $sum2 * $div - $sum * $div * $sum * $div;
+            $this->sigma[$k] = round(sqrt($var[$k]));
+        }
     }
 
     public function save() {
@@ -103,75 +119,50 @@ class Histogramme {
         }
     }
 
-    public function process() {
+    public function update(\SplSubject $obj) {
 
-        //print_r($this->rgb);die;
+        $x = $obj->getColumn();
+        $y = $obj->getLine();
+        $imageSrc = $obj->getImageSrc();
+        $pixels = $imageSrc->getWidth() * $imageSrc->getHeight();
 
-        for ($line = 0; $line < $this->image->getHeight(); $line++)
-            for ($col = 0; $col < $this->image->getWidth(); $col++) {
+        $rgb = imagecolorat($imageSrc->getImg(), $x, $y);
+        $r = ($rgb >> 16) & 0xFF;
+        $g = ($rgb >> 8) & 0xFF;
+        $b = $rgb & 0xFF;
 
-                $rgb = imagecolorat($this->image->getImg(), $col, $line);
-                $r = ($rgb >> 16) & 0xFF;
-                $g = ($rgb >> 8) & 0xFF;
-                $b = $rgb & 0xFF;
+        if ($r > 255)
+            $r = 255;
+        if ($g > 255)
+            $g = 255;
+        if ($b > 255)
+            $b = 255;
 
-                if ($r > 255)
-                    $r = 255;
-                if ($g > 255)
-                    $g = 255;
-                if ($b > 255)
-                    $b = 255;
+        if ($r < 0)
+            $r = 0;
+        if ($g < 0)
+            $g = 0;
+        if ($b < 0)
+            $b = 0;
 
-                if ($r < 0)
-                    $r = 0;
-                if ($g < 0)
-                    $g = 0;
-                if ($b < 0)
-                    $b = 0;
+        if ($r != 0)
+            $this->histo['red'][$r]++;
+        if ($g != 0)
+            $this->histo['green'][$g]++;
+        if ($b != 0)
+            $this->histo['blue'][$b]++;
 
-                if ($r != 0)
-                    $this->histo['red'][$r]++;
-                if ($g != 0)
-                    $this->histo['green'][$g]++;
-                if ($b != 0)
-                    $this->histo['blue'][$b]++;
+        if ($this->histo['red'][$r] > $this->max['red'])
+            $this->max['red'] = $this->histo['red'][$r];
 
-                if ($this->histo['red'][$r] > $this->max['red'])
-                    $this->max['red'] = $this->histo['red'][$r];
+        if ($this->histo['green'][$g] > $this->max['green'])
+            $this->max['green'] = $this->histo['green'][$g];
 
-                if ($this->histo['green'][$g] > $this->max['green'])
-                    $this->max['green'] = $this->histo['green'][$g];
-
-                if ($this->histo['blue'][$b] > $this->max['blue'])
-                    $this->max['blue'] = $this->histo['blue'][$b];
-            }
-
-        $pixels = $this->image->getWidth() * $this->image->getHeight();
-
-        $var = array(
-            'red' => 0,
-            'green' => 0,
-            'blue' => 0,
-            'alpha' => 0
-        );
-
-        $div = floatval(1 / $pixels);
-        foreach ($this->histo as $k => $v) {
-            $sum = 0;
-            $sum2 = 0;
-            for ($i = 0; $i < 255; $i++) {
-                $sum += $v[$i] * $i;
-                $sum2 += $v[$i] * $i * $i;
-            }
-            $this->average[$k] = round($sum * $div);
-            $var[$k] = $sum2 * $div - $sum * $div * $sum * $div;
-            $this->sigma[$k] = round(sqrt($var[$k]));
-        }
+        if ($this->histo['blue'][$b] > $this->max['blue'])
+            $this->max['blue'] = $this->histo['blue'][$b];
 
         unset($this->histo['alpha']);
         unset($this->max['alpha']);
-
-        return $this;
     }
 
     public function getHisto() {
