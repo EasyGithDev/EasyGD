@@ -196,6 +196,10 @@ class Image {
         return ($this->img) ? imagesy($this->img) : FALSE;
     }
 
+    public function getDimension() {
+        return Dimension::create(imagesx($this->img), imagesy($this->img));
+    }
+
     public function getImg() {
         return $this->img;
     }
