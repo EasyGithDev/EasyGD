@@ -160,7 +160,8 @@ class Transformation {
         $posX = ($max - $width) / 2;
 
         // Création du conteneur de sortie
-        $imDest = Image::create(Dimension::create($max, $max), $color);
+        $imDest = Image::create(Dimension::create($max, $max), $color)
+                ->setImagetype($imSrc->getImagetype());
 
         // Si l'image original est plus grande que le conteneur de destination
         if ($width > $max OR $height > $max) {
