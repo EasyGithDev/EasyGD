@@ -150,8 +150,9 @@ class Convolution {
     private $offset;
     private $divisor;
 
-    public function __construct($matrix = self::CONVOLUTION_IDENTITY, $divisor = 1.0, $offset = 0.0) {
-
+    public function __construct($matrix = array(), $divisor = 1.0, $offset = 0.0) {
+	if (!count($matrix))
+	    $matrix = self::$CONVOLUTION_IDENTITY;
 	$this->setMatrix($matrix);
 	$this->offset = floatval($offset);
 	$this->divisor = floatval($divisor);
