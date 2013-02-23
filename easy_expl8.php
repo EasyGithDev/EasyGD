@@ -9,7 +9,7 @@ $text = \Easy\TrueType::create('Copyright (C) 2013 Florent Brusciano', \Easy\Tex
 	->setColor(Easy\Color::White())
 	->setPosition(Easy\Position::create(40, 190));
 
-$path = __DIR__ . 'images/original/';
+$path = __DIR__ . '/images/original/';
 foreach (new \Easy\ImageFilterIterator(new DirectoryIterator($path)) as $file) {
 
     if (($image = Easy\Image::createFrom($file->getPathname())) === FALSE)
@@ -17,10 +17,10 @@ foreach (new \Easy\ImageFilterIterator(new DirectoryIterator($path)) as $file) {
 
     \Easy\Transformation::thumbnail($image, 200)
 	    ->addText($text)
-	    ->save(__DIR__ . 'images/thumb/200/' . $file->getFilename(), 100, FALSE);
+	    ->save(__DIR__ . '/images/thumb/200/' . $file->getFilename(), 100, FALSE);
 
     \Easy\Transformation::thumbnail($image, 400)
 	    ->addText($text)
-	    ->save(__DIR__ . 'images/thumb/400/' . $file->getFilename(), 100, FALSE);
+	    ->save(__DIR__ . '/images/thumb/400/' . $file->getFilename(), 100, FALSE);
 }
 ?>
