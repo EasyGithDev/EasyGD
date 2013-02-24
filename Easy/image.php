@@ -114,6 +114,16 @@ class Image {
 	return "data:$mime;base64," . base64_encode(file_get_contents($fileSrc));
     }
 
+    public static function getInfos($fileSrc) {
+	$infos = getimagesize($fileSrc);
+	$infos['width'] = $infos[0];
+	$infos['height'] = $infos[1];
+	$infos['size'] = filesize($fileSrc);
+	for ($i = 0; $i < 4; $i++)
+	    unset($infos[$i]);
+	return $infos;
+    }
+
     protected function manage(&$function, &$param_array, $quality) {
 
 	$function = 'image' . image_type_to_extension($this->imageType, false);
