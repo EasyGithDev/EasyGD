@@ -29,7 +29,8 @@ switch ($action) {
 	$smooth = isset($_GET['smooth']) ? $_GET['smooth'] : '';
 	$contrast = isset($_GET['contrast']) ? $_GET['contrast'] : '';
 	$brightness = isset($_GET['brightness']) ? $_GET['brightness'] : '';
-
+	$blocksize = isset($_GET['blocksize']) ? $_GET['blocksize'] : '';
+	
 	$filter = 'FILTER_' . strtoupper($_GET['filter']);
 	$imgSrc = Easy\Image::createFrom($fileSrc);
 
@@ -43,6 +44,12 @@ switch ($action) {
 	    case 'FILTER_BRIGHTNESS':
 		$filter = \Easy\Filter::$filter($brightness);
 		break;
+	    case 'FILTER_PIXELATE':
+		$type = true;
+		$filter = Easy\Filter::FILTER_PIXELATE($blocksize, $type);
+
+		break;
+
 	    default :
 		$filter = \Easy\Filter::$filter();
 		break;
@@ -51,9 +58,6 @@ switch ($action) {
 
 	$filter->process($imgSrc)->show();
 
-//$blockSize = 3;
-//$type = true;
-//Easy\Filter::FILTER_PIXELATE($blockSize, $type)->process($image)->show();
 
 //$color = \Easy\Color::Purple();
 //Easy\Filter::FILTER_COLORIZE($color)->process($image)->show();

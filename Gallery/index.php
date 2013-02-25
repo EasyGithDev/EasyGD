@@ -163,6 +163,7 @@ define('THUMB_100', './images/thumb/100/');
 		$( "#modal-slider-brightness" ).on( "slide", function( event, ui ) {} );
 		$( "#modal-slider-contrast" ).on( "slide", function( event, ui ) {} );
 		$( "#modal-slider-smooth" ).on( "slide", function( event, ui ) {} );
+		$( "#modal-slider-pixelate" ).on( "slide", function( event, ui ) {} );
 		
 		$( "#modal-slider-brightness" ).on( "slidestop", function( event, ui ) {
 		    //console.log(ui.value)		    
@@ -182,6 +183,13 @@ define('THUMB_100', './images/thumb/100/');
 		    //console.log(ui.value)		    
 		    var filesrc = thumb_400 + getFilename();	    
 		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=smooth&smooth='+ui.value;
+		    $("#modal-img").attr("src", src );
+		} );
+		
+		$( "#modal-slider-pixelate" ).on( "slidestop", function( event, ui ) {
+		    //console.log(ui.value)		    
+		    var filesrc = thumb_400 + getFilename();	    
+		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=pixelate&blocksize='+ui.value;
 		    $("#modal-img").attr("src", src );
 		} );
 		
@@ -266,9 +274,10 @@ define('THUMB_100', './images/thumb/100/');
 	    }
 	    
 	    function loadTools() {
-		$( "#modal-slider-brightness" ).slider({ values: [ 10 ] });
-		$( "#modal-slider-contrast" ).slider({ values: [ 10 ] });
-		$( "#modal-slider-smooth" ).slider({ values: [ 10 ] });
+		$( "#modal-slider-brightness" ).slider({ values: [ 0 ], min: -255, max: 255 });
+		$( "#modal-slider-contrast" ).slider({ values: [ 0 ], min: -100, max: 100 });
+		$( "#modal-slider-smooth" ).slider({ values: [ 0 ],min: -8, max: 8 });
+		$( "#modal-slider-pixelate" ).slider({ values: [ 0 ], min: 0, max: 10 });    
 	    }
 	    
 	    function loadInfos(filename) {
@@ -400,6 +409,9 @@ define('THUMB_100', './images/thumb/100/');
 
 			    <h3>Smooth</h3>
 			    <div id="modal-slider-smooth"></div>
+
+			    <h3>Pixelate</h3>
+			    <div id="modal-slider-pixelate"></div>
 
 			</div>
 
