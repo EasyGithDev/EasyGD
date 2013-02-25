@@ -126,7 +126,7 @@ class Filter {
 
     /**
      * 
-     * @param type $smooth, IMG_FILTER_SMOOTH, -1924.124
+     * @param type $smooth, IMG_FILTER_SMOOTH, -8/+8
      * @return type
      */
     public static function FILTER_SMOOTH($smooth) {
@@ -138,10 +138,12 @@ class Filter {
 
     /**
      * 
-     * @param type $BRIGHTNESS,       IMG_FILTER_BRIGHTNESS, 98
+     * @param type $BRIGHTNESS, -255 = min brightness, 0 = no change, +255 = max brightness
      * @return type
      */
     public static function FILTER_BRIGHTNESS($brightness) {
+	if ($brightness < -255 OR $brightness > 255)
+	    $brightness = 0;
 	$filter = self::create();
 	$filter->filterType = IMG_FILTER_BRIGHTNESS;
 	$filter->paramArr[] = $brightness;
@@ -150,10 +152,13 @@ class Filter {
 
     /**
      * 
-     * @param type $contrast,  IMG_FILTER_CONTRAST, -90
+     * @param type $contrast,  
+     * -100 = max contrast, 0 = no change, +100 = min contrast (note the direction!)
      * @return type
      */
     public static function FILTER_CONTRAST($contrast) {
+	if ($contrast < -100 OR $contrast > 100)
+	    $contrast = 0;
 	$filter = self::create();
 	$filter->filterType = IMG_FILTER_CONTRAST;
 	$filter->paramArr[] = $contrast;
