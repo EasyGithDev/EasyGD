@@ -1,10 +1,5 @@
 <?php
-require '../autoload.php';
-
-define('THUMB_ORIGINAL', './images/original/');
-define('THUMB_200', './images/thumb/200/');
-define('THUMB_400', './images/thumb/400/');
-define('THUMB_100', './images/thumb/100/');
+require 'conf.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -310,10 +305,20 @@ define('THUMB_100', './images/thumb/100/');
 			items.push('<li id="' + key + '">' + key + ': ' + val + '</li>');
 		    });
 		    
-		    $('#modal-tab-infos').html('<ul>'+items.join('')+'</ul>');
+		    $('#modal-tab-infos > #text-infos').html('<ul>'+items.join('')+'</ul>');
+		});
+		
+		//loadHistogramme(filename);
+	    } 
+	   
+	    function loadHistogramme(filename) {
+	    
+		var src ='loader.php?action=histogramme&filesrc=' + thumb_original + filename;
+		$.getJSON(src + '&t=' + date.getTime(), function(data) {
+		    
 		});
 	    
-	    } 
+	    }
 	   
 	    function loadCrops() {
 		$('<div><img src="' + $('#modal-img').attr('src') + '" style="position: relative;" /><div>')
@@ -560,6 +565,15 @@ define('THUMB_100', './images/thumb/100/');
 			</div>
 
 			<div id="modal-tab-infos" class="modal-tab hide">
+			    
+			    <span id="text-infos"></span>
+			    <!--
+			    <span id="histo-infos">
+				<img src="red.png" width="50" height="50" />
+				<img src="green.png" width="50" height="50" />
+				<img src="blue.png" width="50" height="50" />
+			    </span>
+			    -->
 			</div>
 		    </div>
 

@@ -2,16 +2,9 @@
 
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date dans le passé
-require '../autoload.php';
 
-$filename = str_replace('jpeg', 'jpg', urldecode($_GET['filename']));
-$path = '/Users/florent/Pictures/Florent portable/' . $filename;
-/*
-  <div style="text-align: center">
-  <img src="<?php echo Easy\Image::getDataSource($path); ?>" style="max-width: 500px" />
-  </div>
- * 
- */
+require 'conf.php';
+
 $action = $_GET['action'];
 $fileSrc = $_GET['filesrc'];
 switch ($action) {
@@ -34,6 +27,22 @@ switch ($action) {
 	    'offset' => $convolution->getOffset(),
 	);
 	echo json_encode($json);
+	break;
+    case 'histogramme' :
+	/**
+	 * trop long
+
+	  set_time_limit(0);
+	  $histogramme = new Easy\Histogramme();
+	  $imgSrc = Easy\Image::createFrom($fileSrc);
+	  $runer = Easy\RunThrough::create($imgSrc);
+	  $runer->attach($histogramme);
+	  $runer->process();
+	  $histogramme->computeSigma($imgSrc->getWidth() * $imgSrc->getHeight());
+	  $histogramme->save(THUMB_HISTO);
+
+	 * 
+	 */
 	break;
     case 'filter' :
 	$smooth = isset($_GET['smooth']) ? $_GET['smooth'] : 0;
@@ -69,12 +78,8 @@ switch ($action) {
 		break;
 	}
 
-
 	$filter->process($imgSrc)->show();
 
-
-//$color = \Easy\Color::Purple();
-//Easy\Filter::FILTER_COLORIZE($color)->process($image)->show();
 	break;
     default :
 	break;
