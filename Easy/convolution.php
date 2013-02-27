@@ -45,21 +45,43 @@ class Convolution {
 	0, 1, 0,
 	0, 0, 0
     );
-    public static $CONVOLTION_SHARPEN = array(
+    public static $CONVOLUTION_SHARPEN = array(
 	0, -1, 0,
 	-1, 5, -1,
 	0, -1, 0
     );
-    public static $CONVOLTION_EDGE = array(
+
+    /**
+     * other exemple
+
+      array(
+      -1, -1, -1,
+      -1, 9, -1,
+      -1, -1, -1,
+      );
+     */
+    public static $CONVOLUTION_DETECTION_EDGES = array(
 	0, 1, 0,
 	1, -4, 1,
 	0, 1, 0
     );
-    public static $CONVOLUTION_FINDEDGES = array(
+    public static $CONVOLUTION_FIND_EDGES = array(
 	-1, -1, -1,
 	-2, 8, -1,
 	-1, -1, -1
     );
+
+    /**
+     * other exemple
+
+      array(0,	1,	0,
+      1,	-4,	1,
+      0,	1,	0);
+
+      array(    	1,	-2,	1,
+      -2,	4	-2,
+      1,	-2,	1);
+     */
     public static $CONVOLUTION_BLUR = array(
 	1, 1, 1,
 	1, 1, 1,
@@ -71,17 +93,38 @@ class Convolution {
 	1, 2, 1
     );
 // Repoussage
-    public static $CONVOLUTION_R = array(
+    public static $CONVOLUTION_EMBOSS = array(
 	-2, -1, 0,
 	-1, 1, 1,
 	0, 1, 2
     );
 // Renforcement des bords
-    public static $CONVOLUTION_REENFORCEMENT = array(
+// Edge Enhancement 
+    public static $CONVOLUTION_ENHANCEMENT_EDGES = array(
 	0, 0, 0,
 	-1, 1, 0,
 	0, 0, 0
     );
+
+    /*
+     * Other examples
+     * 
+      array(
+
+      0,-1,0,
+      0,1,0,
+      0,0,0
+
+      );
+
+      array(
+
+      -1,0,0,
+      0,1,0,
+      0,0,0
+
+      );
+     */
 // Laplacien 1
     public static $CONVOLUTION_LAPLACIEN_1 = array(
 	0, -1, 0,
@@ -104,7 +147,7 @@ class Convolution {
     public static $CONVOLUTION_4_CONNEX = array(
 	0., -1, 0,
 	-1, 4, -1,
-	0., -1, 0);
+	0, -1, 0);
 //Gradient 3x3 8-connex 
     public static $CONVOLUTION_8_CONNEX = array(
 	-1, -1, -1,
@@ -116,25 +159,25 @@ class Convolution {
 	1, 0, -1,
 	1, 0, -1
     );
-    //WE
+//WE
     public static $CONVOLUTION_GRADIENT_WE = array(
 	-1, 0, 1,
 	-1, 0, 1,
 	-1, 0, 1
     );
-    // NS
+// NS
     public static $CONVOLUTION_GRADIENT_NS = array(
 	-1, -1, -1,
 	0, 0, 0,
 	1, 1, 1
     );
-    // SN
+// SN
     public static $CONVOLUTION_GRADIENT_SN = array(
 	1, 1, 1,
 	0, 0, 0,
 	-1, -1, -1
     );
-    // NW-SE
+// NW-SE
     public static $CONVOLUTION_GRADIENT_NWSE = array(
 	-1, -1, 0,
 	-1, 0, 1,
@@ -161,7 +204,8 @@ class Convolution {
     public static function create($matrix) {
 	$obj = new self($matrix);
 	$divisor = floatval(array_sum(array_map('array_sum', $obj->getMatrix())));
-	$obj->setDivisor($divisor);
+	if ($divisor != 0)
+	    $obj->setDivisor($divisor);
 	return $obj;
     }
 
@@ -203,6 +247,9 @@ class Convolution {
     }
 
     public function setDivisor($divisor) {
+
+	if ($divisor == 0)
+	    throw new \Exception('oups');
 	$this->divisor = floatval($divisor);
 	return $this;
     }
@@ -219,16 +266,16 @@ class Convolution {
 
 // Contraste (Sharpen)
     public static function CONVOLTION_SHARPEN() {
-	return Convolution::create(self::$CONVOLTION_SHARPEN);
+	return Convolution::create(self::$CONVOLUTION_SHARPEN);
     }
 
 // Border detection (Edge)
-    public static function CONVOLTION_EDGE() {
-	return Convolution::create(self::$CONVOLTION_EDGE);
+    public static function CONVOLTION_DECTECTION_EDGES() {
+	return Convolution::create(self::$CONVOLUTION_DETECTION_EDGES);
     }
 
-    public static function CONVOLUTION_FINDEDGES() {
-	return Convolution::create(self::$CONVOLUTION_FINDEDGES);
+    public static function CONVOLUTION_FIND_EDGES() {
+	return Convolution::create(self::$CONVOLUTION_FIND_EDGES);
     }
 
 // Median Blur
@@ -241,12 +288,12 @@ class Convolution {
 	return Convolution::create(self::$CONVOLUTION_GAUSSIAN);
     }
 
-    public static function CONVOLUTION_R() {
-	return Convolution::create(self::$CONVOLUTION_R);
+    public static function CONVOLUTION_EMBOSS() {
+	return Convolution::create(self::$CONVOLUTION_EMBOSS);
     }
 
-    public static function CONVOLUTION_REENFORCEMENT() {
-	return Convolution::create(self::$CONVOLUTION_REENFORCEMENT);
+    public static function CONVOLUTION_ENHANCEMENT_EDGES() {
+	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES);
     }
 
     public static function CONVOLUTION_LAPLACIEN_1($alpha = 2) {
