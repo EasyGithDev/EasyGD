@@ -170,12 +170,20 @@ class Filter {
      * @param type $colorize,     IMG_FILTER_COLORIZE, -127.12, -127.98, 127
      * @return type
      */
-    public static function FILTER_COLORIZE(Color $color) {
+    public static function FILTER_COLORIZE($red, $green, $blue) {
+
+	if ($red < -255 OR $red > 255)
+	    $red = 0;
+	if ($green < -255 OR $blue > 255)
+	    $green = 0;
+	if ($blue < -255 OR $blue > 255)
+	    $blue = 0;
+
 	$filter = self::create();
 	$filter->filterType = IMG_FILTER_COLORIZE;
-	$filter->paramArr[] = $color->getRed();
-	$filter->paramArr[] = $color->getGreen();
-	$filter->paramArr[] = $color->getBlue();
+	$filter->paramArr[] = $red;
+	$filter->paramArr[] = $green;
+	$filter->paramArr[] = $blue;
 	return $filter;
     }
 
