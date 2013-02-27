@@ -126,18 +126,18 @@ define('THUMB_100', './images/thumb/100/');
                 });
     
                 $('#modal-btn-rotate-left').click(  function() {
-                    angle += 90;
+                    angle -= 90;
                     $('#modal-img').rotate(angle);
                 });
 		
 		$('#modal-btn-rotate-right').click(  function() {
-                    angle -= 90;
+                    angle += 90;
                     $('#modal-img').rotate(angle);
                 });
 		
 		
 		$('#modal-btn-crop').click(  function() {
-		    $('#modal-img').imgAreaSelect({x1: 120, y1: 90, x2: 280, y2: 210, maxWidth: 200, maxHeight: 150, handles: true });
+		    loadCrops();
 		});
 		
 		$('#modal-btn-fullscreen').click(function() {
@@ -192,6 +192,22 @@ define('THUMB_100', './images/thumb/100/');
 		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=pixelate&blocksize='+ui.value;
 		    $("#modal-img").attr("src", src );
 		} );
+		
+		$( "#modal-slider-red" ).on( "slidestop", function( event, ui ) {
+		    $(this).slider('value', ui.value);
+		    changeColor();
+		} );
+		
+		$( "#modal-slider-green" ).on( "slidestop", function( event, ui ) {
+		    $(this).slider('value', ui.value);
+		    changeColor();
+		} );
+		
+		$( "#modal-slider-blue" ).on( "slidestop", function( event, ui ) {
+		    $(this).slider('value', ui.value);
+		    changeColor();
+		} );
+		
 		
 		$('#btn-img-prev').click( function(){
 		    
@@ -278,6 +294,9 @@ define('THUMB_100', './images/thumb/100/');
 		$( "#modal-slider-contrast" ).slider({ values: [ 0 ], min: -100, max: 100 });
 		$( "#modal-slider-smooth" ).slider({ values: [ 0 ],min: -8, max: 8 });
 		$( "#modal-slider-pixelate" ).slider({ values: [ 0 ], min: 0, max: 10 });    
+		$( "#modal-slider-red" ).slider({ values: [ 0 ], min: -255, max: 255 });
+		$( "#modal-slider-green" ).slider({ values: [ 0 ], min: -255, max: 255 });
+		$( "#modal-slider-blue" ).slider({ values: [ 0 ], min: -255, max: 255 });
 	    }
 	    
 	    function loadInfos(filename) {
@@ -286,21 +305,80 @@ define('THUMB_100', './images/thumb/100/');
 		$.getJSON(src + '&t=' + date.getTime(), function(data) {
 		    var items = [];
 		    $.each(data, function(key, val) {
+			if(key == 'size')
+			    val = Math.round( val / 1024 ) + ' Ko';
 			items.push('<li id="' + key + '">' + key + ': ' + val + '</li>');
 		    });
+		    
 		    $('#modal-tab-infos').html('<ul>'+items.join('')+'</ul>');
 		});
 	    
 	    } 
-	    
 	   
+	    function loadCrops() {
+		$('<div><img src="' + $('#modal-img').attr('src') + '" style="position: relative;" /><div>')
+		.css({
+		    float:  'left',
+		    position: 'relative',
+		    overflow: 'hidden',
+		    width: '100px',
+		    height: '100px'
+		})
+		.insertAfter($('#modal-btn-crop'));
+
+		$('#modal-img').imgAreaSelect({ aspectRatio: '1:1', onSelectChange: cropPreview });
+	    }
+	   
+	    function changeColor() {
+	   
+		var filesrc = thumb_400 + getFilename();	    
+		var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=colorize';
+		var red = $( "#modal-slider-red" ).slider( "value" );
+		var blue = $( "#modal-slider-blue" ).slider( "value" );
+		var green = $( "#modal-slider-green" ).slider( "value" );
+		
+		src += '&red=' + red + '&green=' + green + '&blue=' + blue; 
+		
+		$("#modal-img").attr("src", src );
+	    }
+	    
 	    function convolution(obj) {
-		filesrc = $("#modal-img").attr("src");
-		console.log(filesrc)
-		$("#modal-img").attr("src",'loader.php?action=convolution&filesrc='+filesrc+'&convolution='+obj[obj.selectedIndex].value);
+		var filesrc = thumb_400 + getFilename();
+		var action = 'convolution';
+		var src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+obj[obj.selectedIndex].value;
+		
+		
+		$("#modal-img").attr("src", src);
+		
+		action = 'convolution_info';
+		src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+obj[obj.selectedIndex].value;
+		$.getJSON(src + '&t=' + date.getTime(), function(data) {
+		  
+		    for(i=0;i<3;i++){
+			for(j=0;j<3;j++){
+			    var m = '#m_' + i + '_' + j;
+			    $(m).val(data.matrix[i][j])
+			}
+		    }
+		    $('#divisor').val(data.divisor);
+		    $('#offset').val(data.offset)
+		});
+		
+		
 	    }
 	    
 
+	    function cropPreview(img, selection) {
+		var scaleX = 100 / (selection.width || 1);
+		var scaleY = 100 / (selection.height || 1);
+  
+		$('#modal-btn-crop + div > img').css({
+		    width: Math.round(scaleX * 400) + 'px',
+		    height: Math.round(scaleY * 300) + 'px',
+		    marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+		    marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+		});
+	    }
     
         </script>
     </head>
@@ -351,7 +429,6 @@ define('THUMB_100', './images/thumb/100/');
 		    <div style="margin-top:5px">
 			<a id="modal-btn-rotate-left" class="btn btn-small" href="#"><i class="icon-arrow-left"></i></a>
 			<a id="modal-btn-rotate-right" class="btn btn-small" href="#"><i class="icon-arrow-right"></i></a>
-			<a id="modal-btn-crop" class="btn btn-small" href="#"><i class="icon-screenshot"></i></a>
 			<a id="modal-btn-fullscreen" class="btn btn-small" href="#"><i class="icon-fullscreen"></i></a>
 		    </div>
 		</span>
@@ -359,7 +436,10 @@ define('THUMB_100', './images/thumb/100/');
 
 		    <ul id="modal-nav" class="nav nav-tabs">
 			<li class="active" id="filters"><a href="#">Filtres</a></li>
+			<li id="crops"><a href="#">Recadrer</a></li>
 			<li id="tools"><a href="#">Outils</a></li>
+			<li id="colors"><a href="#">Couleurs</a></li>
+			<li id="customs"><a href="#">Perso</a></li>
 			<li id="infos"><a href="#">Infos</a></li>
 		    </ul>
 
@@ -399,44 +479,91 @@ define('THUMB_100', './images/thumb/100/');
 			    </ul>
 			</div>
 
+			<div id="modal-tab-crops" class="modal-tab hide">
+
+			    <h3>Recadrer</h3>
+			    <a id="modal-btn-crop" class="btn btn-medium" href="#"><i class="icon-screenshot"></i></a>
+			</div>
+
 			<div id="modal-tab-tools" class="modal-tab hide">
 
-			    <h3>Contrast</h3>
+			    <h4>Contraste</h4>
 			    <div id="modal-slider-contrast"></div>
 
-			    <h3>Brightness</h3>
+			    <h4>Luminosité</h4>
 			    <div id="modal-slider-brightness"></div>
 
-			    <h3>Smooth</h3>
+			    <h4>Lissage</h4>
 			    <div id="modal-slider-smooth"></div>
 
-			    <h3>Pixelate</h3>
+			    <h4>Pixelisation</h4>
 			    <div id="modal-slider-pixelate"></div>
 
 			</div>
 
+			<div id="modal-tab-colors" class="modal-tab hide">
+
+			    <h4>Rouge</h4>
+			    <div id="modal-slider-red"></div>
+
+			    <h4>Vert</h4>
+			    <div id="modal-slider-green"></div>
+
+			    <h4>Bleu</h4>
+			    <div id="modal-slider-blue"></div>
+
+			</div>
+
+			<div id="modal-tab-customs" class="modal-tab hide">
+
+			    <?php
+			    $convolutions = Easy\Convolution::getConvolutionList();
+			    ?>
+			    Présélections :
+			    <select onchange="convolution(this)">
+				<option value="">--------------</option>
+				<?php foreach ($convolutions as $v) : ?>
+
+    				<option value="<?php echo $v; ?>"><?php echo $v; ?></option>
+
+				<?php endforeach; ?>
+
+			    </select>
+
+			    <table class="table table-bordered">
+				<tbody>
+				    <tr>
+					<td><input id="m_0_0" type="text" value="" class="input-mini"></td>
+					<td><input id="m_0_1" type="text" value="" class="input-mini"></td>
+					<td><input id="m_0_2" type="text" value="" class="input-mini"></td>
+				    </tr>
+				    <tr>
+					<td><input id="m_1_0" type="text" value="" class="input-mini"></td>
+					<td><input id="m_1_1" type="text" value="" class="input-mini"></td>
+					<td><input id="m_1_2" type="text" value="" class="input-mini"></td>
+				    </tr>
+				    <tr>
+					<td><input id="m_2_0" type="text" value="" class="input-mini"></td>
+					<td><input id="m_2_1" type="text" value="" class="input-mini"></td>
+					<td><input id="m_2_2" type="text" value="" class="input-mini"></td>
+				    </tr>
+				</tbody>
+			    </table>
+
+			    <label for="divisor">Diviseur :
+			    <input id="divisor" type="text" value="" class="input-mini"></label>
+			    <label for="offset">Décallage :
+			    <input id="offset" type="text" value="" class="input-mini"></label>
+			    <button id="apply-custom" class="btn btn-primary">Appliquer</button>
+
+
+			</div>
+
 			<div id="modal-tab-infos" class="modal-tab hide">
-			    infos caché
 			</div>
 		    </div>
 
-		    <!--
-		    <div>
-		    <?php
-		    $convolutions = Easy\Convolution::getConvolutionList();
-		    ?>
-			<select onchange="convolution(this)">
-			    <option value="">--------------</option>
-		    <?php foreach ($convolutions as $v) : ?>
-    	
-    			    <option value="<?php echo $v; ?>"><?php echo $v; ?></option>
-    	
-		    <?php endforeach; ?>
 
-			</select>
-		    </div>
-
-		    -->
 
 		</span>
 

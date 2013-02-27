@@ -25,12 +25,25 @@ switch ($action) {
 	$convolution = \Easy\Convolution::$convolution();
 	Easy\Filter::create($convolution)->process($imgSrc)->show();
 	break;
+    case 'convolution_info' :
+	$convolution = $_GET['convolution'];
+	$convolution = \Easy\Convolution::$convolution();
+	$json = array(
+	    'matrix' => $convolution->getMatrix(),
+	    'divisor' => $convolution->getDivisor(),
+	    'offset' => $convolution->getOffset(),
+	);
+	echo json_encode($json);
+	break;
     case 'filter' :
-	$smooth = isset($_GET['smooth']) ? $_GET['smooth'] : '';
-	$contrast = isset($_GET['contrast']) ? $_GET['contrast'] : '';
-	$brightness = isset($_GET['brightness']) ? $_GET['brightness'] : '';
-	$blocksize = isset($_GET['blocksize']) ? $_GET['blocksize'] : '';
-	
+	$smooth = isset($_GET['smooth']) ? $_GET['smooth'] : 0;
+	$contrast = isset($_GET['contrast']) ? $_GET['contrast'] : 0;
+	$brightness = isset($_GET['brightness']) ? $_GET['brightness'] : 0;
+	$blocksize = isset($_GET['blocksize']) ? $_GET['blocksize'] : 0;
+	$red = isset($_GET['red']) ? $_GET['red'] : 0;
+	$green = isset($_GET['green']) ? $_GET['green'] : 0;
+	$blue = isset($_GET['blue']) ? $_GET['blue'] : 0;
+
 	$filter = 'FILTER_' . strtoupper($_GET['filter']);
 	$imgSrc = Easy\Image::createFrom($fileSrc);
 
@@ -46,10 +59,11 @@ switch ($action) {
 		break;
 	    case 'FILTER_PIXELATE':
 		$type = true;
-		$filter = Easy\Filter::FILTER_PIXELATE($blocksize, $type);
-
+		$filter = Easy\Filter::$filter($blocksize, $type);
 		break;
-
+	    case 'FILTER_COLORIZE':
+		$filter = Easy\Filter::$filter($red, $green, $blue);
+		break;
 	    default :
 		$filter = \Easy\Filter::$filter();
 		break;
