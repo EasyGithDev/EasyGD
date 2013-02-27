@@ -265,12 +265,12 @@ class Convolution {
     }
 
 // Contraste (Sharpen)
-    public static function CONVOLTION_SHARPEN() {
+    public static function CONVOLUTION_SHARPEN() {
 	return Convolution::create(self::$CONVOLUTION_SHARPEN);
     }
 
 // Border detection (Edge)
-    public static function CONVOLTION_DECTECTION_EDGES() {
+    public static function  CONVOLUTION_DETECTION_EDGES() {
 	return Convolution::create(self::$CONVOLUTION_DETECTION_EDGES);
     }
 
