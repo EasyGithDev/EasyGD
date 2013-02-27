@@ -33,11 +33,11 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
 //Easy\Filter::FILTER_COLORIZE($color)->process($image)->show();
 //$convolution = Easy\Convolution::CONVOLUTION_IDENTITY();
 //$convolution = Easy\Convolution::CONVOLTION_SHARPEN();
-//$convolution = Easy\Convolution::CONVOLTION_EDGE();
-//$convolution = Easy\Convolution::CONVOLUTION_FINDEDGES();
+//$convolution = Easy\Convolution::CONVOLTION_DECTECTION_EDGES();
+//$convolution = Easy\Convolution::CONVOLUTION_FIND_EDGES();
 //$convolution = Easy\Convolution::CONVOLUTION_BLUR();
 //$convolution = Easy\Convolution::CONVOLUTION_GAUSSIAN();
-//$convolution = Easy\Convolution::CONVOLUTION_REENFORCEMENT();
+//$convolution = Easy\Convolution::CONVOLUTION_ENHANCEMENT_EDGES();
 //$convolution = Easy\Convolution::CONVOLUTION_LAPLACIEN_1();
 //$convolution = Easy\Convolution::CONVOLUTION_LAPLACIEN_2();
 //$convolution = Easy\Convolution::CONVOLUTION_LAPLACIEN_3();
