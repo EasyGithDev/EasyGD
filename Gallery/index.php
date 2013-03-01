@@ -51,6 +51,20 @@ require 'conf.php';
 
 	    }
 
+	    #myModal #modal-form-customs .input-mini {
+		width: 25px;
+	    }
+
+	    #myModal #modal-form-customs table td {
+		text-align: center;
+		padding-bottom: 0;
+	    }
+
+	    #myModal #modal-tab-customs label {
+		display: inline;
+		padding-right: 10px;
+	    }
+
 	    #myModal .pager {
 		margin-top: 5px;
 		margin-bottom: 5px;
@@ -63,9 +77,6 @@ require 'conf.php';
 	    span {
 		/*border: 1px solid #000000;*/
 	    }
-
-
-
 
         </style>
 	<link href="assets/css/ui-lightness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
@@ -120,15 +131,15 @@ require 'conf.php';
                     $('#modal-img').rotate(angle);
                 });
     
-                $('#modal-btn-rotate-left').click(  function() {
-                    angle -= 90;
-                    $('#modal-img').rotate(angle);
-                });
+		$('#modal-btn-rotate-left').click(  function() {
+		    angle -= 90;
+		    $('#modal-img').rotate(angle);
+		});
 		
 		$('#modal-btn-rotate-right').click(  function() {
-                    angle += 90;
-                    $('#modal-img').rotate(angle);
-                });
+		    angle += 90;
+		    $('#modal-img').rotate(angle);
+		});
 		
 		
 		$('#modal-btn-crop').click(  function() {
@@ -152,8 +163,6 @@ require 'conf.php';
 			console.log('Am I fullscreen? ' + screenfull.isFullscreen ? 'Yes' : 'No');
 		    };
 		}
-		
-		
 		
 		$( "#modal-slider-brightness" ).on( "slide", function( event, ui ) {} );
 		$( "#modal-slider-contrast" ).on( "slide", function( event, ui ) {} );
@@ -203,6 +212,30 @@ require 'conf.php';
 		    changeColor();
 		} );
 		
+		
+		$('#custom-selection').change(function () {
+		    var filesrc = thumb_400 + getFilename();
+		    var action = 'convolution';
+		    var src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+$(this).val();
+		
+		    $("#modal-img").attr("src", src);
+		
+		    action = 'convolution_info';
+		    src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+$(this).val();
+		    $.getJSON(src + '&t=' + date.getTime(), function(data) {
+		  
+			for(i=0;i<3;i++){
+			    for(j=0;j<3;j++){
+				var m = '#m_' + i + '_' + j;
+				$(m).val(data.matrix[i][j])
+			    }
+			}
+			$('#divisor').val(data.divisor);
+			$('#offset').val(data.offset)
+		    });
+		
+		});
+	    
 		
 		$('#btn-img-prev').click( function(){
 		    
@@ -346,32 +379,26 @@ require 'conf.php';
 		
 		$("#modal-img").attr("src", src );
 	    }
+	
 	    
-	    function convolution(obj) {
-		var filesrc = thumb_400 + getFilename();
-		var action = 'convolution';
-		var src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+obj[obj.selectedIndex].value;
-		
-		
-		$("#modal-img").attr("src", src);
-		
-		action = 'convolution_info';
-		src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+obj[obj.selectedIndex].value;
-		$.getJSON(src + '&t=' + date.getTime(), function(data) {
-		  
-		    for(i=0;i<3;i++){
-			for(j=0;j<3;j++){
-			    var m = '#m_' + i + '_' + j;
-			    $(m).val(data.matrix[i][j])
-			}
+	    function applyConvolution() {
+		var divisor = $('#divisor').val();
+		var offset = $('#offset').val();
+		var matrix = [];
+		    
+		for(i =0; i<3;i++){
+		    for(j=0;j<3;j++){
+			matrix.push($('#m_'+i+'_'+j).val());
 		    }
-		    $('#divisor').val(data.divisor);
-		    $('#offset').val(data.offset)
-		});
-		
-		
+		}
+		matrix = JSON.stringify(matrix);
+		console.log(matrix);
+		var filesrc = thumb_400 + getFilename();
+		var  src = 'loader.php?action=convolution_custom&filesrc=' + filesrc + '&divisor='+divisor+'&offset='+offset+'&matrix='+matrix;
+		console.log(src)
+		$("#modal-img").attr("src", src );
+		return false;
 	    }
-	    
 
 	    function cropPreview(img, selection) {
 		var scaleX = 100 / (selection.width || 1);
@@ -524,48 +551,59 @@ require 'conf.php';
 			    <?php
 			    $convolutions = Easy\Convolution::getConvolutionList();
 			    ?>
-			    Présélections :
-			    <select onchange="convolution(this)">
-				<option value="">--------------</option>
-				<?php foreach ($convolutions as $v) : ?>
+			    <form id="modal-form-customs" class="well" onsubmit="return applyConvolution();">
+				<div>
+				    <label for="custom-selection">Sélections :</label>
 
-    				<option value="<?php echo $v; ?>"><?php echo $v; ?></option>
+				    <select id="custom-selection" class="input-xlarge">
 
-				<?php endforeach; ?>
+					<?php foreach ($convolutions as $v) : ?>
 
-			    </select>
+    					<option value="<?php echo $v; ?>"><?php echo $v; ?></option>
 
-			    <table class="table table-bordered">
-				<tbody>
-				    <tr>
-					<td><input id="m_0_0" type="text" value="" class="input-mini"></td>
-					<td><input id="m_0_1" type="text" value="" class="input-mini"></td>
-					<td><input id="m_0_2" type="text" value="" class="input-mini"></td>
-				    </tr>
-				    <tr>
-					<td><input id="m_1_0" type="text" value="" class="input-mini"></td>
-					<td><input id="m_1_1" type="text" value="" class="input-mini"></td>
-					<td><input id="m_1_2" type="text" value="" class="input-mini"></td>
-				    </tr>
-				    <tr>
-					<td><input id="m_2_0" type="text" value="" class="input-mini"></td>
-					<td><input id="m_2_1" type="text" value="" class="input-mini"></td>
-					<td><input id="m_2_2" type="text" value="" class="input-mini"></td>
-				    </tr>
-				</tbody>
-			    </table>
+					<?php endforeach; ?>
 
-			    <label for="divisor">Diviseur :
-			    <input id="divisor" type="text" value="" class="input-mini"></label>
-			    <label for="offset">Décallage :
-			    <input id="offset" type="text" value="" class="input-mini"></label>
-			    <button id="apply-custom" class="btn btn-primary">Appliquer</button>
+				    </select>
+				</div>
 
+				<table class="table table-bordered">
+				    <tbody>
+					<tr>
+					    <td><input id="m_0_0" type="text" value="" class="input-mini"></td>
+					    <td><input id="m_0_1" type="text" value="" class="input-mini"></td>
+					    <td><input id="m_0_2" type="text" value="" class="input-mini"></td>
+					</tr>
+					<tr>
+					    <td><input id="m_1_0" type="text" value="" class="input-mini"></td>
+					    <td><input id="m_1_1" type="text" value="" class="input-mini"></td>
+					    <td><input id="m_1_2" type="text" value="" class="input-mini"></td>
+					</tr>
+					<tr>
+					    <td><input id="m_2_0" type="text" value="" class="input-mini"></td>
+					    <td><input id="m_2_1" type="text" value="" class="input-mini"></td>
+					    <td><input id="m_2_2" type="text" value="" class="input-mini"></td>
+					</tr>
+				    </tbody>
+				</table>
+
+				<div>
+				    <label class="control-label" for="divisor">Diviseur :</label>
+				    <input id="divisor" type="text" value="" class="input-mini">
+				</div>
+				<div>
+				    <label class="control-label" for="offset">Décallage :</label>
+				    <input id="offset" type="text" value="" class="input-mini">
+				</div>
+				<div>
+				    <button id="submit" type="submit" class="btn">Appliquer</button>
+				</div>
+
+			    </form>
 
 			</div>
 
 			<div id="modal-tab-infos" class="modal-tab hide">
-			    
+
 			    <span id="text-infos"></span>
 			    <!--
 			    <span id="histo-infos">

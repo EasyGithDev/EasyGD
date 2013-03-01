@@ -18,6 +18,15 @@ switch ($action) {
 	$convolution = \Easy\Convolution::$convolution();
 	Easy\Filter::create($convolution)->process($imgSrc)->show();
 	break;
+    case 'convolution_custom':
+	$divisor = $_GET['divisor'];
+	$offset = $_GET['offset'];
+	$matrix = json_decode($_GET['matrix']);
+	$imgSrc = Easy\Image::createFrom($fileSrc);
+	$convolution = \Easy\Convolution::create($matrix);
+	$convolution->setDivisor($divisor)->setOffset($offset);
+	\Easy\Filter::create($convolution)->process($imgSrc)->show();
+	break;
     case 'convolution_info' :
 	$convolution = $_GET['convolution'];
 	$convolution = \Easy\Convolution::$convolution();
