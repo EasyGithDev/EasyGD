@@ -12,7 +12,23 @@ require 'conf.php';
 
         <!-- Le styles -->
         <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <style>
+	<link href="assets/css/ui-lightness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+        <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="assets/bootstrap/js/html5shiv.js"></script>
+        <![endif]-->
+
+        <!-- Fav and touch icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+        <link rel="shortcut icon" href="assets/bootstrap/ico/favicon.png">
+
+
+	<style>
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
@@ -79,32 +95,11 @@ require 'conf.php';
 	    }
 
         </style>
-	<link href="assets/css/ui-lightness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
 
-	<link href="assets/css/imgareaselect/imgareaselect-default.css" rel="stylesheet">
-
-        <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="assets/bootstrap/js/html5shiv.js"></script>
-        <![endif]-->
-
-        <!-- Fav and touch icons -->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/bootstrap/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/bootstrap/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/bootstrap/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="assets/bootstrap/ico/apple-touch-icon-57-precomposed.png">
-        <link rel="shortcut icon" href="assets/bootstrap/ico/favicon.png">
-
-
-
-	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/jquery.1.9.0.min.js"></script>
 	<script src="assets/js/jquery-ui-1.10.1.custom.min.js"></script>
         <script src="assets/js/jQueryRotateCompressed.2.2.js"></script>
 	<script src="assets/js/screenfull.min.js"></script>
-	<script src="assets/js/jquery.imgareaselect.min.js"></script>
-
 
         <script>
 
@@ -139,11 +134,6 @@ require 'conf.php';
 		$('#modal-btn-rotate-right').click(  function() {
 		    angle += 90;
 		    $('#modal-img').rotate(angle);
-		});
-		
-		
-		$('#modal-btn-crop').click(  function() {
-		    loadCrops();
 		});
 		
 		$('#modal-btn-fullscreen').click(function() {
@@ -352,21 +342,7 @@ require 'conf.php';
 		});
 	    
 	    }
-	   
-	    function loadCrops() {
-		$('<div><img src="' + $('#modal-img').attr('src') + '" style="position: relative;" /><div>')
-		.css({
-		    float:  'left',
-		    position: 'relative',
-		    overflow: 'hidden',
-		    width: '100px',
-		    height: '100px'
-		})
-		.insertAfter($('#modal-btn-crop'));
 
-		$('#modal-img').imgAreaSelect({ aspectRatio: '1:1', onSelectChange: cropPreview });
-	    }
-	   
 	    function changeColor() {
 	   
 		var filesrc = thumb_400 + getFilename();	    
@@ -400,18 +376,6 @@ require 'conf.php';
 		return false;
 	    }
 
-	    function cropPreview(img, selection) {
-		var scaleX = 100 / (selection.width || 1);
-		var scaleY = 100 / (selection.height || 1);
-  
-		$('#modal-btn-crop + div > img').css({
-		    width: Math.round(scaleX * 400) + 'px',
-		    height: Math.round(scaleY * 300) + 'px',
-		    marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
-		    marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
-		});
-	    }
-    
         </script>
     </head>
 
@@ -468,9 +432,7 @@ require 'conf.php';
 
 		    <ul id="modal-nav" class="nav nav-tabs">
 			<li class="active" id="filters"><a href="#">Filtres</a></li>
-			<li id="crops"><a href="#">Recadrer</a></li>
 			<li id="tools"><a href="#">Outils</a></li>
-			<li id="colors"><a href="#">Couleurs</a></li>
 			<li id="customs"><a href="#">Perso</a></li>
 			<li id="infos"><a href="#">Infos</a></li>
 		    </ul>
@@ -511,37 +473,24 @@ require 'conf.php';
 			    </ul>
 			</div>
 
-			<div id="modal-tab-crops" class="modal-tab hide">
-
-			    <h3>Recadrer</h3>
-			    <a id="modal-btn-crop" class="btn btn-medium" href="#"><i class="icon-screenshot"></i></a>
-			</div>
 
 			<div id="modal-tab-tools" class="modal-tab hide">
 
-			    <h4>Contraste</h4>
-			    <div id="modal-slider-contrast"></div>
-
-			    <h4>Luminosité</h4>
+			    <h6>Luminosité</h6>
 			    <div id="modal-slider-brightness"></div>
 
-			    <h4>Lissage</h4>
+			    <h6>Contraste</h6>
+			    <div id="modal-slider-contrast"></div>
+
+			    <h6>Lissage</h6>
 			    <div id="modal-slider-smooth"></div>
 
-			    <h4>Pixelisation</h4>
+			    <h6>Pixelisation</h6>
 			    <div id="modal-slider-pixelate"></div>
 
-			</div>
-
-			<div id="modal-tab-colors" class="modal-tab hide">
-
-			    <h4>Rouge</h4>
-			    <div id="modal-slider-red"></div>
-
-			    <h4>Vert</h4>
-			    <div id="modal-slider-green"></div>
-
-			    <h4>Bleu</h4>
+			    <h6>Rouge / Vert / Bleu</h6>
+			    <div id="modal-slider-red"></div><br/>
+			    <div id="modal-slider-green"></div><br/>
 			    <div id="modal-slider-blue"></div>
 
 			</div>
