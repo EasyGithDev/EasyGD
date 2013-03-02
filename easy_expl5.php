@@ -65,7 +65,16 @@ Easy\Transformation::crop(
  * How to make a thumbnail
  * 
  */
-Easy\Transformation::thumbnail($image, 140, Easy\Color::Silver())->show();
+//Easy\Transformation::thumbnail($image, 140, Easy\Color::Silver())->show();
+
+
+/*
+ * 
+ * How to make a rotation
+ * 
+ */
+Easy\Transformation::rotate($image, 90)->show();
+
 
 /*
  * 
