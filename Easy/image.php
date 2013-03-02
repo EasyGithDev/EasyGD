@@ -246,6 +246,10 @@ class Image {
 	return isset($this->colors[$hexa]) ? $this->colors[$hexa] : FALSE;
     }
 
+    public function setImg($img) {
+	$this->img = $img;
+    }
+
     public function setImagetype($imageType) {
 	$this->imageType = $imageType;
 	return $this;
