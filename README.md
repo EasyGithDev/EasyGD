@@ -50,3 +50,79 @@ EasyGD - a PHP framework for use GD easier
 ####How to make multiple save
 
     Easy\Image::createfrom($filename)->save('zend')->setImagetype(IMAGETYPE_GIF)->save('zend')->setImagetype(IMAGETYPE_JPEG)->save('zend');
+
+----
+
+# Create your own images
+
+#### define a dimension
+    $dimension = Easy\Dimension::create(300, 300);
+
+####How to create a truetype image
+    Easy\Image::create($dimension)->show();
+
+####How to create a color with hexadecimal code
+    $color = Easy\Color::create('#83d01e');
+
+####How to create a color from a preset
+    $color = Easy\Color::create(\Easy\Color::Yellow);
+
+####How to create a preseted color 
+    $color = Easy\Color::Yellow();
+
+####How to fill an image with a color 
+    Easy\Image::create($dimension, Easy\Color::Gray())->show();
+
+----
+
+# Adding text in the images 
+
+#### How to create a GD text
+    $text = Easy\Text::create('Hello World');
+
+#### How to create a position
+    $position = Easy\Position::create(100, 125);
+
+
+#### How to add a GD text into an image
+    $image = Easy\Image::create($dimension, Easy\Color::Blue())->addText(
+	$text->setColor(Easy\Color::Silver())
+		->setSize(3)
+		->setPosition($position)
+    );
+
+
+#### How to draw a string vertically into an image
+    $image = Easy\Image::create(Easy\Dimension::create(100, 100))->addText(
+	Easy\Text::create('gd library')
+		->setSize(3)
+		->setColor(Easy\Color::White())
+		->setdrawtype(Easy\Text::TEXT_DRAW_VERTICAL)
+		->setPosition(Easy\Position::create(40, 80))
+    );
+
+#### How to add a TrueType text into an image
+
+$text = Easy\TrueType::create('Hello True World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+	->setColor(Easy\Color::Silver())
+	->setSize(16)
+	->setAngle(45)
+	->setPosition($position);
+
+
+#### How to add a FreeType text into an image
+
+    $text = Easy\FreeType::create('Hello Free World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+	->setColor(Easy\Color::Silver())
+	->setSize(16)
+	->setAngle(45)
+	->setPosition($position);
+
+#### How to apply an alpha color to a text into an image
+    $text =	Easy\Text::create('Alpha Color')
+	->setColor(
+		Easy\Color::create('#FF0000')
+		->setAlpha(90)
+	)
+	->setSize(5)
+	->setPosition($position);
