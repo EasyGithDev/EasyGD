@@ -22,12 +22,22 @@ $filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
  */
 
 $image = Easy\Image::createfrom($filename)
-        ->addText(
-        Easy\Text::create('Hello Zend')
-        ->setColor(Easy\Color::Silver())
-        ->setSize(4)
-        ->setPosition(Easy\Position::create(60, 20))
-        );
+	->addText(
+	Easy\Text::create('Hello Zend')
+	->setColor(Easy\Color::Silver())
+	->setSize(4)
+	->setPosition(Easy\Position::create(60, 20))
+);
 ?>
 
 <img src="<?php echo $image->src(); ?>">
+
+<?php
+/*
+ * 
+ * how to get the information about an image
+ */
+
+$infos = Easy\Image::getInfos($filename);
+echo '<pre>', print_r($infos, 1), '</pre>';
+?>
