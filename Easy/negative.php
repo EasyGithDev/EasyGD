@@ -40,24 +40,19 @@ namespace Easy;
  */
 class Negative implements \SplObserver {
 
-   
-    public function __construct() {
-    }
-
     public function update(\SplSubject $obj) {
 
-        $x = $obj->getColumn();
-        $y = $obj->getLine();
-        $imageSrc = $obj->getImageSrc();
-        $imageDest = $obj->getImageDest();
+	$x = $obj->getColumn();
+	$y = $obj->getLine();
+	$imageDest = $obj->getImageDest(__CLASS__);
 
-        $rgb = imagecolorat($imageSrc->getImg(), $x, $y);
-        $r = 255 - (($rgb >> 16) & 0xFF);
-        $g = 255 - (($rgb >> 8) & 0xFF);
-        $b = 255 - ($rgb & 0xFF);
+	$rgb = $obj->getRgb();
+	$r = 255 - (($rgb >> 16) & 0xFF);
+	$g = 255 - (($rgb >> 8) & 0xFF);
+	$b = 255 - ($rgb & 0xFF);
 
-        $color = imagecolorallocate($imageDest->getImg(), $r, $g, $b);
-        imagesetpixel($imageDest->getImg(), $x, $y, $color);
+	$color = imagecolorallocate($imageDest->getImg(), $r, $g, $b);
+	imagesetpixel($imageDest->getImg(), $x, $y, $color);
     }
 
 }
