@@ -40,16 +40,6 @@ namespace Easy;
  */
 class Transformation {
 
-    const POSITION_TOP_LEFT = 1;
-    const POSITION_TOP_MIDDLE = 2;
-    const POSITION_TOP_RIGHT = 3;
-    const POSITION_MIDDLE_LEFT = 4;
-    const POSITION_MIDDLE_MIDDLE = 5;
-    const POSITION_MIDDLE_RIGHT = 6;
-    const POSITION_BOTTOM_LEFT = 7;
-    const POSITION_BOTTOM_MIDDLE = 8;
-    const POSITION_BOTTOM_RIGHT = 9;
-
     private static function resize(Image $imSrc, Dimension $d) {
 
 
@@ -223,52 +213,13 @@ class Transformation {
 	return $imDest;
     }
 
-    public static function inlay(Image $origine, Image $logo, $position, Position $offset = NULL, $pct = 100) {
+    public static function inlay(Image $origine, Image $logo, Position $position = NULL, $pct = 100) {
 
-	$offset = (is_null($offset)) ? Position::create() : $offset;
-
-	switch ($position) {
-	    case self::POSITION_TOP_LEFT :
-		$dst_x = $offset->getX();
-		$dst_y = $offset->getY();
-		break;
-	    case self::POSITION_TOP_MIDDLE :
-		$dst_x = intval($origine->getWidth() / 2) - intval($logo->getWidth() / 2) - $offset->getX();
-		$dst_y = $offset->getY();
-		break;
-	    case self::POSITION_TOP_RIGHT :
-		$dst_x = $origine->getWidth() - $logo->getWidth() - $offset->getX();
-		$dst_y = $offset->getY();
-		break;
-	    case self::POSITION_MIDDLE_LEFT :
-		$dst_x = $offset->getX();
-		$dst_y = intval($origine->getHeight() / 2) - intval($logo->getHeight() / 2) - $offset->getY();
-		break;
-	    case self::POSITION_MIDDLE_MIDDLE :
-		$dst_x = intval($origine->getWidth() / 2) - intval($logo->getWidth() / 2) - $offset->getX();
-		$dst_y = intval($origine->getHeight() / 2) - intval($logo->getHeight() / 2) - $offset->getY();
-		break;
-	    case self::POSITION_MIDDLE_RIGHT :
-		$dst_x = $origine->getWidth() - $logo->getWidth() - $offset->getX();
-		$dst_y = intval($origine->getHeight() / 2) - intval($logo->getHeight() / 2) - $offset->getY();
-		break;
-	    case self::POSITION_BOTTOM_LEFT :
-		$dst_x = $offset->getX();
-		$dst_y = $origine->getHeight() - $logo->getHeight() - $offset->getY();
-		break;
-	    case self::POSITION_BOTTOM_MIDDLE :
-		$dst_x = intval($origine->getWidth() / 2) - intval($logo->getWidth() / 2) - $offset->getX();
-		$dst_y = $origine->getHeight() - $logo->getHeight() - $offset->getY();
-		break;
-	    case self::POSITION_BOTTOM_RIGHT :
-		$dst_x = $origine->getWidth() - $logo->getWidth() - $offset->getX();
-		$dst_y = $origine->getHeight() - $logo->getHeight() - $offset->getY();
-		break;
-	}
+	$position = (is_null($position)) ? Position::create() : $position;
 
 	// Bug with imagecopymerge
 	//imagecopymerge($origine->getImg(), $logo->getImg(), $dst_x, $dst_y, 0, 0, $logo->getWidth(), $logo->getHeight(), $pct);
-	imagecopy($origine->getImg(), $logo->getImg(), $dst_x, $dst_y, 0, 0, $logo->getWidth(), $logo->getHeight());
+	imagecopy($origine->getImg(), $logo->getImg(), $position->getX(), $position->getY(), 0, 0, $logo->getWidth(), $logo->getHeight());
 	return $origine;
     }
 
