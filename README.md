@@ -80,7 +80,7 @@ EasyGD - a PHP framework for use GD easier
 #### How to create a GD text
     $text = Easy\Text::create('Hello World');
 
-#### How to create a position
+#### Define a position
     $position = Easy\Position::create(100, 125);
 
 
@@ -103,7 +103,7 @@ EasyGD - a PHP framework for use GD easier
 
 #### How to add a TrueType text into an image
 
-$text = Easy\TrueType::create('Hello True World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+    $text = Easy\TrueType::create('Hello True World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
 	->setColor(Easy\Color::Silver())
 	->setSize(16)
 	->setAngle(45)
@@ -126,3 +126,16 @@ $text = Easy\TrueType::create('Hello True World', \Easy\Text::TEXT_MACOS_FONT_PA
 	)
 	->setSize(5)
 	->setPosition($position);
+
+---
+
+# Using the help methods
+
+
+#### How to load an image for data src
+#### Use it only on small image, if you dont want that your html page becommes to big 
+    <img src="<?php echo Easy\Image::getDataSource($filename); ?>" />
+
+#### how to get the information about an image
+    $infos = Easy\Image::getInfos($filename);
+    echo '<pre>', print_r($infos, 1), '</pre>';
