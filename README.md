@@ -4,7 +4,7 @@ EasyGD
 EasyGD - a PHP framework for use GD easier
 
 
-#The basics stuffs 
+# The basic stuff 
 
 
 ####How to load and show an image
@@ -127,15 +127,46 @@ EasyGD - a PHP framework for use GD easier
 	->setSize(5)
 	->setPosition($position);
 
----
+----
 
 # Using the help methods
 
 
 #### How to load an image for data src
-#### Use it only on small image, if you dont want that your html page becommes to big 
     <img src="<?php echo Easy\Image::getDataSource($filename); ?>" />
 
 #### how to get the information about an image
     $infos = Easy\Image::getInfos($filename);
     echo '<pre>', print_r($infos, 1), '</pre>';
+
+----
+
+# Transformations
+
+## Resizing the images
+
+#### How to resize an image
+    Easy\Transformation::resizeByPercent($image, 0.5)->show();
+
+
+#### How to resize an image by fixing the width or height
+    Easy\Transformation::resizeByWidth($image, 100)->show();
+    Easy\Transformation::resizeByHeight($image, 100)->show();
+
+#### How to safetly resize an image 
+    Easy\Transformation::resizeAuto($image, Easy\Dimension::create(600, 400))->show();
+
+#### How to make a thumbnail
+    Easy\Transformation::thumbnail($image, 140, Easy\Color::Silver())->show();
+
+## Croping and Rotation
+
+#### How to crop an image
+    Easy\Transformation::crop(
+        Easy\Image::createFrom($filename), 
+        Easy\Position::create(20, 13), 
+        Easy\Dimension::create(80, 40))
+        ->show();
+
+#### How to make a rotation
+    Easy\Transformation::rotate($image, 90)->show();
