@@ -48,54 +48,55 @@ class RunThrough implements \SplSubject {
     protected $observers = array();
 
     public function __construct(Image $image) {
-        $this->imageSrc = $image;
-        $this->imageDest = Image::create($image->getDimension());
-        $this->info = 0;
+	$this->imageSrc = $image;
+	$this->imageDest = Image::create($image->getDimension())
+		->setImageType($image->getImagetype());
+	$this->info = 0;
     }
 
     public static function create(Image $image) {
-        return new self($image);
+	return new self($image);
     }
 
     public function process() {
 
-        for ($this->line = 0; $this->line < $this->imageSrc->getHeight(); $this->line++) {
-            for ($this->column = 0; $this->column < $this->imageSrc->getWidth(); $this->column++) {
-                $this->notify();
-            }
-        }
+	for ($this->line = 0; $this->line < $this->imageSrc->getHeight(); $this->line++) {
+	    for ($this->column = 0; $this->column < $this->imageSrc->getWidth(); $this->column++) {
+		$this->notify();
+	    }
+	}
     }
 
     public function attach(\SplObserver $observer) {
-        $this->observers[] = $observer;
+	$this->observers[] = $observer;
     }
 
     public function detach(\SplObserver $observer) {
-        if (is_int($key = array_search($observer, $this->observers, true))) {
-            unset($this->observers[$key]);
-        }
+	if (is_int($key = array_search($observer, $this->observers, true))) {
+	    unset($this->observers[$key]);
+	}
     }
 
     public function notify() {
-        foreach ($this->observers as $observer) {
-            $observer->update($this);
-        }
+	foreach ($this->observers as $observer) {
+	    $observer->update($this);
+	}
     }
 
     public function getLine() {
-        return $this->line;
+	return $this->line;
     }
 
     public function getColumn() {
-        return $this->column;
+	return $this->column;
     }
 
     public function getImageSrc() {
-        return $this->imageSrc;
+	return $this->imageSrc;
     }
 
     public function getImageDest() {
-        return $this->imageDest;
+	return $this->imageDest;
     }
 
 }
