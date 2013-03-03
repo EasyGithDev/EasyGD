@@ -44,14 +44,14 @@ class RunThrough implements \SplSubject {
     private $imageDest;
     protected $line;
     protected $column;
+    protected $rgb;
 // Ceci est le tableau qui va contenir tous les objets qui nous observent.
     protected $observers = array();
 
     public function __construct(Image $image) {
 	$this->imageSrc = $image;
-	$this->imageDest = Image::create($image->getDimension())
-		->setImageType($image->getImagetype());
-	$this->info = 0;
+	$this->imageDest = array();
+	$this->rgb = 0;
     }
 
     public static function create(Image $image) {
@@ -60,15 +60,29 @@ class RunThrough implements \SplSubject {
 
     public function process() {
 
-	for ($this->line = 0; $this->line < $this->imageSrc->getHeight(); $this->line++) {
-	    for ($this->column = 0; $this->column < $this->imageSrc->getWidth(); $this->column++) {
+	foreach ($this->observers as $key => $value) {
+	    $this->imageDest[$key] = Image::create($this->imageSrc->getDimension())
+		    ->setImageType($this->imageSrc->getImagetype());
+	}
+
+	$img = $this->imageSrc->getImg();
+	$width = $this->imageSrc->getWidth();
+	$height = $this->imageSrc->getHeight();
+
+	for ($this->line = 0; $this->line < $height; $this->line++) {
+	    for ($this->column = 0; $this->column < $width; $this->column++) {
+
+		//$this->rgb = imagecolorsforindex($img, imagecolorat($img, $this->column, $this->line));
+
+		$this->rgb = imagecolorat($img, $this->column, $this->line);
+		
 		$this->notify();
 	    }
 	}
     }
 
     public function attach(\SplObserver $observer) {
-	$this->observers[] = $observer;
+	$this->observers[get_class($observer)] = $observer;
     }
 
     public function detach(\SplObserver $observer) {
@@ -83,6 +97,10 @@ class RunThrough implements \SplSubject {
 	}
     }
 
+    public function getRgb() {
+	return $this->rgb;
+    }
+
     public function getLine() {
 	return $this->line;
     }
@@ -95,8 +113,10 @@ class RunThrough implements \SplSubject {
 	return $this->imageSrc;
     }
 
-    public function getImageDest() {
-	return $this->imageDest;
+    public function getImageDest($key = NULL) {
+	if (is_null($key))
+	    return $this->imageDest;
+	return $this->imageDest[$key];
     }
 
 }

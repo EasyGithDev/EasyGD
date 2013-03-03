@@ -40,15 +40,13 @@ namespace Easy;
  */
 class GrayscaleLuminosity implements \SplObserver {
 
-
     public function update(\SplSubject $obj) {
 
 	$x = $obj->getColumn();
 	$y = $obj->getLine();
-	$imageSrc = $obj->getImageSrc();
-	$imageDest = $obj->getImageDest();
+	$imageDest = $obj->getImageDest(__CLASS__);
 
-	$rgb = imagecolorat($imageSrc->getImg(), $x, $y);
+	$rgb = $obj->getRgb();
 	$r = ($rgb >> 16) & 0xFF;
 	$g = ($rgb >> 8) & 0xFF;
 	$b = $rgb & 0xFF;

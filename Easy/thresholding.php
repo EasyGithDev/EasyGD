@@ -43,27 +43,27 @@ class Thresholding implements \SplObserver {
     protected $threshold;
 
     public function __construct($threshold) {
-        $this->threshold = $threshold;
+	$this->threshold = $threshold;
     }
 
     public function update(\SplSubject $obj) {
 
-        $x = $obj->getColumn();
-        $y = $obj->getLine();
-        $imageSrc = $obj->getImageSrc();
-        $imageDest = $obj->getImageDest();
+	$x = $obj->getColumn();
+	$y = $obj->getLine();
+	$imageDest = $obj->getImageDest(__CLASS__);
 
-        $rgb = imagecolorat($imageSrc->getImg(), $x, $y);
-        $r = ($rgb >> 16) & 0xFF;
-        $g = ($rgb >> 8) & 0xFF;
-        $b = $rgb & 0xFF;
+	$rgb = $obj->getRgb();
+	
+	$r = ($rgb >> 16) & 0xFF;
+	$g = ($rgb >> 8) & 0xFF;
+	$b = $rgb & 0xFF;
 
-        $r = ($r >= $this->threshold) ? 255 : 0;
-        $g = ($g >= $this->threshold) ? 255 : 0;
-        $b = ($b >= $this->threshold) ? 255 : 0;
+	$r = ($r >= $this->threshold) ? 255 : 0;
+	$g = ($g >= $this->threshold) ? 255 : 0;
+	$b = ($b >= $this->threshold) ? 255 : 0;
 
-        $color = imagecolorallocate($imageDest->getImg(), $r, $g, $b);
-        imagesetpixel($imageDest->getImg(), $x, $y, $color);
+	$color = imagecolorallocate($imageDest->getImg(), $r, $g, $b);
+	imagesetpixel($imageDest->getImg(), $x, $y, $color);
     }
 
 }
