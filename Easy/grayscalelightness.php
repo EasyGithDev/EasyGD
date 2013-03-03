@@ -47,9 +47,15 @@ class GrayscaleLightness implements \SplObserver {
 	$imageSrc = $obj->getImageSrc();
 	$imageDest = $obj->getImageDest();
 
-	$rgb = imagecolorsforindex($imageSrc->getImg(), imagecolorat($imageSrc->getImg(), $x, $y));
+	$rgb = imagecolorat($imageSrc->getImg(), $x, $y);
+	$r = ($rgb >> 16) & 0xFF;
+	$g = ($rgb >> 8) & 0xFF;
+	$b = $rgb & 0xFF;
 
-	$gray = round((max($rgb) + min($rgb)) / 2);
+	$max = max($r, $g, $b);
+	$min = min($r, $g, $b);
+
+	$gray = round(($max + $min) / 2);
 	$color = imagecolorallocate($imageDest->getImg(), $gray, $gray, $gray);
 	imagesetpixel($imageDest->getImg(), $x, $y, $color);
     }
