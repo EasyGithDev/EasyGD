@@ -126,7 +126,6 @@ class Histogramme implements \SplObserver {
 	$y = $obj->getLine();
 	$imageSrc = $obj->getImageSrc();
 
-
 	$rgb = imagecolorat($imageSrc->getImg(), $x, $y);
 	$r = ($rgb >> 16) & 0xFF;
 	$g = ($rgb >> 8) & 0xFF;
