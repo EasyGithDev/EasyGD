@@ -9,7 +9,14 @@ $dimension = Easy\Dimension::create(300, 300);
  * How to create a text
  * 
  */
-//Easy\Text::create('Hello World');
+$text = Easy\Text::create('Hello World');
+
+/*
+ * 
+ * How to create a position
+ * 
+ */
+$position = Easy\Position::create(100, 125);
 
 
 /*
@@ -18,14 +25,13 @@ $dimension = Easy\Dimension::create(300, 300);
  * 
  */
 
-$image = Easy\Image::create($dimension, Easy\Color::Blue())
-        ->addText(
-        Easy\Text::create('Hello World')
-        ->setColor(Easy\Color::Silver())
-        ->setSize(3)
-        ->setPosition(Easy\Position::create(100, 125))
+$image = Easy\Image::create($dimension, Easy\Color::Blue())->addText(
+	$text->setColor(Easy\Color::Silver())
+		->setSize(3)
+		->setPosition($position)
 );
-//$image->show();
+
+$image->show();
 
 /*
  * 
@@ -33,11 +39,11 @@ $image = Easy\Image::create($dimension, Easy\Color::Blue())
  * 
  */
 $image = Easy\Image::create(Easy\Dimension::create(100, 100))->addText(
-        Easy\Text::create('gd library')
-                ->setSize(3)
-                ->setColor(Easy\Color::White())
-                ->setdrawtype(Easy\Text::TEXT_DRAW_VERTICAL)
-                ->setPosition(Easy\Position::create(40, 80))
+	Easy\Text::create('gd library')
+		->setSize(3)
+		->setColor(Easy\Color::White())
+		->setdrawtype(Easy\Text::TEXT_DRAW_VERTICAL)
+		->setPosition(Easy\Position::create(40, 80))
 );
 //$image->show();
 
@@ -49,16 +55,16 @@ $image = Easy\Image::create(Easy\Dimension::create(100, 100))->addText(
  */
 
 $text = Easy\TrueType::create('Hello True World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
-        ->setColor(Easy\Color::Silver())
-        ->setSize(16)
-        ->setAngle(45)
-        ->setPosition(Easy\Position::create(100, 175));
+	->setColor(Easy\Color::Silver())
+	->setSize(16)
+	->setAngle(45)
+	->setPosition(Easy\Position::create(100, 175));
 
 $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
-        ->addText($text)
-        ->addText(
-        $text->setColor(Easy\Color::Maroon())
-        ->setPosition(Easy\Position::create(98, 173))
+	->addText($text)
+	->addText(
+	$text->setColor(Easy\Color::Maroon())
+	->setPosition(Easy\Position::create(98, 173))
 );
 
 //$image->show();
@@ -71,12 +77,12 @@ $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
  */
 
 $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
-        ->addText(
-        Easy\FreeType::create('Hello Free World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
-        ->setColor(Easy\Color::Silver())
-        ->setSize(16)
-        ->setAngle(45)
-        ->setPosition(Easy\Position::create(100, 175))
+	->addText(
+	Easy\FreeType::create('Hello Free World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+	->setColor(Easy\Color::Silver())
+	->setSize(16)
+	->setAngle(45)
+	->setPosition(Easy\Position::create(100, 175))
 );
 
 //$image->show();
@@ -88,15 +94,15 @@ $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
  * 
  */
 $image = Easy\Image::create(Easy\Dimension::create(250, 100))
-        ->fill(Easy\Color::create('#f2f2f2'))
-        ->addText(
-        Easy\Text::create('Alpha Color')
-        ->setColor(
-                Easy\Color::create('#FF0000')
-                ->setAlpha(90)
-        )
-        ->setSize(5)
-        ->setPosition(Easy\Position::create(55, 35))
+	->fill(Easy\Color::create('#f2f2f2'))
+	->addText(
+	Easy\Text::create('Alpha Color')
+	->setColor(
+		Easy\Color::create('#FF0000')
+		->setAlpha(90)
+	)
+	->setSize(5)
+	->setPosition(Easy\Position::create(55, 35))
 );
 //$image->show();
 ?>
