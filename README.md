@@ -157,7 +157,7 @@ EasyGD - a PHP framework for use GD easier
     Easy\Transformation::resizeAuto($image, Easy\Dimension::create(600, 400))->show();
 
 #### How to make a thumbnail
-    Easy\Transformation::thumbnail($image, 140, Easy\Color::Silver())->show();
+    Easy\Transformation::thumbnail($image, 140)->show();
 
 ## Croping and Rotation
 
@@ -170,3 +170,5 @@ EasyGD - a PHP framework for use GD easier
 
 #### How to make a rotation
     Easy\Transformation::rotate($image, 90)->show();
+
+
