@@ -6,6 +6,10 @@ require 'autoload.php';
 
 $filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
 
+$filename = 'http://xgarreau.org/aide/devel/gd/tux.jpg';
+
+//$filename = 'grayscaleaverage.png';
+
 if (($image = Easy\Image::createfrom($filename)) === FALSE)
     throw new Exception('Unable to load ' . $filename);
 
@@ -13,21 +17,35 @@ $progress = new Easy\Progress();
 $thresholding = new Easy\Thresholding(128);
 $negative = new Easy\Negative();
 $histogramme = new Easy\Histogramme();
+$grayscaleluminosity = new \Easy\GrayscaleLuminosity();
+$grayscalelightness = new \Easy\GrayscaleLightness();
+$grayscaleaverage = new \Easy\GrayscaleAverage();
+$floydsteinbergdithering = new \Easy\FloydSteinbergDithering();
 
 $runer = Easy\RunThrough::create($image);
-$runer->attach($progress);
-$runer->attach($histogramme);
+//$runer->attach($progress);
+//$runer->attach($histogramme);
 $runer->attach($negative);
+$runer->attach($thresholding);
+$runer->attach($negative);
+$runer->attach($grayscalelightness);
+$runer->attach($grayscaleluminosity);
+$runer->attach($grayscaleaverage);
 $runer->process();
 
-$runer->getImageDest()->show();
+//$runer->getImageDest()->save('tux');
 
+$out = pathinfo($filename, PATHINFO_FILENAME);
+
+foreach ($runer->getImageDest() as $k => $v) {
+    $tab = explode('\\', $k);
+    $v->save($out . '-' . strtolower($tab[1]));
+}
+
+//$runer->getImageDest()->show();
 //$histogramme->computeSigma();
-
 //echo '<pre>',  print_r($histo->getHisto(), 1),'</pre>';
 //echo '<pre>',  print_r($histo->getAverage(), 1),'</pre>';
 //echo '<pre>',  print_r($histo->getSigma(), 1),'</pre>';
-
 //$histogramme->save();
-
 ?>
