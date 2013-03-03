@@ -115,10 +115,13 @@ class Image {
     }
 
     public static function getInfos($fileSrc) {
-	$infos = getimagesize($fileSrc);
+
+	if (($infos = getimagesize($fileSrc)) === FALSE)
+	    return FALSE;
+	
 	$infos['width'] = $infos[0];
 	$infos['height'] = $infos[1];
-	$infos['size'] = filesize($fileSrc);
+	$infos['size'] = @filesize($fileSrc);
 	for ($i = 0; $i < 4; $i++)
 	    unset($infos[$i]);
 	return $infos;
