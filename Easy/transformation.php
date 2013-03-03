@@ -142,7 +142,7 @@ class Transformation {
      * @param type $max la taille de la miniature
      * @return Image l'image de sortie
      */
-    public function thumbnail(Image $imSrc, $max, Color $color = NULL) {
+    public static function thumbnail(Image $imSrc, $max, Color $color = NULL) {
 
 	if (!is_int($max))
 	    return FALSE;
