@@ -45,43 +45,36 @@ class Convolution {
 	0, 1, 0,
 	0, 0, 0
     );
-    public static $CONVOLUTION_SHARPEN = array(
+    public static $CONVOLUTION_SHARPEN_1 = array(
 	0, -1, 0,
 	-1, 5, -1,
 	0, -1, 0
     );
-
-    /**
-     * other exemple
-
-      array(
-      -1, -1, -1,
-      -1, 9, -1,
-      -1, -1, -1,
-      );
-     */
+    public static $CONVOLUTION_SHARPEN_2 = array(
+	-1, -1, -1,
+	-1, 9, -1,
+	-1, -1, -1
+    );
     public static $CONVOLUTION_DETECTION_EDGES = array(
 	0, 1, 0,
 	1, -4, 1,
 	0, 1, 0
     );
-    public static $CONVOLUTION_FIND_EDGES = array(
+    public static $CONVOLUTION_FIND_EDGES_1 = array(
 	-1, -1, -1,
 	-2, 8, -1,
 	-1, -1, -1
     );
-
-    /**
-     * other exemple
-
-      array(0,	1,	0,
-      1,	-4,	1,
-      0,	1,	0);
-
-      array(    	1,	-2,	1,
-      -2,	4	-2,
-      1,	-2,	1);
-     */
+    public static $CONVOLUTION_FIND_EDGES_2 = array(
+	0, 1, 0,
+	1, -4, 1,
+	0, 1, 0
+    );
+    public static $CONVOLUTION_FIND_EDGES_3 = array(
+	1, -2, 1,
+	-2, 4, -2,
+	1, -2, 1
+    );
     public static $CONVOLUTION_BLUR = array(
 	1, 1, 1,
 	1, 1, 1,
@@ -100,31 +93,21 @@ class Convolution {
     );
 // Renforcement des bords
 // Edge Enhancement 
-    public static $CONVOLUTION_ENHANCEMENT_EDGES = array(
+    public static $CONVOLUTION_ENHANCEMENT_EDGES_1 = array(
 	0, 0, 0,
 	-1, 1, 0,
 	0, 0, 0
     );
-
-    /*
-     * Other examples
-     * 
-      array(
-
-      0,-1,0,
-      0,1,0,
-      0,0,0
-
-      );
-
-      array(
-
-      -1,0,0,
-      0,1,0,
-      0,0,0
-
-      );
-     */
+    public static $CONVOLUTION_ENHANCEMENT_EDGES_2 = array(
+	0, -1, 0,
+	0, 1, 0,
+	0, 0, 0
+    );
+    public static $CONVOLUTION_ENHANCEMENT_EDGES_3 = array(
+	-1, 0, 0,
+	0, 1, 0,
+	0, 0, 0
+    );
 // Laplacien 1
     public static $CONVOLUTION_LAPLACIEN_1 = array(
 	0, -1, 0,
@@ -265,17 +248,29 @@ class Convolution {
     }
 
 // Contraste (Sharpen)
-    public static function CONVOLUTION_SHARPEN() {
-	return Convolution::create(self::$CONVOLUTION_SHARPEN);
+    public static function CONVOLUTION_SHARPEN_1() {
+	return Convolution::create(self::$CONVOLUTION_SHARPEN_1);
+    }
+
+    public static function CONVOLUTION_SHARPEN_2() {
+	return Convolution::create(self::$CONVOLUTION_SHARPEN_2);
     }
 
 // Border detection (Edge)
-    public static function  CONVOLUTION_DETECTION_EDGES() {
+    public static function CONVOLUTION_DETECTION_EDGES() {
 	return Convolution::create(self::$CONVOLUTION_DETECTION_EDGES);
     }
 
-    public static function CONVOLUTION_FIND_EDGES() {
-	return Convolution::create(self::$CONVOLUTION_FIND_EDGES);
+    public static function CONVOLUTION_FIND_EDGES_1() {
+	return Convolution::create(self::$CONVOLUTION_FIND_EDGES_1);
+    }
+
+    public static function CONVOLUTION_FIND_EDGES_2() {
+	return Convolution::create(self::$CONVOLUTION_FIND_EDGES_2);
+    }
+
+    public static function CONVOLUTION_FIND_EDGES_3() {
+	return Convolution::create(self::$CONVOLUTION_FIND_EDGES_3);
     }
 
 // Median Blur
@@ -292,8 +287,16 @@ class Convolution {
 	return Convolution::create(self::$CONVOLUTION_EMBOSS);
     }
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES() {
-	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES);
+    public static function CONVOLUTION_ENHANCEMENT_EDGES_1() {
+	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES_1);
+    }
+
+    public static function CONVOLUTION_ENHANCEMENT_EDGES_2() {
+	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES_2);
+    }
+
+    public static function CONVOLUTION_ENHANCEMENT_EDGES_3() {
+	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES_3);
     }
 
     public static function CONVOLUTION_LAPLACIEN_1($alpha = 2) {
