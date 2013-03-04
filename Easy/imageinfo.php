@@ -48,14 +48,14 @@ class ImageInfo {
     protected $mime;
     protected $channels;
     protected $bits;
-    protected $ipct;
+    protected $iptc;
 
     public function __construct($filename) {
 
 	if (($infos = getimagesize($filename, $additional)) === FALSE)
 	    return FALSE;
 
-	
+
 	$this->filename = $filename;
 	$this->width = $infos[0];
 	$this->height = $infos[1];
@@ -64,10 +64,10 @@ class ImageInfo {
 	$this->mime = $infos['mime'];
 	$this->channels = $infos['channels'];
 	$this->bits = $infos['bits'];
-	$this->ipct = NULL;
+	$this->iptc = NULL;
 
 	if (isset($additional["APP13"]))
-	    $this->ipct = new Iptc($additional["APP13"]);
+	    $this->iptc = new Iptc($additional["APP13"]);
     }
 
     public function __toString() {
@@ -80,7 +80,26 @@ class ImageInfo {
 	mime : $this->mime 
 	channels : $this->channels 
 	bits : $this->bits 
-	$this->ipct ";
+	$this->iptc ";
+    }
+
+    public function toArray() {
+
+	$array = array();
+
+	$array['filename'] = $this->filename;
+	$array['width'] = $this->width;
+	$array['height'] = $this->height;
+	$array['type'] = $this->type;
+	$array['img'] = $this->img;
+	$array['mime'] = $this->mime;
+	$array['channels'] = $this->channels;
+	$array['bits'] = $this->bits;
+
+	if (!is_null($this->iptc))
+	    $array = array_merge($array, $this->iptc->toArray());
+
+	return $array;
     }
 
     public function getFilename() {
@@ -116,7 +135,7 @@ class ImageInfo {
     }
 
     public function getIpct() {
-	return $this->ipct;
+	return $this->iptc;
     }
 
 }

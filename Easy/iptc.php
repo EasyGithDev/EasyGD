@@ -80,6 +80,10 @@ class Iptc {
 	return $iptc_new;
     }
 
+    public function toArray() {
+	return $this->metas;
+    }
+
     // Fonction iptc_make_tag() par Thies C. Arntzen
     private function iptc_maketag($rec, $data, $value) {
 	$length = strlen($value);
