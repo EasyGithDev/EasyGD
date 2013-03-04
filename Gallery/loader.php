@@ -17,7 +17,7 @@ switch ($action) {
 	$convolution = $_GET['convolution'];
 	$imgSrc = Easy\Image::createFrom($fileSrc);
 	$convolution = \Easy\Convolution::$convolution();
-	Easy\Filter::create($convolution)->process($imgSrc)->show();
+	$convolution->process($imgSrc)->show();
 	break;
     case 'convolution_custom':
 	$divisor = $_GET['divisor'];
@@ -26,7 +26,7 @@ switch ($action) {
 	$imgSrc = Easy\Image::createFrom($fileSrc);
 	$convolution = \Easy\Convolution::create($matrix);
 	$convolution->setDivisor($divisor)->setOffset($offset);
-	\Easy\Filter::create($convolution)->process($imgSrc)->show();
+	$convolution->process($imgSrc)->show();
 	break;
     case 'convolution_info' :
 	$convolution = $_GET['convolution'];
@@ -68,23 +68,23 @@ switch ($action) {
 
 	switch ($filter) {
 	    case 'FILTER_SMOOTH':
-		$filter = \Easy\Filter::$filter($smooth);
+		$filter = \Easy\Preset::$filter($smooth);
 		break;
 	    case 'FILTER_CONTRAST':
-		$filter = \Easy\Filter::$filter($contrast);
+		$filter = \Easy\Preset::$filter($contrast);
 		break;
 	    case 'FILTER_BRIGHTNESS':
-		$filter = \Easy\Filter::$filter($brightness);
+		$filter = \Easy\Preset::$filter($brightness);
 		break;
 	    case 'FILTER_PIXELATE':
 		$type = true;
-		$filter = Easy\Filter::$filter($blocksize, $type);
+		$filter = Easy\Preset::$filter($blocksize, $type);
 		break;
 	    case 'FILTER_COLORIZE':
-		$filter = Easy\Filter::$filter($red, $green, $blue);
+		$filter = Easy\Preset::$filter($red, $green, $blue);
 		break;
 	    default :
-		$filter = \Easy\Filter::$filter();
+		$filter = \Easy\Preset::$filter();
 		break;
 	}
 
