@@ -39,50 +39,39 @@ namespace Easy;
  * @since   1.0.0
  */
 class Position {
-    const TOP_LEFT = 1;
-    const TOP_MIDDLE = 2;
-    const TOP_RIGHT = 3;
-
-    const MIDDLE_LEFT = 4;
-    const MIDDLE_MIDDLE = 5;
-    const MIDDLE_RIGHT = 6;
-
-    const BOTTOM_LEFT = 7;
-    const BOTTOM_MIDDLE = 8;
-    const BOTTOM_RIGHT = 9;
 
     protected $x;
     protected $y;
 
     public function __construct($x = 0, $y = 0) {
-        if (!is_int($x) OR !is_int($y))
-            throw new Exception('X and Y must be integer');
-        $this->x = $x;
-        $this->y = $y;
+	if (!is_int($x) OR !is_int($y))
+	    throw new Exception('X and Y must be integer');
+	$this->x = $x;
+	$this->y = $y;
     }
 
     public static function create($x = 0, $y = 0) {
-        return new self($x, $y);
+	return new self($x, $y);
     }
 
     public function getX() {
-        return $this->x;
+	return $this->x;
     }
 
     public function setX($x) {
-        $this->x = $x;
+	$this->x = $x;
     }
 
     public function getY() {
-        return $this->y;
+	return $this->y;
     }
 
     public function setY($y) {
-        $this->y = $y;
+	$this->y = $y;
     }
 
     public function __toString() {
-        return '(' . $this->x . ',' . $this->y . ')';
+	return '(' . $this->x . ',' . $this->y . ')';
     }
 
 }

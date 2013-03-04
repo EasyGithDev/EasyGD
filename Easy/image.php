@@ -317,9 +317,9 @@ class Image {
 	imageline($this->img, $p1->getX(), $p1->getY(), $p2->getX(), $p2->getY(), $this->colors["$color"]);
     }
 
-    public function __call($name, $arguments) {
+    public function __get($key) {
 
-	switch ($name) {
+	switch ($key) {
 	    case 'TOP_LEFT' :
 		return Position::create();
 		break;
@@ -348,6 +348,8 @@ class Image {
 		return Position::create($this->getWidth(), $this->getHeight());
 		break;
 	}
+	
+	return FALSE;
     }
 
 }
