@@ -10,7 +10,8 @@ $fileSrc = $_GET['filesrc'];
 switch ($action) {
 
     case 'info' :
-	echo json_encode(Easy\Image::getInfos($fileSrc));
+	$imageInfo = Easy\Image::getInfos($fileSrc);
+	echo json_encode($imageInfo->toArray());
 	break;
     case 'convolution' :
 	$convolution = $_GET['convolution'];

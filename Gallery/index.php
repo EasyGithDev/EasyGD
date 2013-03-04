@@ -96,7 +96,7 @@ require 'conf.php';
 
         </style>
 
-	<script src="assets/js/jquery.1.9.0.min.js"></script>
+	<script src="assets/js/jquery.1.9.1.js"></script>
 	<script src="assets/js/jquery-ui-1.10.1.custom.min.js"></script>
         <script src="assets/js/jQueryRotateCompressed.2.2.js"></script>
 	<script src="assets/js/screenfull.min.js"></script>
