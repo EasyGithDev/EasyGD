@@ -38,8 +38,16 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-interface Filter {
-    public function process(Image $imgSrc);
+class FilterFactory {
+
+    const FILTER_PRESET = 1;
+    const FILTER_LOOKUPTABLE = 2;
+    const FILTER_CONVOLUTION = 3;
+
+    public static function process(Image $imgSrc, Filter $filter) {
+	return $filter->process($imgSrc);
+    }
+
 }
 
 ?>

@@ -38,7 +38,7 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Convolution {
+class Convolution implements Filter {
 
     public static $CONVOLUTION_IDENTITY = array(
 	0, 0, 0,
@@ -235,6 +235,11 @@ class Convolution {
 	    throw new \Exception('oups');
 	$this->divisor = floatval($divisor);
 	return $this;
+    }
+
+    public function process(Image $imgSrc) {
+	imageconvolution($imgSrc->getImg(), $this->getMatrix(), round($this->getDivisor(), 2), $this->getOffset());
+	return $imgSrc;
     }
 
     public static function getConvolutionList() {
