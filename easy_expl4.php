@@ -40,4 +40,19 @@ $image = Easy\Image::createfrom($filename)
 
 $infos = Easy\Image::getInfos($filename);
 echo '<pre>', print_r($infos, 1), '</pre>';
+
+/*
+ * 
+ * how to get the standard positions
+ */
+
+echo $image->TOP_LEFT, '<br/>';
+echo $image->TOP_MIDDLE, '<br/>';
+echo $image->TOP_RIGHT, '<br/>';
+echo $image->MIDDLE_LEFT, '<br/>';
+echo $image->MIDDLE_MIDDLE, '<br/>';
+echo $image->MIDDLE_RIGHT, '<br/>';
+echo $image->BOTTOM_LEFT, '<br/>';
+echo $image->BOTTOM_MIDDLE, '<br/>';
+echo $image->BOTTOM_RIGHT, '<br/>';
 ?>
