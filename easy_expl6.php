@@ -70,7 +70,12 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
 //$filter = \Easy\Convolution::create($matrix);
 
 
-
+$filter = new \Easy\LookUpTable('LightnessGray');
+//$filter = new \Easy\LookUpTable('AverageGray');
+//$filter = new \Easy\LookUpTable('LuminosityGray');
+//$filter = new \Easy\LookUpTable('Thresholding');
+//$filter = new \Easy\LookUpTable('Negative');
+//$filter = new \Easy\LookUpTable('Special');
 
 
 \Easy\FilterFactory::process($image, $filter)->show();
