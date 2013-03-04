@@ -3,6 +3,7 @@ require 'autoload.php';
 
 $filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
 
+
 /*
  * 
  * How to load an image for data src
@@ -38,8 +39,23 @@ $image = Easy\Image::createfrom($filename)
  * how to get the information about an image
  */
 
-$infos = Easy\Image::getInfos($filename);
-echo '<pre>', print_r($infos, 1), '</pre>';
+$imageInfo = Easy\Image::getInfos($filename);
+echo '<pre>', $imageInfo, '</pre>';
+
+/*
+ * 
+ * how to get / add the ipct tag
+ */
+
+/*
+$iptc = $imageInfo->getIpct();
+$iptc->addTag(\Easy\Iptc::IPTC_CITY, 'Dans ton luc !!!!');
+
+$fileSrc = $imageInfo->getFilename();
+$fileDst = 'yes.jpg';
+
+$iptc->write($fileSrc, $fileDst);
+*/
 
 /*
  * 
