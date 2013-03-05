@@ -162,28 +162,28 @@ require 'conf.php';
 		$( "#modal-slider-brightness" ).on( "slidestop", function( event, ui ) {
 		    //console.log(ui.value)		    
 		    var filesrc = thumb_400 + getFilename();
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=brightness&brightness='+ui.value;
+		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=brightness&brightness='+ui.value;
 		    $("#modal-img").attr("src", src );
 		} );
 		
 		$( "#modal-slider-contrast" ).on( "slidestop", function( event, ui ) {
 		    //console.log(ui.value)
 		    var filesrc = thumb_400 + getFilename();  
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=contrast&contrast='+ui.value;
+		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=contrast&contrast='+ui.value;
 		    $("#modal-img").attr("src", src );
 		} );
 		
 		$( "#modal-slider-smooth" ).on( "slidestop", function( event, ui ) {
 		    //console.log(ui.value)		    
 		    var filesrc = thumb_400 + getFilename();	    
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=smooth&smooth='+ui.value;
+		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=smooth&smooth='+ui.value;
 		    $("#modal-img").attr("src", src );
 		} );
 		
 		$( "#modal-slider-pixelate" ).on( "slidestop", function( event, ui ) {
 		    //console.log(ui.value)		    
 		    var filesrc = thumb_400 + getFilename();	    
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=pixelate&blocksize='+ui.value;
+		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=pixelate&blocksize='+ui.value;
 		    $("#modal-img").attr("src", src );
 		} );
 		
@@ -205,13 +205,11 @@ require 'conf.php';
 		
 		$('#custom-selection').change(function () {
 		    var filesrc = thumb_400 + getFilename();
-		    var action = 'convolution';
-		    var src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+$(this).val();
+		    var src = 'loader.php?action=filter&filesrc='+filesrc+'&filtertype=convolution&filtername='+$(this).val();
 		
 		    $("#modal-img").attr("src", src);
 		
-		    action = 'convolution_info';
-		    src = 'loader.php?action='+action+'&filesrc='+filesrc+'&convolution='+$(this).val();
+		    src = 'loader.php?action=convolution_info&filesrc='+filesrc+'&convolution='+$(this).val();
 		    $.getJSON(src + '&t=' + date.getTime(), function(data) {
 		  
 			for(i=0;i<3;i++){
@@ -288,7 +286,7 @@ require 'conf.php';
     
 	    function loadFilters(filename) {
 		    
-		var  src = 'loader.php?action=filter&filesrc=' + thumb_100 + filename + '&filter=';
+		var  src = 'loader.php?action=filter&filesrc=' + thumb_100 + filename + '&filtertype=preset&filtername=';
 		
 		$("#myModal .thumbnail").find('*').each( function (key, val) {
 		
@@ -298,7 +296,7 @@ require 'conf.php';
 		    $(val).click(function(){
 			
 			var filesrc = thumb_400 + getFilename();	    
-			var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=' + filter;
+			var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=' + filter;
 			$("#modal-img").attr("src", src + '&t=' + date.getTime() );
 			
 		    });
@@ -346,7 +344,7 @@ require 'conf.php';
 	    function changeColor() {
 	   
 		var filesrc = thumb_400 + getFilename();	    
-		var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filter=colorize';
+		var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=colorize';
 		var red = $( "#modal-slider-red" ).slider( "value" );
 		var blue = $( "#modal-slider-blue" ).slider( "value" );
 		var green = $( "#modal-slider-green" ).slider( "value" );
@@ -508,7 +506,7 @@ require 'conf.php';
 
 					<?php foreach ($convolutions as $v) : ?>
 
-    					<option value="<?php echo $v; ?>"><?php echo $v; ?></option>
+    					<option value="<?php echo str_replace('CONVOLUTION_', '', $v); ?>"><?php echo $v; ?></option>
 
 					<?php endforeach; ?>
 

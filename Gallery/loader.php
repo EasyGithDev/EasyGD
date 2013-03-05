@@ -13,12 +13,6 @@ switch ($action) {
 	$imageInfo = Easy\Image::getInfos($fileSrc);
 	echo json_encode($imageInfo->toArray());
 	break;
-    case 'convolution' :
-	$convolution = $_GET['convolution'];
-	$imgSrc = Easy\Image::createFrom($fileSrc);
-	$convolution = \Easy\Convolution::$convolution();
-	$convolution->process($imgSrc)->show();
-	break;
     case 'convolution_custom':
 	$divisor = $_GET['divisor'];
 	$offset = $_GET['offset'];
@@ -55,40 +49,27 @@ switch ($action) {
 	 */
 	break;
     case 'filter' :
-	$smooth = isset($_GET['smooth']) ? $_GET['smooth'] : 0;
-	$contrast = isset($_GET['contrast']) ? $_GET['contrast'] : 0;
-	$brightness = isset($_GET['brightness']) ? $_GET['brightness'] : 0;
-	$blocksize = isset($_GET['blocksize']) ? $_GET['blocksize'] : 0;
-	$red = isset($_GET['red']) ? $_GET['red'] : 0;
-	$green = isset($_GET['green']) ? $_GET['green'] : 0;
-	$blue = isset($_GET['blue']) ? $_GET['blue'] : 0;
 
-	$filter = 'FILTER_' . strtoupper($_GET['filter']);
+	$filterType = 'FILTER_' . strtoupper($_GET['filtertype']);
+	$filterType = constant('Easy\FilterFactory::' . $filterType);
+	$filterName = strtoupper($_GET['filtertype']) . '_' . strtoupper($_GET['filtername']);
+
+	$arg1 = isset($_GET['smooth']) ? $_GET['smooth'] : 0;
+	if (empty($arg1))
+	    $arg1 = isset($_GET['contrast']) ? $_GET['contrast'] : 0;
+	if (empty($arg1))
+	    $arg1 = isset($_GET['brightness']) ? $_GET['brightness'] : 0;
+	if (empty($arg1))
+	    $arg1 = isset($_GET['blocksize']) ? $_GET['blocksize'] : 0;
+	if (empty($arg1))
+	    $arg1 = isset($_GET['red']) ? $_GET['red'] : 0;
+
+	$arg2 = isset($_GET['green']) ? $_GET['green'] : 0;
+	$arg3 = isset($_GET['blue']) ? $_GET['blue'] : 0;
+
 	$imgSrc = Easy\Image::createFrom($fileSrc);
-
-	switch ($filter) {
-	    case 'FILTER_SMOOTH':
-		$filter = \Easy\Preset::$filter($smooth);
-		break;
-	    case 'FILTER_CONTRAST':
-		$filter = \Easy\Preset::$filter($contrast);
-		break;
-	    case 'FILTER_BRIGHTNESS':
-		$filter = \Easy\Preset::$filter($brightness);
-		break;
-	    case 'FILTER_PIXELATE':
-		$type = true;
-		$filter = Easy\Preset::$filter($blocksize, $type);
-		break;
-	    case 'FILTER_COLORIZE':
-		$filter = Easy\Preset::$filter($red, $green, $blue);
-		break;
-	    default :
-		$filter = \Easy\Preset::$filter();
-		break;
-	}
-
-	$filter->process($imgSrc)->show();
+	$filter = Easy\FilterFactory::create($filterType, $filterName, $arg1, $arg2, $arg3);
+	Easy\FilterFactory::process($imgSrc, $filter)->show();
 
 	break;
     default :
