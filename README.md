@@ -49,7 +49,9 @@ EasyGD - a PHP framework for use GD easier
 
 ####How to make multiple save
 
-    Easy\Image::createfrom($filename)->save('zend')->setImagetype(IMAGETYPE_GIF)->save('zend')->setImagetype(IMAGETYPE_JPEG)->save('zend');
+    Easy\Image::createfrom($filename)->save('zend')
+    ->setImagetype(IMAGETYPE_GIF)->save('zend')
+    ->setImagetype(IMAGETYPE_JPEG)->save('zend');
 
 ----
 
@@ -172,3 +174,86 @@ EasyGD - a PHP framework for use GD easier
     Easy\Transformation::rotate($image, 90)->show();
 
 
+----
+
+# Filters
+
+## Using the preset filter
+
+You can use : 
+
++ PRESET_NEGATE
++ PRESET_GRAYSCALE
++ PRESET_EDGEDETECT
++ PRESET_EMBOSS
++ PRESET_GAUSSIAN_BLUR
++ PRESET_MEAN_REMOVAL
++ PRESET_SELECTIVE_BLUR
++ PRESET_PIXELATE
++ PRESET_SMOOTH
++ PRESET_CONTRAST
++ PRESET_BRIGHTNESS
++ PRESET_COLORIZE
+
+#### How to create a preset filter
+    $filter = Easy\Preset::PRESET_GRAYSCALE();
+
+#### How to apply the filter
+    $filter->process($image)->show();
+
+## Using the convolution filter
+
+You can use preseted convolution or your own convolution filters.
+
+#### How to use a preseted convolution
+    $filter = Easy\Convolution::CONVOLUTION_LAPLACIEN_1();
+    $filter->process($image)->show();
+
+#### How to use your own convolution
+    $matrix = array(-1, 7, -1,
+    0, 0, 0,
+    1, 7, 1
+    );
+
+    $filter = \Easy\Convolution::create($matrix);
+    $filter->process($image)->show();
+
+## Using the lookuptable filter
+
+You can use preseted lookuptable or your own lookuptable filters.
+
+#### How to use a preseted lookuptable
+    $filter = \Easy\LookUpTable::create('Negative');
+    $filter->process($image)->show();
+
+#### To create a new lookuptable filter, you must create a callback method like this :
+
+    private function Special($rgb) {
+	$r = ($rgb['red'] > 128) ? max($rgb['green'], $rgb['blue']) : min($rgb['green'], $rgb['blue']);
+	$g = ($rgb['green'] > 128) ? max($rgb['red'], $rgb['blue']) : min($rgb['red'], $rgb['blue']);
+	$b = ($rgb['blue'] > 128) ? max($rgb['green'], $rgb['red']) : min($rgb['green'], $rgb['red']);
+	return array($r, $g, $b);
+    }
+
+    $filter = \Easy\LookUpTable::create('Special');
+    $filter->process($image)->show();
+    
+## Using all the filters with the factory
+
+You can use filters with a common syntax.
+The factory, use the three types of filter :
++ FILTER_PRESET
++ FILTER_LOOKUPTABLE
++ FILTER_CONVOLUTION
+
+#### Using the factory is easy !!!!
+
+    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
+OR    
+    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
+OR
+    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
+OR
+    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
+AND APPLY THE FILTER
+    \Easy\FilterFactory::process($image, $filter)->show(); 
