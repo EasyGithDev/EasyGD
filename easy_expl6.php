@@ -37,7 +37,6 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
 //$red = $green = $blue = 128;
 //$filter = Easy\Preset::PRESET_COLORIZE($red,$green, $blue);
 
-
 //$filter = Easy\Convolution::CONVOLUTION_IDENTITY();
 //$filter = Easy\Convolution::CONVOLUTION_SHARPEN_1();
 //$filter = Easy\Convolution::CONVOLUTION_SHARPEN_2();
@@ -88,7 +87,7 @@ $matrix = array(-1, 7, -1,
  * 
  */
 
-//$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
+$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_PIXELATE', 3, true);
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
