@@ -52,7 +52,10 @@ switch ($action) {
 
 	$filterType = 'FILTER_' . strtoupper($_GET['filtertype']);
 	$filterType = constant('Easy\FilterFactory::' . $filterType);
-	$filterName = strtoupper($_GET['filtertype']) . '_' . strtoupper($_GET['filtername']);
+	
+	$filterName = strtoupper($_GET['filtername']);
+	if ($_GET['filtertype'] != 'lookuptable')
+	    $filterName = strtoupper($_GET['filtertype']) . '_' . strtoupper($_GET['filtername']);
 
 	$arg1 = isset($_GET['smooth']) ? $_GET['smooth'] : 0;
 	if (empty($arg1))

@@ -286,17 +286,19 @@ require 'conf.php';
     
 	    function loadFilters(filename) {
 		    
-		var  src = 'loader.php?action=filter&filesrc=' + thumb_100 + filename + '&filtertype=preset&filtername=';
+		var  src = 'loader.php?action=filter&filesrc=' + thumb_100 + filename;
 		
 		$("#myModal .thumbnail").find('*').each( function (key, val) {
 		
-		    //console.log(key +' '+val)
-		    var filter = $(val).attr('id').split('-').pop();
-		    $(val).attr("src", src + filter + '&t=' + date.getTime());
-		    $(val).click(function(){
-			
+		    var thumbnail = $(val).attr('id').split('-');		    
+		    var filtertype = thumbnail[0];
+		    var filtername = thumbnail[1];
+		    var filterstring = '&filtertype='+filtertype+'&filtername='+filtername+ '&t=' + date.getTime(); 
+		    //console.log(thumbnail)
+		    $(val).attr("src", src + filterstring);
+		    $(val).click(function(){	
 			var filesrc = thumb_400 + getFilename();	    
-			var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=' + filter;
+			var  src = 'loader.php?action=filter&filesrc=' + filesrc + filterstring;
 			$("#modal-img").attr("src", src + '&t=' + date.getTime() );
 			
 		    });
@@ -440,32 +442,47 @@ require 'conf.php';
 			    <ul class="thumbnails">
 				<li>
 				    <div class="thumbnail">
-					<img id="modal-img-grayscale" />
+					<img id="lookuptable-lightnessgray" />
 				    </div>
 				</li>
 				<li>
 				    <div class="thumbnail">
-					<img id="modal-img-edgedetect" />
+					<img id="lookuptable-averagegray" />
 				    </div>
 				</li>
 				<li>
 				    <div class="thumbnail">
-					<img id="modal-img-emboss" />
+					<img id="lookuptable-luminositygray" />
 				    </div>
 				</li>
 				<li>
 				    <div class="thumbnail">
-					<img id="modal-img-gaussian_blur" />
+					<img id="lookuptable-thresholding" />
 				    </div>
 				</li>
 				<li>
 				    <div class="thumbnail">
-					<img id="modal-img-mean_removal" />
+					<img id="preset-edgedetect" />
 				    </div>
 				</li>
 				<li>
 				    <div class="thumbnail">
-					<img id="modal-img-negate" />
+					<img id="preset-emboss" />
+				    </div>
+				</li>
+				<li>
+				    <div class="thumbnail">
+					<img id="preset-gaussian_blur" />
+				    </div>
+				</li>
+				<li>
+				    <div class="thumbnail">
+					<img id="preset-mean_removal" />
+				    </div>
+				</li>
+				<li>
+				    <div class="thumbnail">
+					<img id="preset-negate" />
 				    </div>
 				</li>
 			    </ul>
