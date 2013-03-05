@@ -13,29 +13,29 @@ $filename = 'http://assets.natgeotv.com/Shows/2870.jpg';
 if (($image = Easy\Image::createFrom($filename)) === FALSE)
     throw new Exception('Error loading');
 
-//$filter = Easy\Preset::FILTER_NEGATE();
-//$filter = Easy\Preset::FILTER_GRAYSCALE();
-//$filter = Easy\Preset::FILTER_EDGEDETECT();
-//$filter =Easy\Preset::FILTER_EMBOSS();
-//$filter = Easy\Preset::FILTER_GAUSSIAN_BLUR();
-//$filter = Easy\Preset::FILTER_MEAN_REMOVAL();
-//$filter = Easy\Preset::FILTER_SELECTIVE_BLUR();
+//$filter = Easy\Preset::PRESET_NEGATE();
+//$filter = Easy\Preset::PRESET_GRAYSCALE();
+//$filter = Easy\Preset::PRESET_EDGEDETECT();
+//$filter =Easy\Preset::PRESET_EMBOSS();
+//$filter = Easy\Preset::PRESET_GAUSSIAN_BLUR();
+//$filter = Easy\Preset::PRESET_MEAN_REMOVAL();
+//$filter = Easy\Preset::PRESET_SELECTIVE_BLUR();
 
 //$blockSize = 3;
 //$type = true;
-//$filter = Easy\Preset::FILTER_PIXELATE($blockSize, $type);
+//$filter = Easy\Preset::PRESET_PIXELATE($blockSize, $type);
 
 //$smooth = 100;
-//$filter = Easy\Preset::FILTER_SMOOTH($smooth);
+//$filter = Easy\Preset::PRESET_SMOOTH($smooth);
 
 //$contrast = 10;
-//$filter = Easy\Preset::FILTER_CONTRAST($contrast);
+//$filter = Easy\Preset::PRESET_CONTRAST($contrast);
 
 //$brightness = 100;
-//$filter = Easy\Preset::FILTER_BRIGHTNESS($brightness);
+//$filter = Easy\Preset::PRESET_BRIGHTNESS($brightness);
 
 //$red = $green = $blue = 128;
-//$filter = Easy\Preset::FILTER_COLORIZE($red,$green, $blue);
+//$filter = Easy\Preset::PRESET_COLORIZE($red,$green, $blue);
 
 
 //$filter = Easy\Convolution::CONVOLUTION_IDENTITY();
@@ -62,21 +62,37 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
 //$filter = Easy\Convolution::CONVOLUTION_4_CONNEX();
 //$filter = Easy\Convolution::CONVOLUTION_8_CONNEX();
 
-//$matrix = array(-1, 7, -1,
-//    0, 0, 0,
-//    1, 7, 1
-//);
-//
+$matrix = array(-1, 7, -1,
+    0, 0, 0,
+    1, 7, 1
+);
+
 //$filter = \Easy\Convolution::create($matrix);
 
+/***
+ * 
+ * How to use the lookuptable filter
+ * 
+ */
 
-$filter = new \Easy\LookUpTable('LightnessGray');
-//$filter = new \Easy\LookUpTable('AverageGray');
-//$filter = new \Easy\LookUpTable('LuminosityGray');
-//$filter = new \Easy\LookUpTable('Thresholding');
-//$filter = new \Easy\LookUpTable('Negative');
-//$filter = new \Easy\LookUpTable('Special');
+//$filter = \Easy\LookUpTable::create('LightnessGray');
+//$filter = \Easy\LookUpTable::create('AverageGray');
+//$filter = \Easy\LookUpTable::create('LuminosityGray');
+//$filter = \Easy\LookUpTable::create('Thresholding');
+//$filter = \Easy\LookUpTable::create('Negative');
+//$filter = \Easy\LookUpTable::create('Special');
 
+/***
+ * 
+ * How to use the filter factory
+ * 
+ */
+
+//$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
+//$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
+//$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_PIXELATE', 3, true);
+//$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
+//$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
 
 \Easy\FilterFactory::process($image, $filter)->show();
 
