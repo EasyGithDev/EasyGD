@@ -40,10 +40,14 @@ namespace Easy;
  */
 class LookUpTable implements Filter {
 
-    private $function;
+    private $filterName;
 
-    public function __construct($function) {
-	$this->function = $function;
+    public function __construct($filterName) {
+	$this->filterName = $filterName;
+    }
+
+    public static function create($filterName) {
+	return new self($filterName);
     }
 
     public function process(Image $imgSrc) {
@@ -56,7 +60,7 @@ class LookUpTable implements Filter {
 
 	for ($i = 0; $i < imagecolorstotal($im); $i++) {
 	    $rgb = imagecolorsforindex($im, $i);
-	    $color = call_user_func_array(array(__CLASS__, $this->function), array($rgb));
+	    $color = call_user_func_array(array(__CLASS__, $this->filterName), array($rgb));
 	    imagecolorset($im, $i, $color[0], $color[1], $color[2]);
 	}
 

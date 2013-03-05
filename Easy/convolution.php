@@ -184,12 +184,20 @@ class Convolution implements Filter {
 	$this->divisor = floatval($divisor);
     }
 
-    public static function create($matrix) {
-	$obj = new self($matrix);
-	$divisor = floatval(array_sum(array_map('array_sum', $obj->getMatrix())));
-	if ($divisor != 0)
-	    $obj->setDivisor($divisor);
-	return $obj;
+    public static function create() {
+	if (is_array(func_get_arg(0))) {
+	    $matrix = func_get_arg(0);
+	    $obj = new self($matrix);
+	    $divisor = floatval(array_sum(array_map('array_sum', $obj->getMatrix())));
+	    if ($divisor != 0)
+		$obj->setDivisor($divisor);
+	    return $obj;
+	}
+	else {
+	    $arg_list = func_get_args();
+	    $presetFunction = array_shift($arg_list);
+	    return call_user_func_array(array(__CLASS__, $presetFunction), $arg_list);
+	}
     }
 
     public function getMatrix() {

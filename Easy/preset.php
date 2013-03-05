@@ -40,12 +40,12 @@ namespace Easy;
  */
 class Preset implements Filter {
 
-    protected $filterName;
+    protected $presetName;
     protected $paramArr;
 
     public function __construct() {
 	$this->paramArr = array();
-	$this->filterName = NULL;
+	$this->presetName = NULL;
     }
 
     public static function create() {
@@ -64,12 +64,12 @@ class Preset implements Filter {
 	}
     }
 
-    public function getFilterName() {
-	return $this->filterName;
+    public function getPresetName() {
+	return $this->presetName;
     }
 
-    public function setFilterName($filterName) {
-	$this->filterName = $filterName;
+    public function setPresetName($presetName) {
+	$this->presetName = $presetName;
     }
 
     public function getParamArr() {
@@ -83,11 +83,11 @@ class Preset implements Filter {
 
     public function process(Image $imgSrc) {
 
-	if(is_null($this->filterName))
+	if (is_null($this->presetName))
 	    throw new Exception('Filter name dont be NULL');
-	
+
 	$paramArr[] = $imgSrc->getImg();
-	$paramArr[] = $this->filterName;
+	$paramArr[] = $this->presetName;
 
 	$paramArr = array_merge($paramArr, $this->paramArr);
 
@@ -98,49 +98,49 @@ class Preset implements Filter {
 
     public static function PRESET_NEGATE() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_NEGATE;
+	$filter->presetName = IMG_FILTER_NEGATE;
 	return $filter;
     }
 
     public static function PRESET_GRAYSCALE() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_GRAYSCALE;
+	$filter->presetName = IMG_FILTER_GRAYSCALE;
 	return $filter;
     }
 
     public static function PRESET_EDGEDETECT() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_EDGEDETECT;
+	$filter->presetName = IMG_FILTER_EDGEDETECT;
 	return $filter;
     }
 
     public static function PRESET_EMBOSS() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_EMBOSS;
+	$filter->presetName = IMG_FILTER_EMBOSS;
 	return $filter;
     }
 
     public static function PRESET_GAUSSIAN_BLUR() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_GAUSSIAN_BLUR;
+	$filter->presetName = IMG_FILTER_GAUSSIAN_BLUR;
 	return $filter;
     }
 
     public static function PRESET_SELECTIVE_BLUR() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_SELECTIVE_BLUR;
+	$filter->presetName = IMG_FILTER_SELECTIVE_BLUR;
 	return $filter;
     }
 
     public static function PRESET_MEAN_REMOVAL() {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_MEAN_REMOVAL;
+	$filter->presetName = IMG_FILTER_MEAN_REMOVAL;
 	return $filter;
     }
 
     public static function PRESET_PIXELATE($blockSize, $type = FALSE) {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_PIXELATE;
+	$filter->presetName = IMG_FILTER_PIXELATE;
 	$filter->paramArr[] = $blockSize;
 	$filter->paramArr[] = $type;
 	return $filter;
@@ -153,7 +153,7 @@ class Preset implements Filter {
      */
     public static function PRESET_SMOOTH($smooth) {
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_SMOOTH;
+	$filter->presetName = IMG_FILTER_SMOOTH;
 	$filter->paramArr[] = $smooth;
 	return $filter;
     }
@@ -167,7 +167,7 @@ class Preset implements Filter {
 	if ($brightness < -255 OR $brightness > 255)
 	    $brightness = 0;
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_BRIGHTNESS;
+	$filter->presetName = IMG_FILTER_BRIGHTNESS;
 	$filter->paramArr[] = $brightness;
 	return $filter;
     }
@@ -182,7 +182,7 @@ class Preset implements Filter {
 	if ($contrast < -100 OR $contrast > 100)
 	    $contrast = 0;
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_CONTRAST;
+	$filter->presetName = IMG_FILTER_CONTRAST;
 	$filter->paramArr[] = $contrast;
 	return $filter;
     }
@@ -202,7 +202,7 @@ class Preset implements Filter {
 	    $blue = 0;
 
 	$filter = new self();
-	$filter->filterName = IMG_FILTER_COLORIZE;
+	$filter->presetName = IMG_FILTER_COLORIZE;
 	$filter->paramArr[] = $red;
 	$filter->paramArr[] = $green;
 	$filter->paramArr[] = $blue;
