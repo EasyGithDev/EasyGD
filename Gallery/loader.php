@@ -23,7 +23,7 @@ switch ($action) {
 	$convolution->process($imgSrc)->show();
 	break;
     case 'convolution_info' :
-	$convolution = $_GET['convolution'];
+	$convolution = 'CONVOLUTION_' . $_GET['convolution'];
 	$convolution = \Easy\Convolution::$convolution();
 	$json = array(
 	    'matrix' => $convolution->getMatrix(),
