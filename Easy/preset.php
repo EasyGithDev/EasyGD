@@ -40,21 +40,54 @@ namespace Easy;
  */
 class Preset implements Filter {
 
-    protected $filterType;
+    protected $filterName;
     protected $paramArr;
 
     public function __construct() {
 	$this->paramArr = array();
+	$this->filterName = NULL;
     }
 
     public static function create() {
-	return new self();
+
+	$numargs = func_num_args();
+
+	if ($numargs == 0) {
+	    return new self();
+	} else if ($numargs == 1) {
+	    $presetFunction = func_get_arg(0);
+	    return self::$presetFunction();
+	} else if ($numargs > 1) {
+	    $arg_list = func_get_args();
+	    $presetFunction = array_shift($arg_list);
+	    return call_user_func_array(array(__CLASS__, $presetFunction), $arg_list);
+	}
+    }
+
+    public function getFilterName() {
+	return $this->filterName;
+    }
+
+    public function setFilterName($filterName) {
+	$this->filterName = $filterName;
+    }
+
+    public function getParamArr() {
+	return $this->paramArr;
+    }
+
+    public function setParamArr($paramArr) {
+	$this->paramArr = $paramArr;
+	return $this;
     }
 
     public function process(Image $imgSrc) {
 
+	if(is_null($this->filterName))
+	    throw new Exception('Filter name dont be NULL');
+	
 	$paramArr[] = $imgSrc->getImg();
-	$paramArr[] = $this->filterType;
+	$paramArr[] = $this->filterName;
 
 	$paramArr = array_merge($paramArr, $this->paramArr);
 
@@ -63,51 +96,51 @@ class Preset implements Filter {
 	return $imgSrc;
     }
 
-    public static function FILTER_NEGATE() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_NEGATE;
+    public static function PRESET_NEGATE() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_NEGATE;
 	return $filter;
     }
 
-    public static function FILTER_GRAYSCALE() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_GRAYSCALE;
+    public static function PRESET_GRAYSCALE() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_GRAYSCALE;
 	return $filter;
     }
 
-    public static function FILTER_EDGEDETECT() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_EDGEDETECT;
+    public static function PRESET_EDGEDETECT() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_EDGEDETECT;
 	return $filter;
     }
 
-    public static function FILTER_EMBOSS() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_EMBOSS;
+    public static function PRESET_EMBOSS() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_EMBOSS;
 	return $filter;
     }
 
-    public static function FILTER_GAUSSIAN_BLUR() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_GAUSSIAN_BLUR;
+    public static function PRESET_GAUSSIAN_BLUR() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_GAUSSIAN_BLUR;
 	return $filter;
     }
 
-    public static function FILTER_SELECTIVE_BLUR() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_SELECTIVE_BLUR;
+    public static function PRESET_SELECTIVE_BLUR() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_SELECTIVE_BLUR;
 	return $filter;
     }
 
-    public static function FILTER_MEAN_REMOVAL() {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_MEAN_REMOVAL;
+    public static function PRESET_MEAN_REMOVAL() {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_MEAN_REMOVAL;
 	return $filter;
     }
 
-    public static function FILTER_PIXELATE($blockSize, $type = FALSE) {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_PIXELATE;
+    public static function PRESET_PIXELATE($blockSize, $type = FALSE) {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_PIXELATE;
 	$filter->paramArr[] = $blockSize;
 	$filter->paramArr[] = $type;
 	return $filter;
@@ -118,9 +151,9 @@ class Preset implements Filter {
      * @param type $smooth, IMG_FILTER_SMOOTH, -8/+8
      * @return type
      */
-    public static function FILTER_SMOOTH($smooth) {
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_SMOOTH;
+    public static function PRESET_SMOOTH($smooth) {
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_SMOOTH;
 	$filter->paramArr[] = $smooth;
 	return $filter;
     }
@@ -130,11 +163,11 @@ class Preset implements Filter {
      * @param type $BRIGHTNESS, -255 = min brightness, 0 = no change, +255 = max brightness
      * @return type
      */
-    public static function FILTER_BRIGHTNESS($brightness) {
+    public static function PRESET_BRIGHTNESS($brightness) {
 	if ($brightness < -255 OR $brightness > 255)
 	    $brightness = 0;
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_BRIGHTNESS;
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_BRIGHTNESS;
 	$filter->paramArr[] = $brightness;
 	return $filter;
     }
@@ -145,11 +178,11 @@ class Preset implements Filter {
      * -100 = max contrast, 0 = no change, +100 = min contrast (note the direction!)
      * @return type
      */
-    public static function FILTER_CONTRAST($contrast) {
+    public static function PRESET_CONTRAST($contrast) {
 	if ($contrast < -100 OR $contrast > 100)
 	    $contrast = 0;
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_CONTRAST;
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_CONTRAST;
 	$filter->paramArr[] = $contrast;
 	return $filter;
     }
@@ -159,7 +192,7 @@ class Preset implements Filter {
      * @param type $colorize,     IMG_FILTER_COLORIZE, -127.12, -127.98, 127
      * @return type
      */
-    public static function FILTER_COLORIZE($red, $green, $blue) {
+    public static function PRESET_COLORIZE($red, $green, $blue) {
 
 	if ($red < -255 OR $red > 255)
 	    $red = 0;
@@ -168,8 +201,8 @@ class Preset implements Filter {
 	if ($blue < -255 OR $blue > 255)
 	    $blue = 0;
 
-	$filter = self::create();
-	$filter->filterType = IMG_FILTER_COLORIZE;
+	$filter = new self();
+	$filter->filterName = IMG_FILTER_COLORIZE;
 	$filter->paramArr[] = $red;
 	$filter->paramArr[] = $green;
 	$filter->paramArr[] = $blue;
