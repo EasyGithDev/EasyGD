@@ -249,11 +249,19 @@ The factory, use the three types of filter :
 #### Using the factory is easy !!!!
 
     $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
-OR    
+
+OR
+    
     $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
+
 OR
+
     $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
+
 OR
+
     $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
+
 AND APPLY THE FILTER
+
     \Easy\FilterFactory::process($image, $filter)->show(); 
