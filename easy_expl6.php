@@ -13,6 +13,12 @@ $filename = 'http://assets.natgeotv.com/Shows/2870.jpg';
 if (($image = Easy\Image::createFrom($filename)) === FALSE)
     throw new Exception('Error loading');
 
+/***
+ * 
+ * How to use the preset filter
+ * 
+ */
+
 //$filter = Easy\Preset::PRESET_NEGATE();
 //$filter = Easy\Preset::PRESET_GRAYSCALE();
 //$filter = Easy\Preset::PRESET_EDGEDETECT();
@@ -36,6 +42,12 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
 
 //$red = $green = $blue = 128;
 //$filter = Easy\Preset::PRESET_COLORIZE($red,$green, $blue);
+
+/***
+ * 
+ * How to use the convolution filter
+ * 
+ */
 
 //$filter = Easy\Convolution::CONVOLUTION_IDENTITY();
 //$filter = Easy\Convolution::CONVOLUTION_SHARPEN_1();
