@@ -153,55 +153,7 @@ require 'conf.php';
 			console.log('Am I fullscreen? ' + screenfull.isFullscreen ? 'Yes' : 'No');
 		    };
 		}
-		
-		$( "#modal-slider-brightness" ).on( "slide", function( event, ui ) {} );
-		$( "#modal-slider-contrast" ).on( "slide", function( event, ui ) {} );
-		$( "#modal-slider-smooth" ).on( "slide", function( event, ui ) {} );
-		$( "#modal-slider-pixelate" ).on( "slide", function( event, ui ) {} );
-		
-		$( "#modal-slider-brightness" ).on( "slidestop", function( event, ui ) {
-		    //console.log(ui.value)		    
-		    var filesrc = thumb_400 + getFilename();
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=brightness&brightness='+ui.value;
-		    $("#modal-img").attr("src", src );
-		} );
-		
-		$( "#modal-slider-contrast" ).on( "slidestop", function( event, ui ) {
-		    //console.log(ui.value)
-		    var filesrc = thumb_400 + getFilename();  
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=contrast&contrast='+ui.value;
-		    $("#modal-img").attr("src", src );
-		} );
-		
-		$( "#modal-slider-smooth" ).on( "slidestop", function( event, ui ) {
-		    //console.log(ui.value)		    
-		    var filesrc = thumb_400 + getFilename();	    
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=smooth&smooth='+ui.value;
-		    $("#modal-img").attr("src", src );
-		} );
-		
-		$( "#modal-slider-pixelate" ).on( "slidestop", function( event, ui ) {
-		    //console.log(ui.value)		    
-		    var filesrc = thumb_400 + getFilename();	    
-		    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername=pixelate&blocksize='+ui.value;
-		    $("#modal-img").attr("src", src );
-		} );
-		
-		$( "#modal-slider-red" ).on( "slidestop", function( event, ui ) {
-		    $(this).slider('value', ui.value);
-		    changeColor();
-		} );
-		
-		$( "#modal-slider-green" ).on( "slidestop", function( event, ui ) {
-		    $(this).slider('value', ui.value);
-		    changeColor();
-		} );
-		
-		$( "#modal-slider-blue" ).on( "slidestop", function( event, ui ) {
-		    $(this).slider('value', ui.value);
-		    changeColor();
-		} );
-		
+	
 		
 		$('#custom-selection').change(function () {
 		    var filesrc = thumb_400 + getFilename();
@@ -308,6 +260,7 @@ require 'conf.php';
 	    }
 	    
 	    function loadTools() {
+	    
 		$( "#modal-slider-brightness" ).slider({ values: [ 0 ], min: -255, max: 255 });
 		$( "#modal-slider-contrast" ).slider({ values: [ 0 ], min: -100, max: 100 });
 		$( "#modal-slider-smooth" ).slider({ values: [ 0 ],min: -8, max: 8 });
@@ -315,6 +268,23 @@ require 'conf.php';
 		$( "#modal-slider-red" ).slider({ values: [ 0 ], min: -255, max: 255 });
 		$( "#modal-slider-green" ).slider({ values: [ 0 ], min: -255, max: 255 });
 		$( "#modal-slider-blue" ).slider({ values: [ 0 ], min: -255, max: 255 });
+		
+		$("#myModal #modal-tab-tools").find('div').each( function (key, val) {
+		    var filtername = $(val).attr('id').split('-').pop();
+		    $(val).on( "slidestop", function( event, ui ) {
+			if(filtername == 'red' || filtername == 'green' || filtername == 'blue'){
+			    $(val).slider('value', ui.value);
+			    changeColor();
+			}
+			else {
+			    var filesrc = thumb_400 + getFilename();
+			    var  src = 'loader.php?action=filter&filesrc=' + filesrc + '&filtertype=preset&filtername='+filtername+'&value='+ui.value;
+			    $("#modal-img").attr("src", src );
+			}
+		    } );
+		
+		});
+		
 	    }
 	    
 	    function loadInfos(filename) {
@@ -352,7 +322,7 @@ require 'conf.php';
 		var green = $( "#modal-slider-green" ).slider( "value" );
 		
 		src += '&red=' + red + '&green=' + green + '&blue=' + blue; 
-		
+	
 		$("#modal-img").attr("src", src );
 	    }
 	
@@ -368,10 +338,10 @@ require 'conf.php';
 		    }
 		}
 		matrix = JSON.stringify(matrix);
-		console.log(matrix);
+		//console.log(matrix);
 		var filesrc = thumb_400 + getFilename();
 		var  src = 'loader.php?action=convolution_custom&filesrc=' + filesrc + '&divisor='+divisor+'&offset='+offset+'&matrix='+matrix;
-		console.log(src)
+		//console.log(src)
 		$("#modal-img").attr("src", src );
 		return false;
 	    }
@@ -492,21 +462,21 @@ require 'conf.php';
 			<div id="modal-tab-tools" class="modal-tab hide">
 
 			    <h6>Luminosité</h6>
-			    <div id="modal-slider-brightness"></div>
+			    <div id="modal-slider-brightness" ></div>
 
 			    <h6>Contraste</h6>
-			    <div id="modal-slider-contrast"></div>
+			    <div id="modal-slider-contrast" ></div>
 
 			    <h6>Lissage</h6>
-			    <div id="modal-slider-smooth"></div>
+			    <div id="modal-slider-smooth" ></div>
 
 			    <h6>Pixelisation</h6>
-			    <div id="modal-slider-pixelate"></div>
+			    <div id="modal-slider-pixelate" ></div>
 
 			    <h6>Rouge / Vert / Bleu</h6>
-			    <div id="modal-slider-red"></div><br/>
-			    <div id="modal-slider-green"></div><br/>
-			    <div id="modal-slider-blue"></div>
+			    <div id="modal-slider-red" ></div><br/>
+			    <div id="modal-slider-green" ></div><br/>
+			    <div id="modal-slider-blue" ></div>
 
 			</div>
 

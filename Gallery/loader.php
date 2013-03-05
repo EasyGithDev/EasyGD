@@ -35,7 +35,6 @@ switch ($action) {
     case 'histogramme' :
 	/**
 	 * trop long
-
 	  set_time_limit(0);
 	  $histogramme = new Easy\Histogramme();
 	  $imgSrc = Easy\Image::createFrom($fileSrc);
@@ -44,7 +43,6 @@ switch ($action) {
 	  $runer->process();
 	  $histogramme->computeSigma($imgSrc->getWidth() * $imgSrc->getHeight());
 	  $histogramme->save(THUMB_HISTO);
-
 	 * 
 	 */
 	break;
@@ -57,13 +55,8 @@ switch ($action) {
 	if ($_GET['filtertype'] != 'lookuptable')
 	    $filterName = strtoupper($_GET['filtertype']) . '_' . strtoupper($_GET['filtername']);
 
-	$arg1 = isset($_GET['smooth']) ? $_GET['smooth'] : 0;
-	if (empty($arg1))
-	    $arg1 = isset($_GET['contrast']) ? $_GET['contrast'] : 0;
-	if (empty($arg1))
-	    $arg1 = isset($_GET['brightness']) ? $_GET['brightness'] : 0;
-	if (empty($arg1))
-	    $arg1 = isset($_GET['blocksize']) ? $_GET['blocksize'] : 0;
+	$arg1 = isset($_GET['value']) ? $_GET['value'] : 0;
+	
 	if (empty($arg1))
 	    $arg1 = isset($_GET['red']) ? $_GET['red'] : 0;
 
