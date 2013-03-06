@@ -70,6 +70,16 @@ class Position {
 	$this->y = $y;
     }
 
+    public function offsetX($x) {
+	$this->x += $x;
+	return $this;
+    }
+
+    public function offsetY($y) {
+	$this->y += $y;
+	return $this;
+    }
+
     public function __toString() {
 	return '(' . $this->x . ',' . $this->y . ')';
     }
