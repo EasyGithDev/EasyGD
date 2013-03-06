@@ -137,9 +137,23 @@ EasyGD - a PHP framework for use GD easier
 #### How to load an image for data src
     <img src="<?php echo Easy\Image::getDataSource($filename); ?>" />
 
-#### how to get the information about an image
+#### How to get the information about an image
     $infos = Easy\Image::getInfos($filename);
     echo '<pre>', print_r($infos, 1), '</pre>';
+
+#### How to have the preseted positions
+
+    echo $image->TOP_LEFT, '<br/>';
+    echo $image->TOP_MIDDLE, '<br/>';
+    echo $image->TOP_RIGHT, '<br/>';
+    echo $image->MIDDLE_LEFT, '<br/>';
+    echo $image->MIDDLE_MIDDLE, '<br/>';
+    echo $image->MIDDLE_RIGHT, '<br/>';
+    echo $image->BOTTOM_LEFT, '<br/>';
+    echo $image->BOTTOM_MIDDLE, '<br/>';
+    echo $image->BOTTOM_RIGHT, '<br/>';
+
+It will return an object Position ...
 
 ----
 
@@ -172,6 +186,14 @@ EasyGD - a PHP framework for use GD easier
 
 #### How to make a rotation
     Easy\Transformation::rotate($image, 90)->show();
+
+## Merging two images
+
+#### How to insert a logo into an image
+
+    $logo = Easy\Image::createFrom('http://www.php.net/images/logos/php-med-trans.png');
+    $logo = Easy\Transformation::resizeByPercent($logo, 0.6);
+    Easy\Transformation::inlay($image, $logo, Easy\Position::create(30, 20), 50)->show();
 
 
 ----
@@ -246,7 +268,7 @@ The factory, use the three types of filter :
 + FILTER_LOOKUPTABLE
 + FILTER_CONVOLUTION
 
-#### Using the factory is easy !!!!
+#### Using the factory, it is easy !!!!
 
     $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
 
