@@ -330,7 +330,7 @@ class Image {
 	    case 'TOP_LEFT' :
 		return Position::create();
 		break;
-	    case 'TOP_MIDDLE' :
+	    case 'TOP_CENTER' :
 		return Position::create(intval($this->getWidth() / 2), 0);
 		break;
 	    case 'TOP_RIGHT' :
@@ -339,7 +339,7 @@ class Image {
 	    case 'MIDDLE_LEFT' :
 		return Position::create(0, intval($this->getHeight() / 2));
 		break;
-	    case 'MIDDLE_MIDDLE' :
+	    case 'MIDDLE_CENTER' :
 		return Position::create(intval($this->getWidth() / 2), intval($this->getHeight() / 2));
 		break;
 	    case 'MIDDLE_RIGHT' :
@@ -348,7 +348,7 @@ class Image {
 	    case 'BOTTOM_LEFT' :
 		return Position::create(0, $this->getHeight());
 		break;
-	    case 'BOTTOM_MIDDLE' :
+	    case 'BOTTOM_CENTER' :
 		return Position::create(intval($this->getWidth() / 2), $this->getHeight());
 		break;
 	    case 'BOTTOM_RIGHT' :
