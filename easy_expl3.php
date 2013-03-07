@@ -31,7 +31,7 @@ $image = Easy\Image::create($dimension, Easy\Color::Blue())->addText(
 		->setPosition($position)
 );
 
-//$image->show();
+$image->show();
 
 /*
  * 
@@ -102,13 +102,12 @@ $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
  * How to apply an alpha color to a text into an image
  * 
  */
-$image = Easy\Image::create(Easy\Dimension::create(250, 100))
-	->fill(Easy\Color::create('#f2f2f2'))
+$image = Easy\Image::create(Easy\Dimension::create(250, 100), Easy\Color::Silver())
 	->addText(
 	Easy\Text::create('Alpha Color')
 	->setColor(
 		Easy\Color::create('#FF0000')
-		->setAlpha(90)
+		->setAlpha(95)
 	)
 	->setSize(5)
 	->setPosition(Easy\Position::create(55, 35))
@@ -118,7 +117,7 @@ $image = Easy\Image::create(Easy\Dimension::create(250, 100))
 
 /*
  * 
- * How to have the font list as an image
+ * How to view the font list as an image
  * 
  */
 
@@ -128,7 +127,7 @@ $image = Easy\Image::create(Easy\Dimension::create(800, 600), Easy\Color::White(
 
 $i = 1;
 foreach ($list as $v) {
-    if ($i > 55) {
+    if ($i == 55) {
 	$position->setX(300);
 	$i = 1;
     }
@@ -139,5 +138,5 @@ foreach ($list as $v) {
     $image->addText($text);
     $i++;
 }
-$image->show();
+//$image->show();
 ?>
