@@ -127,7 +127,7 @@ $image = Easy\Image::create(Easy\Dimension::create(1024, 768), Easy\Color::White
 
 $i = 1;
 foreach ($list as $v) {
-    if ($i % 40 == 0) {
+    if (($i % 40) == 0) {
 	$position->offsetX(300);
 	$i = 1;
     }
