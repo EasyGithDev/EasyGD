@@ -31,7 +31,7 @@ $image = Easy\Image::create($dimension, Easy\Color::Blue())->addText(
 		->setPosition($position)
 );
 
-$image->show();
+//$image->show();
 
 /*
  * 
@@ -50,7 +50,17 @@ $image = Easy\Image::create(Easy\Dimension::create(100, 100))->addText(
 
 /*
  * 
- * How to add a TrueType text into an image
+ * How to have the font list
+ * 
+ */
+
+$list = \Easy\Text::getFontList(\Easy\Text::TEXT_MACOS_FONT_PATH);
+//echo '<pre>', print_r($list, 1), '</pre>';
+
+
+/*
+ * 
+ * How to use "TrueType text" into an image
  * 
  */
 
@@ -72,13 +82,13 @@ $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
 
 /*
  * 
- * How to add a FreeType text into an image
+ * How to use "FreeType text" with a line break into an image
  * 
  */
 
 $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
 	->addText(
-	Easy\FreeType::create('Hello Free World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+	Easy\FreeType::create('Hello ' . PHP_EOL . 'Free World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Tahoma.ttf')
 	->setColor(Easy\Color::Silver())
 	->setSize(16)
 	->setAngle(45)
@@ -86,7 +96,6 @@ $image = Easy\Image::create($dimension, Easy\Color::create('#f2f2f2'))
 );
 
 //$image->show();
-
 
 /*
  * 
@@ -105,4 +114,30 @@ $image = Easy\Image::create(Easy\Dimension::create(250, 100))
 	->setPosition(Easy\Position::create(55, 35))
 );
 //$image->show();
+
+
+/*
+ * 
+ * How to have the font list as an image
+ * 
+ */
+
+$position = \Easy\Position::create(5, 5);
+$text = Easy\TrueType::create('', \Easy\Text::TEXT_MACOS_FONT_PATH . '/' . $list[0]);
+$image = Easy\Image::create(Easy\Dimension::create(800, 600), Easy\Color::White());
+
+$i = 1;
+foreach ($list as $v) {
+    if ($i > 55) {
+	$position->setX(300);
+	$i = 1;
+    }
+    $position->setY($i * 15);
+    $text->setFontfile(\Easy\Text::TEXT_MACOS_FONT_PATH . '/' . $v);
+    $text->setText($v);
+    $text->setPosition($position);
+    $image->addText($text);
+    $i++;
+}
+$image->show();
 ?>
