@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EasyGd - a PHP framework for use GD easier
  *
@@ -28,6 +29,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Easy;
 
 /**
@@ -41,31 +43,41 @@ class TrueType extends Text {
     protected $angle;
 
     public function __construct($text, $fontfile) {
-        if (!file_exists($fontfile))
-            throw new Exception('Unable to find the fontfile ' . $fontfile);
-        
-        parent::__construct($text, 8);
-        $this->fontfile = $fontfile;
-        $this->fonttype = self::TEXT_FONT_TRUETYPE;
-        $this->angle = 0;
+	if (!file_exists($fontfile))
+	    throw new Exception('Unable to find the fontfile ' . $fontfile);
+
+	parent::__construct($text, 8);
+	$this->fontfile = $fontfile;
+	$this->fonttype = self::TEXT_FONT_TRUETYPE;
+	$this->angle = 0;
     }
 
     public static function create($text, $fontfile) {
-        return new self($text, $fontfile);
+	return new self($text, $fontfile);
     }
 
     public function setFontfile($fontfile) {
-        $this->fontfile = $fontfile;
-        return $this;
+	$this->fontfile = $fontfile;
+	return $this;
+    }
+
+    public function setDrawtype($drawtype) {
+	$this->drawtype = $drawtype;
+	if ($drawtype == Text::TEXT_DRAW_VERTICAL) {
+	    $this->angle = 90;
+	} else if ($drawtype == Text::TEXT_DRAW_HORIZONTAL) {
+	    $this->angle = 0;
+	}
+	return $this;
     }
 
     public function getAngle() {
-        return $this->angle;
+	return $this->angle;
     }
 
     public function setAngle($angle) {
-        $this->angle = $angle;
-        return $this;
+	$this->angle = $angle;
+	return $this;
     }
 
 }
