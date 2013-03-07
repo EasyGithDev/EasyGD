@@ -133,11 +133,6 @@ class Text {
 	return $this->fonttype;
     }
 
-    public function setFonttype($fonttype) {
-	$this->fonttype = $fonttype;
-	return $this;
-    }
-
     public function getFontfile() {
 	return $this->fontfile;
     }
