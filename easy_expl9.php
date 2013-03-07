@@ -19,13 +19,13 @@ if (($image = Easy\Image::createfrom($filename)) === FALSE)
 Easy\Transformation::inlay(
 	$thumb = Easy\Preset::PRESET_NEGATE()->process(
 		Easy\Transformation::thumbnail($image, 400)->addText(
-			\Easy\Text::create('Very nice castle !!!')
-				->setSize(5)
+		\Easy\TrueType::create('Very nice castle !!!', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+				->setSize(16)
 				->setColor(Easy\Color::Gray())
-				->setPosition(\Easy\Position::create(10, 20))
+				->setPosition(\Easy\Position::create(10, 30))
 		)
 	), 
 	$logo = Easy\Transformation::resizeByPercent($image, 0.05), 
-	$thumb->BOTTOM_RIGHT->offsetY($logo->getHeight() * -1 - 50)->offsetX($logo->getWidth() * -1)
+	$thumb->BOTTOM_RIGHT->offsetY($logo->IMG_HEIGHT * -1 - 50)->offsetX($logo->IMG_WIDTH * -1)
 )->show();
 ?>
