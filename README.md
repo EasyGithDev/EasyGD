@@ -144,13 +144,13 @@ EasyGD - a PHP framework for use GD easier
 #### How to have the preseted positions
 
     echo $image->TOP_LEFT, '<br/>';
-    echo $image->TOP_MIDDLE, '<br/>';
+    echo $image->TOP_CENTER, '<br/>';
     echo $image->TOP_RIGHT, '<br/>';
     echo $image->MIDDLE_LEFT, '<br/>';
-    echo $image->MIDDLE_MIDDLE, '<br/>';
+    echo $image->MIDDLE_CENTER, '<br/>';
     echo $image->MIDDLE_RIGHT, '<br/>';
     echo $image->BOTTOM_LEFT, '<br/>';
-    echo $image->BOTTOM_MIDDLE, '<br/>';
+    echo $image->BOTTOM_CENTER, '<br/>';
     echo $image->BOTTOM_RIGHT, '<br/>';
 
 It will return an object Position ...
