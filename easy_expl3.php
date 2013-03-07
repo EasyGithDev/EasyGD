@@ -31,7 +31,7 @@ $image = Easy\Image::create($dimension, Easy\Color::Blue())->addText(
 		->setPosition($position)
 );
 
-$image->show();
+//$image->show();
 
 /*
  * 
@@ -123,20 +123,20 @@ $image = Easy\Image::create(Easy\Dimension::create(250, 100), Easy\Color::Silver
 
 $position = \Easy\Position::create(5, 5);
 $text = Easy\TrueType::create('', \Easy\Text::TEXT_MACOS_FONT_PATH . '/' . $list[0]);
-$image = Easy\Image::create(Easy\Dimension::create(800, 600), Easy\Color::White());
+$image = Easy\Image::create(Easy\Dimension::create(1024, 768), Easy\Color::White());
 
 $i = 1;
 foreach ($list as $v) {
-    if ($i == 55) {
-	$position->setX(300);
+    if ($i % 40 == 0) {
+	$position->offsetX(300);
 	$i = 1;
     }
-    $position->setY($i * 15);
+    $position->setY($i * 18);
     $text->setFontfile(\Easy\Text::TEXT_MACOS_FONT_PATH . '/' . $v);
     $text->setText($v);
     $text->setPosition($position);
     $image->addText($text);
     $i++;
 }
-//$image->show();
+$image->show();
 ?>
