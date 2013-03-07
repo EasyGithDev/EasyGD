@@ -269,24 +269,27 @@ class Image {
     }
 
     public function addText(Text $text) {
+
+	if ($text->getPosition()->getX() > $this->getWidth() OR $text->getPosition()->getY() > $this->getHeight())
+	    return FALSE;
+
 	$color = $text->getColor();
 	$this->setColor($color);
-	$function = ($text->getDrawtype() == TEXT::TEXT_DRAW_HORIZONTAL) ? 'imagestring' : 'imagestringup';
 
 	switch ($text->getFonttype()) {
 
 	    case TEXT::TEXT_FONT_TRUETYPE :
-		imagettftext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
+		@imagettftext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
 		break;
 	    case Text::TEXT_FONT_FREETYPE :
-		imagefttext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
+		@imagefttext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
 		break;
 	    case Text::TEXT_FONT_DEFAULT :
 	    default :
+		$function = ($text->getDrawtype() == TEXT::TEXT_DRAW_HORIZONTAL) ? 'imagestring' : 'imagestringup';
 		$function($this->img, $text->getSize(), $text->getPosition()->getX(), $text->getPosition()->getY(), $text->getText(), $this->colors["$color"]);
 		break;
 	}
-
 
 	return $this;
     }
@@ -312,6 +315,18 @@ class Image {
     public function __get($key) {
 
 	switch ($key) {
+	    case 'IMG_WIDTH':
+		return ($this->img) ? imagesx($this->img) : FALSE;
+		break;
+	    case 'IMG_HEIGHT':
+		return ($this->img) ? imagesy($this->img) : FALSE;
+		break;
+	    case 'IMG_TYPE':
+		return $this->imageType;
+		break;
+	    case 'IMG_SRC':
+		return $this->fileSrc;
+		break;
 	    case 'TOP_LEFT' :
 		return Position::create();
 		break;
