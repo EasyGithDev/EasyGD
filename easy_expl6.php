@@ -105,7 +105,7 @@ $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Ne
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
 
-\Easy\FilterFactory::process($image, $filter)->show();
+$filter->process($image)->show();
 
 
 ?>
