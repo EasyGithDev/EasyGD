@@ -71,10 +71,6 @@ class FilterFactory {
 	}
     }
 
-    public static function process(Image $imgSrc, Filter $filter) {
-	return $filter->process($imgSrc);
-    }
-
 }
 
 ?>
