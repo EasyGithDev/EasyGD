@@ -87,7 +87,7 @@ $matrix = array(-1, 7, -1,
  */
 
 //$filter = \Easy\LookUpTable::create('LightnessGray');
-//$filter = \Easy\LookUpTable::create('AverageGray');
+$filter = \Easy\LookUpTable::create('AverageGray');
 //$filter = \Easy\LookUpTable::create('LuminosityGray');
 //$filter = \Easy\LookUpTable::create('Thresholding');
 //$filter = \Easy\LookUpTable::create('Negative');
@@ -99,7 +99,7 @@ $matrix = array(-1, 7, -1,
  * 
  */
 
-$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
+//$filter = Easy\Filter::create(Easy\Filter::FILTER_LOOKUPTABLE, 'Negative');
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_PIXELATE', 3, true);
 //$filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
