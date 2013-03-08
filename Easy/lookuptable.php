@@ -38,7 +38,7 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class LookUpTable implements Filter {
+class LookUpTable extends Filter {
 
     private $filterName;
 

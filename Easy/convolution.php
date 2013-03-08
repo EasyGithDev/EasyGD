@@ -38,7 +38,7 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Convolution implements Filter {
+class Convolution extends Filter {
 
     public static $CONVOLUTION_IDENTITY = array(
 	0, 0, 0,

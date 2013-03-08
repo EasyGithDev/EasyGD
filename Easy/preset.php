@@ -38,7 +38,7 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Preset implements Filter {
+class Preset extends Filter {
 
     protected $presetName;
     protected $paramArr;
