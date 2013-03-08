@@ -49,7 +49,7 @@ switch ($action) {
     case 'filter' :
 
 	$filterType = 'FILTER_' . strtoupper($_GET['filtertype']);
-	$filterType = constant('Easy\FilterFactory::' . $filterType);
+	$filterType = constant('Easy\Filter::' . $filterType);
 	
 	$filterName = strtoupper($_GET['filtername']);
 	if ($_GET['filtertype'] != 'lookuptable')
@@ -64,8 +64,8 @@ switch ($action) {
 	$arg3 = isset($_GET['blue']) ? $_GET['blue'] : 0;
 
 	$imgSrc = Easy\Image::createFrom($fileSrc);
-	$filter = Easy\FilterFactory::create($filterType, $filterName, $arg1, $arg2, $arg3);
-	Easy\FilterFactory::process($imgSrc, $filter)->show();
+	$filter = Easy\Filter::create($filterType, $filterName, $arg1, $arg2, $arg3);
+	$filter->process($imgSrc)->show();
 
 	break;
     default :
