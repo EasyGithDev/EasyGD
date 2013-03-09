@@ -60,6 +60,7 @@ class Position {
 
     public function setX($x) {
 	$this->x = $x;
+	return $this;
     }
 
     public function getY() {
@@ -68,6 +69,7 @@ class Position {
 
     public function setY($y) {
 	$this->y = $y;
+	return $this;
     }
 
     public function offsetX($x) {
