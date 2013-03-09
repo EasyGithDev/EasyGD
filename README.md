@@ -138,8 +138,20 @@ EasyGD - a PHP framework for use GD easier
     <img src="<?php echo Easy\Image::getDataSource($filename); ?>" />
 
 #### How to get the information about an image
-    $infos = Easy\Image::getInfos($filename);
-    echo '<pre>', print_r($infos, 1), '</pre>';
+    $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
+    $imageInfo = Easy\Image::getInfos($filename);
+    echo '<pre>', print_r($imageInfo, 1), '</pre>';
+
+#### how to get / add the IPTC tag
+    $fileDst = __DIR__ . '/iptc.jpg';
+    $iptc = $imageInfo->getIpct();
+    $iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
+	    ->addTag(Easy\Iptc::IPTC_COUNTRY, 'FRANCE')
+	    ->addTag(Easy\Iptc::IPTC_CREATED_DATE, '2012-03-01')
+	    ->addTag(Easy\Iptc::IPTC_CATEGORY, 'JOURNEY');
+
+    if ($iptc->write($fileSrc, $fileDst) === false)
+	throw new Exception('Error to write IPTC');
 
 #### How to have the preseted positions
 
@@ -286,4 +298,4 @@ OR
 
 AND APPLY THE FILTER
 
-    \Easy\FilterFactory::process($image, $filter)->show(); 
+    $filter->process($image)->show();
