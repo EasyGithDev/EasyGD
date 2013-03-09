@@ -55,7 +55,6 @@ class ImageInfo {
 	if (($infos = getimagesize($filename, $additional)) === FALSE)
 	    return FALSE;
 
-
 	$this->filename = $filename;
 	$this->width = $infos[0];
 	$this->height = $infos[1];
@@ -64,10 +63,11 @@ class ImageInfo {
 	$this->mime = $infos['mime'];
 	$this->channels = $infos['channels'];
 	$this->bits = $infos['bits'];
-	$this->iptc = NULL;
+	$this->iptc = (isset($additional["APP13"])) ? Iptc::create($additional["APP13"]) : Iptc::create();
+    }
 
-	if (isset($additional["APP13"]))
-	    $this->iptc = new Iptc($additional["APP13"]);
+    public static function create($filename) {
+	return new self($filename);
     }
 
     public function __toString() {

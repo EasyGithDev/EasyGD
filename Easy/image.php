@@ -115,8 +115,7 @@ class Image {
     }
 
     public static function getInfos($fileSrc) {
-
-	return new ImageInfo($fileSrc);
+	return ImageInfo::create($fileSrc);
     }
 
     protected function manage(&$function, &$param_array, $quality) {

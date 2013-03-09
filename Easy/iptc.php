@@ -59,12 +59,19 @@ class Iptc {
 
     private $metas = array();
 
-    public function __construct($app13) {
-	$this->metas = iptcparse($app13);
+    public function __construct($app13 = '') {
+	if (!empty($app13)) {
+	    $this->metas = iptcparse($app13);
+	}
+    }
+
+    public static function create($app13 = '') {
+	return new self($app13);
     }
 
     public function addTag($tag, $data) {
 	$this->metas["2#$tag"][0] = $data;
+	return $this;
     }
 
     public function getTag($tag) {
