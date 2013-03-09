@@ -88,16 +88,14 @@ class LookUpTable extends Filter {
 	return array($gray, $gray, $gray);
     }
 
-    private function Thresholding($rgb) {
-	//0.21 R + 0.71 G + 0.07 B.
-	$r = ($rgb['red'] > 128) ? 255 : 0;
-	$g = ($rgb['green'] > 128) ? 255 : 0;
-	$b = ($rgb['blue'] > 128) ? 255 : 0;
+    private function Thresholding($rgb, $threshold = 128) {
+	$r = ($rgb['red'] > $threshold) ? 255 : 0;
+	$g = ($rgb['green'] > $threshold) ? 255 : 0;
+	$b = ($rgb['blue'] > $threshold) ? 255 : 0;
 	return array($r, $g, $b);
     }
 
     private function Negative($rgb) {
-	//0.21 R + 0.71 G + 0.07 B.
 	$r = 255 - $rgb['red'];
 	$g = 255 - $rgb['green'];
 	$b = 255 - $rgb['blue'];
