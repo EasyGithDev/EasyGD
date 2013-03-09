@@ -142,7 +142,7 @@ EasyGD - a PHP framework for use GD easier
     $imageInfo = Easy\Image::getInfos($filename);
     echo '<pre>', print_r($imageInfo, 1), '</pre>';
 
-#### how to get / add the IPTC tag
+#### How to get / add the IPTC tag
     $fileDst = __DIR__ . '/iptc.jpg';
     $iptc = $imageInfo->getIpct();
     $iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
