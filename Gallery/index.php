@@ -1,5 +1,34 @@
 <?php
 require 'conf.php';
+
+$create_thumb = isset($_GET['create_thumb']) ? $_GET['create_thumb'] : 0;
+
+if ($create_thumb) {
+
+    set_time_limit(0);
+    $text = \Easy\TrueType::create('Copyright (C) 2013 Florent Brusciano', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
+	    ->setSize(5)
+	    ->setColor(Easy\Color::White())
+	    ->setPosition(Easy\Position::create(40, 190));
+
+    foreach (new \Easy\ImageFilterIterator(new DirectoryIterator(THUMB_ORIGINAL)) as $file) {
+
+	if (($image = Easy\Image::createFrom($file->getPathname())) === FALSE)
+	    continue;
+
+	\Easy\Transformation::thumbnail($image, 100)
+		->save(THUMB_100 . $file->getFilename(), 100, FALSE);
+
+	\Easy\Transformation::thumbnail($image, 200)
+		->addText($text)
+		->save(THUMB_200 . $file->getFilename(), 100, FALSE);
+
+	\Easy\Transformation::thumbnail($image, 400)
+		->save(THUMB_400 . $file->getFilename(), 100, FALSE);
+    }
+}
+
+$iterator = new \Easy\ImageFilterIterator(new DirectoryIterator(THUMB_200));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -352,12 +381,17 @@ require 'conf.php';
     <body>
 
         <div class="container">
+	    <div class="span11">
 
-            <ul class="thumbnails">
+	    <?php if (iterator_count($iterator) == 0) : ?>
+    	    <p><a href="?create_thumb=1" class="btn btn-primary btn-large">Generate Thumbs</a></p>
+	    <?php endif; ?>
+
+	    <ul class="thumbnails">
 
 		<?php $images = array(); ?>
 
-		<?php foreach (new \Easy\ImageFilterIterator(new DirectoryIterator(THUMB_200)) as $file) : ?>
+		<?php foreach ($iterator as $file) : ?>
 
 		    <?php $images[] = $file->getFilename(); ?>
 
@@ -373,8 +407,9 @@ require 'conf.php';
 
 		<?php endforeach; ?>
 
-            </ul>
+	    </ul>
 
+</div>
 	</div> <!-- /container -->
 
 	<script>
