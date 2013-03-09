@@ -38,6 +38,8 @@ $image = Easy\Image::createfrom($filename)
  * 
  * how to get the information about an image
  */
+$fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
+$fileDst = __DIR__ . '/iptc.jpg';
 
 $imageInfo = Easy\Image::getInfos($filename);
 echo '<pre>', $imageInfo, '</pre>';
@@ -47,15 +49,19 @@ echo '<pre>', $imageInfo, '</pre>';
  * how to get / add the ipct tag
  */
 
-/*
 $iptc = $imageInfo->getIpct();
-$iptc->addTag(\Easy\Iptc::IPTC_CITY, 'Dans ton luc !!!!');
+$iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
+	->addTag(Easy\Iptc::IPTC_COUNTRY, 'FRANCE')
+	->addTag(Easy\Iptc::IPTC_CREATED_DATE, '2012-03-01')
+	->addTag(Easy\Iptc::IPTC_CATEGORY, 'JOURNEY');
 
-$fileSrc = $imageInfo->getFilename();
-$fileDst = 'yes.jpg';
+if ($iptc->write($fileSrc, $fileDst) === false)
+    throw new Exception('Error to write IPTC');
 
-$iptc->write($fileSrc, $fileDst);
-*/
+$imageInfo = Easy\Image::getInfos($fileDst);
+
+echo '<pre>', $imageInfo, '</pre>';
+
 
 /*
  * 
