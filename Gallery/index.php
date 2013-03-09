@@ -59,8 +59,17 @@ $iterator = new \Easy\ImageFilterIterator(new DirectoryIterator(THUMB_200));
 
 	<style>
             body {
-                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+                padding-top: 20px;
             }
+
+	    /* Custom container */
+	    .container {
+		margin: 0 auto;
+		max-width: 1000px;
+	    }
+	    .container > hr {
+		margin: 60px 0;
+	    }
 
             #myModal {
                 max-height: 800px;
@@ -381,11 +390,13 @@ $iterator = new \Easy\ImageFilterIterator(new DirectoryIterator(THUMB_200));
     <body>
 
         <div class="container">
-	    <div class="span11">
 
-	    <?php if (iterator_count($iterator) == 0) : ?>
-    	    <p><a href="?create_thumb=1" class="btn btn-primary btn-large">Generate Thumbs</a></p>
-	    <?php endif; ?>
+	    <div class="masthead">
+		<h3 class="muted">Gallery using EasyGD</h3>
+		<?php if (iterator_count($iterator) == 0) : ?>
+    		<p><a href="?create_thumb=1" class="btn btn-primary btn-large">Generate Thumbs</a></p>
+		<?php endif; ?>        
+	    </div>
 
 	    <ul class="thumbnails">
 
@@ -409,7 +420,6 @@ $iterator = new \Easy\ImageFilterIterator(new DirectoryIterator(THUMB_200));
 
 	    </ul>
 
-</div>
 	</div> <!-- /container -->
 
 	<script>
