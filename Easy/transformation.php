@@ -110,15 +110,18 @@ class Transformation {
      */
     public static function resizeAuto(Image $imSrc, Dimension $d) {
 
-	$newWidth = $d->getWidth();
-	$newHeight = $d->getHeight();
 	$ratioSrc = $imSrc->getRatio();
-	$ratioDest = $newWidth / $newHeight;
+	$ratioDest = $d->getWidth() / $d->getHeight();
+	$roundSrc = round($ratioSrc, 2);
+	$roundDest = round($ratioDest, 2);
 
-	if ($ratioSrc > $radioDest) {
-	    $d->setWidth(intval($newHeight * $ratioSrc));
-	} else {
-	    $d->setHeight(intval($newWidth / $ratioSrc));
+	// la largeur est recalculée en fonction de la nouvelle hauteur
+	if ($roundSrc > $roundDest) {
+	    $d->setWidth(round($d->getHeight() * $ratioSrc));
+	}
+	// la hauteur est recalculée en fonction de la nouvelle largeur
+	else if ($roundSrc < $roundDest) {
+	    $d->setHeight(round($d->getWidth() / $ratioSrc));
 	}
 
 	return self::resize($imSrc, $d);
