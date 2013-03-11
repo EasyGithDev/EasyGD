@@ -94,9 +94,57 @@ class Image {
 	$obj->img = $img;
 	$obj->imageType = $imagetype;
 	$obj->fileSrc = $fileSrc;
-	$obj->loadAlpha();
 
 	return $obj;
+    }
+
+    public function createCopy(Dimension $d = NULL) {
+
+	$d = (is_null($d)) ? $this->getDimension() : $d;
+
+	// Création du conteneur de destination
+	if (($imDest = Image::create($d)) === FALSE)
+	    return FALSE;
+
+	$imDest->setImagetype($this->getImagetype());
+
+
+	if (($this->getImagetype() == IMAGETYPE_GIF) || ($this->getImagetype() == IMAGETYPE_PNG)) {
+	    $trnprt_indx = imagecolortransparent($this->getImg());
+
+	    // If we have a specific transparent color
+	    if ($trnprt_indx >= 0) {
+
+		// Get the original image's transparent color's RGB values
+		$trnprt_color = imagecolorsforindex($this->getImg(), $trnprt_indx);
+
+		// Allocate the same color in the new image resource
+		$trnprt_indx = imagecolorallocate($imDest->getImg(), $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
+
+		// Completely fill the background of the new image with allocated color.
+		imagefill($imDest->getImg(), 0, 0, $trnprt_indx);
+
+		// Set the background color for new image to transparent
+		imagecolortransparent($imDest->getImg(), $trnprt_indx);
+	    }
+	    // Always make a transparent background color for PNGs that don't have one allocated already
+	    elseif ($this->getImagetype() == IMAGETYPE_PNG) {
+
+		// Turn off transparency blending (temporarily)
+		imagealphablending($imDest->getImg(), false);
+
+		// Create a new transparent color for image
+		$color = imagecolorallocatealpha($imDest->getImg(), 0, 0, 0, 127);
+
+		// Completely fill the background of the new image with allocated color.
+		imagefill($imDest->getImg(), 0, 0, $color);
+
+		// Restore transparency blending
+		imagesavealpha($imDest->getImg(), true);
+	    }
+	}
+
+	return $imDest;
     }
 
     public static function getDataSource($fileSrc) {
@@ -172,39 +220,6 @@ class Image {
 
 	call_user_func_array($function, $param_array);
 
-	return $this;
-    }
-
-    /**
-     * Experimentale
-     */
-    public function loadAlpha() {
-
-
-	if ($this->imageType == IMAGETYPE_GIF) {
-	    if (($transparent_index = ImageColorTransparent($this->img)) != (-1)) {
-		$transparent_color = ImageColorsForIndex($this->img, $transparent_index);
-		$this->setTransparentColor(Color::createFromArray($transparent_color)->setHexa('alpha'));
-	    }
-	} elseif ($this->imageType == IMAGETYPE_PNG) {
-
-	    ImageAlphaBlending($this->img, TRUE);
-	    ImageSaveAlpha($this->img, TRUE);
-	}
-
-	return $this;
-    }
-
-    /**
-     * Experimentale
-     */
-    public function saveAlpha() {
-	if ($this->imageType == IMAGETYPE_GIF) {
-//$this->fill($this->getColor('alpha'));
-	} elseif ($this->imageType == IMAGETYPE_PNG) {
-	    ImageAlphaBlending($this->img, FALSE);
-	    ImageSaveAlpha($this->img, TRUE);
-	}
 	return $this;
     }
 
