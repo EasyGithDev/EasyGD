@@ -42,16 +42,7 @@ class Transformation {
 
     private static function resize(Image $imSrc, Dimension $d) {
 
-
-	// Création du conteneur de destination
-	if (($imDest = Image::create($d)) === FALSE)
-	    return FALSE;
-
-	$imDest->setImagetype($imSrc->getImagetype());
-	if (($color = $imSrc->getColor('alpha')) !== FALSE) {
-	    $imDest->setTransparentColor($color);
-	}
-	$imDest->saveAlpha();
+	$imDest = $imSrc->createCopy($d);
 
 	imagecopyresampled($imDest->getImg(), $imSrc->getImg(), 0, 0, 0, 0, $d->getWidth(), $d->getHeight(), $imSrc->getWidth(), $imSrc->getHeight());
 
@@ -219,10 +210,10 @@ class Transformation {
     public static function inlay(Image $origine, Image $logo, Position $position = NULL, $pct = 100) {
 
 	$position = (is_null($position)) ? Position::create() : $position;
+	$pct = ($pct < 1 OR $pct > 100) ? 100 : intval($pct);
 
-	// Bug with imagecopymerge
-	//imagecopymerge($origine->getImg(), $logo->getImg(), $dst_x, $dst_y, 0, 0, $logo->getWidth(), $logo->getHeight(), $pct);
-	imagecopy($origine->getImg(), $logo->getImg(), $position->getX(), $position->getY(), 0, 0, $logo->getWidth(), $logo->getHeight());
+	imagecopymerge($origine->getImg(), $logo->getImg(), $position->getX(), $position->getY(), 0, 0, $logo->getWidth(), $logo->getHeight(), $pct);
+
 	return $origine;
     }
 
