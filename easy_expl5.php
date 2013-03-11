@@ -20,7 +20,7 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
  * How to resize an image
  * 
  */
-//Easy\Transformation::resizeByPercent($image, 0.5)->saveAlpha()->show();
+//Easy\Transformation::resizeByPercent($image, 0.5)->show();
 
 /*
  * 
