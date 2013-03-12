@@ -4,7 +4,7 @@ require 'autoload.php';
 
 $filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
 //$filename = 'http://www.php.net/images/logos/php-med-trans.png';
-//$filename = 'http://intechgriti.in/wp-content/uploads/2012/06/php-frameworks.gif';
+
 
 /*
  * 
@@ -81,9 +81,11 @@ if (($image = Easy\Image::createFrom($filename)) === FALSE)
  * How to add merge two images
  * 
  */
-$logo = Easy\Image::createFrom('http://www.php.net/images/logos/php-med-trans.png');
+$logo = Easy\Image::createFrom('http://static.php.net/www.php.net/images/logos/php-med-trans.png');
+$logo = Easy\Image::createFrom('http://www.php.net/images/logos/php-med-trans-light.gif');
 $logo = Easy\Transformation::resizeByPercent($logo, 0.6);
-Easy\Transformation::inlay($image, $logo, Easy\Position::create(30, 20), 50)->show();
+
+Easy\Transformation::inlay($image, $logo, Easy\Position::create(30, 20), 100)->show();
 
 /*
   // Chargement d'un image pour le fond
