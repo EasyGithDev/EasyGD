@@ -178,6 +178,8 @@ class Image {
 		    $param_array[] = ($quality < 0 OR $quality > 100) ? 75 : $quality;
 		    break;
 		case IMAGETYPE_PNG:
+		    // Restore transparency blending
+		imagesavealpha($this->getImg(), true);
 		    $param_array[] = ($quality < 0 OR $quality > 9) ? 9 : $quality;
 		    break;
 	    }
