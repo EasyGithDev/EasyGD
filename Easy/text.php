@@ -38,7 +38,8 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Text {
+class Text
+{
 
     const TEXT_DRAW_HORIZONTAL = 1;
     const TEXT_DRAW_VERTICAL = 2;
@@ -57,92 +58,101 @@ class Text {
     protected $fonttype;
     protected $fontfile;
 
-    public function __construct($text, $size = 1, Position $position = NULL, Color $color = NULL) {
-	if (!is_int($size))
-	    throw new Exception('Size must be integer');
-	$this->text = $text;
-	$this->size = $size;
-	$this->position = ($position == NULL) ? Position::create() : $position;
-	$this->color = ($color == NULL) ? Color::Black() : $color;
-	$this->drawtype = self::TEXT_DRAW_HORIZONTAL;
-	$this->fonttype = self::TEXT_FONT_DEFAULT;
+    public function __construct(string $text, int $size = 1, Position $position = NULL, Color $color = NULL)
+    {
+        $this->text = $text;
+        $this->size = $size;
+        $this->position = ($position == NULL) ? Position::create() : $position;
+        $this->color = ($color == NULL) ? Color::Black() : $color;
+        $this->drawtype = self::TEXT_DRAW_HORIZONTAL;
+        $this->fonttype = self::TEXT_FONT_DEFAULT;
     }
 
-    public static function create($text) {
-	return new self($text);
+    public static function create(string $text)
+    {
+        return new self($text);
     }
 
-    public static function getFontList($fontDir) {
-	$list = array();
-	foreach (new \DirectoryIterator($fontDir) as $file) {
-	    if (preg_match('/\.ttf$/', $file->getFilename())) {
-		$list[] = $file->getFilename();
-	    }
-	}
-	return $list;
+    public static function getFontList(string $fontDir)
+    {
+        $list = array();
+        foreach (new \DirectoryIterator($fontDir) as $file) {
+            if (preg_match('/\.ttf$/', $file->getFilename())) {
+                $list[] = $file->getFilename();
+            }
+        }
+        return $list;
     }
 
-    public function getText() {
-	return $this->text;
+    public function getText()
+    {
+        return $this->text;
     }
 
-    public function setText($text) {
-	$this->text = $text;
-	return $this;
+    public function setText(string $text)
+    {
+        $this->text = $text;
+        return $this;
     }
 
-    public function getColor() {
-	return $this->color;
+    public function getColor()
+    {
+        return $this->color;
     }
 
-    public function setColor(Color $color) {
-	$this->color = $color;
-	return $this;
+    public function setColor(Color $color)
+    {
+        $this->color = $color;
+        return $this;
     }
 
-    public function getPosition() {
-	return $this->position;
+    public function getPosition()
+    {
+        return $this->position;
     }
 
-    public function setPosition(Position $position) {
-	$this->position = $position;
-	return $this;
+    public function setPosition(Position $position)
+    {
+        $this->position = $position;
+        return $this;
     }
 
-    public function getSize() {
-	return $this->size;
+    public function getSize()
+    {
+        return $this->size;
     }
 
-    public function setSize($size) {
-	if (!is_int($size))
-	    throw new Exception('Size must be integer');
-	$this->size = $size;
-	return $this;
+    public function setSize(int $size)
+    {
+        $this->size = $size;
+        return $this;
     }
 
-    public function getDrawtype() {
-	return $this->drawtype;
+    public function getDrawtype()
+    {
+        return $this->drawtype;
     }
 
-    public function setDrawtype($drawtype) {
-	$this->drawtype = $drawtype;
-	return $this;
+    public function setDrawtype($drawtype)
+    {
+        $this->drawtype = $drawtype;
+        return $this;
     }
 
-    public function getFonttype() {
-	return $this->fonttype;
+    public function getFonttype()
+    {
+        return $this->fonttype;
     }
 
-    public function getFontfile() {
-	return $this->fontfile;
+    public function getFontfile()
+    {
+        return $this->fontfile;
     }
 
-    public function setFontfile($fontfile) {
-	imageloadfont($fontfile);
-	$this->fontfile = $fontfile;
-	return $this;
+    public function setFontfile(string $fontfile)
+    {
+        imageloadfont($fontfile);
+        $this->fontfile = $fontfile;
+        return $this;
     }
-
 }
-
-?>

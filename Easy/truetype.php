@@ -38,48 +38,48 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class TrueType extends Text {
+class TrueType extends Text
+{
 
-    protected $angle;
+	protected $angle;
 
-    public function __construct($text, $fontfile) {
-	if (!file_exists($fontfile))
-	    throw new Exception('Unable to find the fontfile ' . $fontfile);
+	public function __construct(string $text, string $fontfile)
+	{
+		if (!file_exists($fontfile)) {
+			throw new Exception('Unable to find the fontfile ' . $fontfile);
+		}
 
-	parent::__construct($text, 8);
-	$this->fontfile = $fontfile;
-	$this->fonttype = self::TEXT_FONT_TRUETYPE;
-	$this->angle = 0;
-    }
-
-    public static function create($text, $fontfile) {
-	return new self($text, $fontfile);
-    }
-
-    public function setFontfile($fontfile) {
-	$this->fontfile = $fontfile;
-	return $this;
-    }
-
-    public function setDrawtype($drawtype) {
-	$this->drawtype = $drawtype;
-	if ($drawtype == Text::TEXT_DRAW_VERTICAL) {
-	    $this->angle = 90;
-	} else if ($drawtype == Text::TEXT_DRAW_HORIZONTAL) {
-	    $this->angle = 0;
+		parent::__construct($text, 8);
+		$this->fontfile = $fontfile;
+		$this->fonttype = self::TEXT_FONT_TRUETYPE;
+		$this->angle = 0;
 	}
-	return $this;
-    }
 
-    public function getAngle() {
-	return $this->angle;
-    }
+	public function setFontfile(string $fontfile)
+	{
+		$this->fontfile = $fontfile;
+		return $this;
+	}
 
-    public function setAngle($angle) {
-	$this->angle = $angle;
-	return $this;
-    }
+	public function setDrawtype($drawtype)
+	{
+		$this->drawtype = $drawtype;
+		if ($drawtype == Text::TEXT_DRAW_VERTICAL) {
+			$this->angle = 90;
+		} else if ($drawtype == Text::TEXT_DRAW_HORIZONTAL) {
+			$this->angle = 0;
+		}
+		return $this;
+	}
 
+	public function getAngle()
+	{
+		return $this->angle;
+	}
+
+	public function setAngle($angle)
+	{
+		$this->angle = $angle;
+		return $this;
+	}
 }
-
-?>

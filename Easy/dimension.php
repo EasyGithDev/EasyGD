@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EasyGd - a PHP framework for use GD easier
  *
@@ -28,6 +29,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Easy;
 
 /**
@@ -36,40 +38,33 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Dimension {
+class Dimension
+{
 
     protected $width;
     protected $height;
 
-    public function __construct($width, $height) {
-        if (!is_int($width) OR !is_int($height))
-            throw new Exception('Width and Height must be integer');
+    public function __construct(int $width, int $height)
+    {
         $this->width = $width;
         $this->height = $height;
     }
 
-    public static function create($width, $height) {
+    public static function create($width, $height)
+    {
         return new self($width, $height);
     }
 
-    public function getWidth() {
-        return $this->width;
+    public function __get($property)
+    {
+        return (property_exists($this, $property)) ? $this->{$property} : null;
     }
 
-    public function setWidth($width) {
-        $this->width = $width;
-        return $this;
+    public function __call($name, $arguments)
+    {
+        if (property_exists($this, $name)) {
+            $this->{$name} = $arguments[0];
+            return $this;
+        }
     }
-
-    public function getHeight() {
-        return $this->height;
-    }
-
-    public function setHeight($height) {
-        $this->height = $height;
-        return $this;
-    }
-
 }
-
-?>

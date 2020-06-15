@@ -78,7 +78,7 @@ class Image
 		return $obj;
 	}
 
-	public function load($stream)
+	public function load(string $stream)
 	{
 
 		if (parse_url($stream, PHP_URL_SCHEME) === false) {
@@ -121,7 +121,7 @@ class Image
 		$imDest->settype($this->gettype());
 
 
-		if (($this->gettype() == type_GIF) || ($this->gettype() == IMAGETYPE_PNG)) {
+		if (($this->gettype() == IMAGETYPE_GIF) || ($this->gettype() == IMAGETYPE_PNG)) {
 			$trnprt_indx = imagecolortransparent($this->getImg());
 
 			// If we have a specific transparent color
@@ -159,9 +159,8 @@ class Image
 		return $imDest;
 	}
 
-	public function getDataSource($stream)
+	public function getDataSource(string $stream)
 	{
-
 		if (parse_url($stream, PHP_URL_SCHEME) === false) {
 			if (!file_exists($stream)) {
 				return false;
@@ -179,7 +178,7 @@ class Image
 		return "data:$mime;base64," . base64_encode(file_get_contents($stream));
 	}
 
-	public function getInfos($stream)
+	public function getInfos(string $stream)
 	{
 		return ImageInfo::create($stream);
 	}
@@ -233,13 +232,9 @@ class Image
 		return $this;
 	}
 
-	public function save($fileDest, $quality = null, $manageExtension = true)
+	public function save(string $fileDest, int $quality = 100)
 	{
 
-		if ($manageExtension) {
-			$info = pathinfo($fileDest);
-			$fileDest = $info['dirname'] . '/' . $info['filename'] . image_type_to_extension($this->type);
-		}
 		$this->manage($function, $param_array, $quality);
 		$param_array[1] = $fileDest;
 
@@ -332,7 +327,16 @@ class Image
 		switch ($text->getFonttype()) {
 
 			case TEXT::TEXT_FONT_TRUETYPE:
-				@imagettftext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
+				@imagettftext(
+					$this->img,
+					$text->getSize(),
+					$text->getAngle(),
+					$text->getPosition()->getX(),
+					$text->getPosition()->getY(),
+					$this->colors["$color"],
+					$text->getFontfile(),
+					$text->getText()
+				);
 				break;
 			case Text::TEXT_FONT_FREETYPE:
 				@imagefttext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
@@ -369,7 +373,6 @@ class Image
 
 	public function __callStatic($name, $arguments)
 	{
-		return (new self);
 	}
 
 	public function __get($key)

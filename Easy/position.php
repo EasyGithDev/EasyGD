@@ -38,54 +38,50 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Position {
+class Position
+{
 
     protected $x;
     protected $y;
 
-    public function __construct($x = 0, $y = 0) {
-	if (!is_int($x) OR !is_int($y))
-	    throw new Exception('X and Y must be integer');
-	$this->x = $x;
-	$this->y = $y;
+    public function __construct(int $x = 0, int $y = 0)
+    {
+        $this->x = $x;
+        $this->y = $y;
     }
 
-    public static function create($x = 0, $y = 0) {
-	return new self($x, $y);
+    public static function create($x = 0, $y = 0)
+    {
+        return new self($x, $y);
     }
 
-    public function getX() {
-	return $this->x;
+    public function offsetX($x)
+    {
+        $this->x += $x;
+        return $this;
     }
 
-    public function setX($x) {
-	$this->x = $x;
-	return $this;
+    public function offsetY($y)
+    {
+        $this->y += $y;
+        return $this;
     }
 
-    public function getY() {
-	return $this->y;
+    public function __toString()
+    {
+        return '(' . $this->x . ',' . $this->y . ')';
     }
 
-    public function setY($y) {
-	$this->y = $y;
-	return $this;
+    public function __get($property)
+    {
+        return (property_exists($this, $property)) ? $this->{$property} : null;
     }
 
-    public function offsetX($x) {
-	$this->x += $x;
-	return $this;
+    public function __call($name, $arguments)
+    {
+        if (property_exists($this, $name)) {
+            $this->{$name} = $arguments[0];
+            return $this;
+        }
     }
-
-    public function offsetY($y) {
-	$this->y += $y;
-	return $this;
-    }
-
-    public function __toString() {
-	return '(' . $this->x . ',' . $this->y . ')';
-    }
-
 }
-
-?>

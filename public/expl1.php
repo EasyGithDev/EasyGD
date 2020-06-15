@@ -13,9 +13,6 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * 
  */
 
-
- Image::load($filename)->show();
-
 // (new Image())->load($filename)->show();
 
 /*
@@ -30,7 +27,9 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to test, load, and show an image
  * 
  */
-//if(($image = Easy\Image::createFrom($filename)) !== FALSE) $image->show();
+// if (($image = (new Image())->load($filename)) !== FALSE) {
+//     $image->show();
+// }
 
 
 
@@ -40,7 +39,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to turn off the http headers output
  * 
  */
-//Easy\Image::createfrom($filename)->show(FALSE);
+// (new Image())->load($filename)->show(FALSE);
 
 
 /*
@@ -48,7 +47,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to load and save an image
  * 
  */
-//Easy\Image::createfrom($filename)->save('zend');
+// (new Image())->load($filename)->save('php.png');
 
 
 /*
@@ -56,7 +55,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to load and convert an image
  * 
  */
-//Easy\Image::createfrom($filename)->setImagetype(IMAGETYPE_GIF)->save('zend');
+// (new Image())->load($filename)->setType(IMAGETYPE_GIF)->save('php.gif');
 
 
 /*
@@ -64,14 +63,14 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to manage the image quality
  * 
  */
-//Easy\Image::createfrom($filename)->setImagetype(IMAGETYPE_JPEG)->save('zend', 25);
+// (new Image())->load($filename)->setType(IMAGETYPE_JPEG)->save('php.jpg', 25);
 
 /*
  * 
  * How to load, save and show an image in the same time
  * 
  */
-//Easy\Image::createfrom($filename)->save('zend')->show();
+// (new Image())->load($filename)->save('php.png')->show();
 
 
 /*
@@ -79,4 +78,4 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to make multiple save
  * 
  */
-//Easy\Image::createfrom($filename)->save('zend')->setImagetype(IMAGETYPE_GIF)->save('zend')->setImagetype(IMAGETYPE_JPEG)->save('zend');
+// (new Image())->load($filename)->save('php.png')->setType(IMAGETYPE_GIF)->save('php.gif')->setType(IMAGETYPE_JPEG)->save('php.jpg');

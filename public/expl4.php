@@ -1,9 +1,11 @@
 <?php
-require 'autoload.php';
 
-$filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
+require '../autoload.php';
 
+use Easy\Image;
 
+$filename = 'https://www.php.net/images/logos/new-php-logo.png';
+ 
 /*
  * 
  * How to load an image for data src
@@ -11,9 +13,10 @@ $filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
  */
 ?>
 
-<img src="<?php echo Easy\Image::getDataSource($filename); ?>" />
+<img src="<?php echo (new Image())->getDataSource($filename) ?>" />
 
 <?php
+
 /*
  * It's VERY DANGEROUS to use this function in production. 
  * 
@@ -22,7 +25,7 @@ $filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
  * 
  */
 
-$image = Easy\Image::createfrom($filename)
+$image = (new Image())->load($filename)
 	->addText(
 	Easy\Text::create('Hello Zend')
 	->setColor(Easy\Color::Silver())
@@ -34,6 +37,8 @@ $image = Easy\Image::createfrom($filename)
 <img src="<?php echo $image->src(); ?>">
 
 <?php
+
+die;
 /*
  * 
  * how to get the information about an image
@@ -41,7 +46,7 @@ $image = Easy\Image::createfrom($filename)
 $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
 $fileDst = __DIR__ . '/iptc.jpg';
 
-$imageInfo = Easy\Image::getInfos($filename);
+$imageInfo = (new Image())->getInfos($filename);
 echo '<pre>', $imageInfo, '</pre>';
 
 /*
@@ -58,7 +63,7 @@ $iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
 if ($iptc->write($fileSrc, $fileDst) === false)
     throw new Exception('Error to write IPTC');
 
-$imageInfo = Easy\Image::getInfos($fileDst);
+$imageInfo = (new Image())->getInfos($fileDst);
 
 echo '<pre>', $imageInfo, '</pre>';
 

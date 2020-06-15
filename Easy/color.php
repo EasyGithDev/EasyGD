@@ -38,7 +38,8 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Color {
+class Color
+{
     const Aqua = '#00FFFF';
     const Black = '#000000';
     const Blue = '#0000FF';
@@ -60,7 +61,8 @@ class Color {
     private $rgb;
     private $alpha;
 
-    public function __construct($hexa, $alpha = 0) {
+    public function __construct(string $hexa, int $alpha = 0)
+    {
         if (!preg_match('/^#?([a-f0-9]{6})$/i', $hexa))
             throw new Exception('Hexa must be an hexadecimal value');
 
@@ -72,74 +74,85 @@ class Color {
         $this->rgb[0] = hexdec(substr($hexa, 0, 2));
         $this->rgb[1] = hexdec(substr($hexa, 2, 2));
         $this->rgb[2] = hexdec(substr($hexa, 4, 2));
-        $this->alpha = ($alpha < 0 OR $alpha > 127) ? 0 : $alpha;
+        $this->alpha = ($alpha < 0 or $alpha > 127) ? 0 : $alpha;
     }
 
-    public static function create($hexa) {
-        return new self($hexa);
+    public static function create(string $hexa, int $alpha = 0)
+    {
+        return new self($hexa, $alpha);
     }
 
-    public static function createFromArray($array) {
+    public static function createFromArray($array)
+    {
         $r = str_pad(dechex($array[0]), 2, '0', STR_PAD_LEFT);
         $g = str_pad(dechex($array[1]), 2, '0', STR_PAD_LEFT);
         $b = str_pad(dechex($array[2]), 2, '0', STR_PAD_LEFT);
         return new self("#$r$g$b");
     }
 
-    public function getAlpha() {
+    public function getAlpha()
+    {
         return $this->alpha;
     }
 
-    public function setAlpha($alpha) {
+    public function setAlpha($alpha)
+    {
         $this->alpha = $alpha;
         return $this;
     }
 
-    public function getHexa() {
+    public function getHexa()
+    {
         return $this->hexa;
     }
 
-    public function setHexa($hexa) {
+    public function setHexa($hexa)
+    {
         $this->hexa = $hexa;
         return $this;
     }
 
-    public function getRed() {
+    public function getRed()
+    {
         return $this->rgb[0];
     }
 
-    public function setRed($red) {
+    public function setRed($red)
+    {
         $this->rgb[0] = $red;
         return $this;
     }
 
-    public function getGreen() {
+    public function getGreen()
+    {
         return $this->rgb[1];
     }
 
-    public function setGreen($green) {
+    public function setGreen($green)
+    {
         $this->rgb[1] = $green;
         return $this;
     }
 
-    public function getBlue() {
+    public function getBlue()
+    {
         return $this->rgb[2];
     }
 
-    public function setBlue($blue) {
+    public function setBlue($blue)
+    {
         $this->rgb[2] = $blue;
         return $this;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->hexa;
     }
 
-    public static function __callStatic($name, $arguments) {
+    public static function __callStatic($name, $arguments)
+    {
         if (defined(__NAMESPACE__ . '\Color::' . $name))
             return new Color(constant(__NAMESPACE__ . '\Color::' . $name));
     }
-
 }
-
-?>
