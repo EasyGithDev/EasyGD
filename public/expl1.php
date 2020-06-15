@@ -1,24 +1,29 @@
 <?php
 
-require 'autoload.php';
+require '../autoload.php';
 
-$filename = 'http://static.zend.com/topics/ZF2-for-ZF-site-logo-01-B-350.png';
+use Easy\Color;
+use Easy\Image;
+
+$filename = 'https://www.php.net/images/logos/new-php-logo.png';
 
 /*
  * 
  * How to load and show an image
  * 
  */
-Easy\Image::createfrom($filename)->show();
 
+
+ Image::load($filename)->show();
+
+// (new Image())->load($filename)->show();
 
 /*
  * 
  * How to load, change the mime type and show an image
  * 
  */
-//Easy\Image::createfrom($filename)->setImagetype(IMAGETYPE_JPEG)->show();
-
+// (new Image())->load($filename)->setType(IMAGETYPE_PNG)->show();
 
 /*
  * 
@@ -26,6 +31,8 @@ Easy\Image::createfrom($filename)->show();
  * 
  */
 //if(($image = Easy\Image::createFrom($filename)) !== FALSE) $image->show();
+
+
 
 
 /*
@@ -73,5 +80,3 @@ Easy\Image::createfrom($filename)->show();
  * 
  */
 //Easy\Image::createfrom($filename)->save('zend')->setImagetype(IMAGETYPE_GIF)->save('zend')->setImagetype(IMAGETYPE_JPEG)->save('zend');
-
-?>
