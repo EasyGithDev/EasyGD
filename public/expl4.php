@@ -2,10 +2,14 @@
 
 require '../autoload.php';
 
+use Easy\Color;
 use Easy\Image;
+use Easy\Iptc;
+use Easy\Position;
+use Easy\Text;
 
 $filename = 'https://www.php.net/images/logos/new-php-logo.png';
- 
+
 /*
  * 
  * How to load an image for data src
@@ -27,18 +31,17 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 
 $image = (new Image())->load($filename)
 	->addText(
-	Easy\Text::create('Hello Zend')
-	->setColor(Easy\Color::Silver())
-	->setSize(4)
-	->setPosition(Easy\Position::create(60, 20))
-);
+		Text::create('Hello Zend')
+			->setColor(Color::Silver())
+			->setSize(4)
+			->setPosition((new Position)->create(60, 20))
+	);
 ?>
 
 <img src="<?php echo $image->src(); ?>">
 
 <?php
 
-die;
 /*
  * 
  * how to get the information about an image
@@ -55,13 +58,13 @@ echo '<pre>', $imageInfo, '</pre>';
  */
 
 $iptc = $imageInfo->getIpct();
-$iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
-	->addTag(Easy\Iptc::IPTC_COUNTRY, 'FRANCE')
-	->addTag(Easy\Iptc::IPTC_CREATED_DATE, '2012-03-01')
-	->addTag(Easy\Iptc::IPTC_CATEGORY, 'JOURNEY');
+$iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
+	->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
+	->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')
+	->addTag(Iptc::IPTC_CATEGORY, 'JOURNEY');
 
 if ($iptc->write($fileSrc, $fileDst) === false)
-    throw new Exception('Error to write IPTC');
+	throw new Exception('Error to write IPTC');
 
 $imageInfo = (new Image())->getInfos($fileDst);
 

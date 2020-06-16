@@ -46,6 +46,8 @@ class Image
 	protected $type;
 	protected $colors;
 
+	use Transformation;
+
 	public function __construct()
 	{
 
@@ -65,7 +67,7 @@ class Image
 	public function create(Dimension $dimension, Color $color = null)
 	{
 
-		if (($img = imagecreatetruecolor($dimension->getWidth(), $dimension->getHeight())) === false) {
+		if (($img = imagecreatetruecolor($dimension->width, $dimension->height)) === false) {
 			return false;
 		}
 
@@ -75,6 +77,7 @@ class Image
 		if (!is_null($color)) {
 			$obj->fill($color);
 		}
+
 		return $obj;
 	}
 
@@ -111,15 +114,14 @@ class Image
 
 	public function createCopy(Dimension $d = null)
 	{
-
 		$d = (is_null($d)) ? $this->getDimension() : $d;
 
 		// Création du conteneur de destination
-		if (($imDest = Image::create($d)) === false)
+		if (($imDest = (new Image)->create($d)) === false) {
 			return false;
+		}
 
 		$imDest->settype($this->gettype());
-
 
 		if (($this->gettype() == IMAGETYPE_GIF) || ($this->gettype() == IMAGETYPE_PNG)) {
 			$trnprt_indx = imagecolortransparent($this->getImg());
@@ -207,14 +209,13 @@ class Image
 	/**
 	 * Dont use this function in production
 	 * 
-	 * @param type $quality
 	 * @return the image string 
 	 */
-	public function src($quality = null)
+	public function src()
 	{
 		$tmp = 'easy' . image_type_to_extension($this->type);
-		$this->save($tmp, $quality);
-		$content = self::getDataSource($tmp);
+		$this->save($tmp);
+		$content = $this->getDataSource($tmp);
 		unlink($tmp);
 		return $content;
 	}
@@ -255,7 +256,7 @@ class Image
 
 	public function getDimension()
 	{
-		return Dimension::create(imagesx($this->img), imagesy($this->img));
+		return (new Dimension)->create(imagesx($this->img), imagesy($this->img));
 	}
 
 	public function getImg()
@@ -310,41 +311,48 @@ class Image
 			return $this;
 		}
 
-		$col = imagecolorallocatealpha($this->img, $color->getRed(), $color->getGreen(), $color->getBlue(), $color->getAlpha());
-		$this->colors["$color"] = $col;
+		$this->colors["$color"] = imagecolorallocatealpha($this->img, $color->getRed(), $color->getGreen(), $color->getBlue(), $color->getAlpha());
 		return $this;
 	}
 
 	public function addText(Text $text)
 	{
-
-		if ($text->getPosition()->getX() > $this->getWidth() or $text->getPosition()->getY() > $this->getHeight())
+		if ($text->getPosition()->x > $this->getWidth() or $text->getPosition()->y > $this->getHeight()) {
 			return false;
+		}
 
 		$color = $text->getColor();
 		$this->setColor($color);
 
 		switch ($text->getFonttype()) {
-
 			case TEXT::TEXT_FONT_TRUETYPE:
 				@imagettftext(
 					$this->img,
 					$text->getSize(),
 					$text->getAngle(),
-					$text->getPosition()->getX(),
-					$text->getPosition()->getY(),
+					$text->getPosition()->x,
+					$text->getPosition()->y,
 					$this->colors["$color"],
 					$text->getFontfile(),
 					$text->getText()
 				);
 				break;
 			case Text::TEXT_FONT_FREETYPE:
-				@imagefttext($this->img, $text->getSize(), $text->getAngle(), $text->getPosition()->getX(), $text->getPosition()->getY(), $this->colors["$color"], $text->getFontfile(), $text->getText());
+				@imagefttext(
+					$this->img,
+					$text->getSize(),
+					$text->getAngle(),
+					$text->getPosition()->x,
+					$text->getPosition()->y,
+					$this->colors["$color"],
+					$text->getFontfile(),
+					$text->getText()
+				);
 				break;
 			case Text::TEXT_FONT_DEFAULT:
 			default:
 				$function = ($text->getDrawtype() == TEXT::TEXT_DRAW_HORIZONTAL) ? 'imagestring' : 'imagestringup';
-				$function($this->img, $text->getSize(), $text->getPosition()->getX(), $text->getPosition()->getY(), $text->getText(), $this->colors["$color"]);
+				$function($this->img, $text->getSize(), $text->getPosition()->x, $text->getPosition()->y, $text->getText(), $this->colors["$color"]);
 				break;
 		}
 
@@ -357,8 +365,8 @@ class Image
 		$x = 0;
 		$y = 0;
 		if (!is_null($position)) {
-			$x = $position->getX();
-			$y = $position->getY();
+			$x = $position->x;
+			$y = $position->y;
 		}
 
 		imagefill($this->img, $x, $y, $this->colors["$color"]);
@@ -371,13 +379,13 @@ class Image
 		imageline($this->img, $p1->getX(), $p1->getY(), $p2->getX(), $p2->getY(), $this->colors["$color"]);
 	}
 
-	public function __callStatic($name, $arguments)
+	public static function __callStatic($name, $arguments)
 	{
+		return (new self);
 	}
 
 	public function __get($key)
 	{
-
 		switch ($key) {
 			case 'IMG_WIDTH':
 				return ($this->img) ? imagesx($this->img) : false;
@@ -392,31 +400,31 @@ class Image
 				return $this->stream;
 				break;
 			case 'TOP_LEFT':
-				return Position::create();
+				return (new Position)->create();
 				break;
 			case 'TOP_CENTER':
-				return Position::create(intval($this->getWidth() / 2), 0);
+				return (new Position)->create(intval($this->getWidth() / 2), 0);
 				break;
 			case 'TOP_RIGHT':
-				return Position::create($this->getWidth(), 0);
+				return (new Position)->create($this->getWidth(), 0);
 				break;
 			case 'MIDDLE_LEFT':
-				return Position::create(0, intval($this->getHeight() / 2));
+				return (new Position)->create(0, intval($this->getHeight() / 2));
 				break;
 			case 'MIDDLE_CENTER':
-				return Position::create(intval($this->getWidth() / 2), intval($this->getHeight() / 2));
+				return (new Position)->create(intval($this->getWidth() / 2), intval($this->getHeight() / 2));
 				break;
 			case 'MIDDLE_RIGHT':
-				return Position::create($this->getWidth(), intval($this->getHeight() / 2));
+				return (new Position)->create($this->getWidth(), intval($this->getHeight() / 2));
 				break;
 			case 'BOTTOM_LEFT':
-				return Position::create(0, $this->getHeight());
+				return (new Position)->create(0, $this->getHeight());
 				break;
 			case 'BOTTOM_CENTER':
-				return Position::create(intval($this->getWidth() / 2), $this->getHeight());
+				return (new Position)->create(intval($this->getWidth() / 2), $this->getHeight());
 				break;
 			case 'BOTTOM_RIGHT':
-				return Position::create($this->getWidth(), $this->getHeight());
+				return (new Position)->create($this->getWidth(), $this->getHeight());
 				break;
 		}
 

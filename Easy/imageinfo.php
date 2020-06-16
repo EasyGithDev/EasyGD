@@ -38,40 +38,45 @@ namespace Easy;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class ImageInfo {
+class ImageInfo
+{
 
-    protected $filename;
-    protected $width;
-    protected $height;
-    protected $type;
-    protected $img;
-    protected $mime;
-    protected $channels;
-    protected $bits;
-    protected $iptc;
+	protected $filename;
+	protected $width;
+	protected $height;
+	protected $type;
+	protected $img;
+	protected $mime;
+	protected $channels;
+	protected $bits;
+	protected $iptc;
 
-    public function __construct($filename) {
+	public function __construct($filename)
+	{
 
-	if (($infos = getimagesize($filename, $additional)) === FALSE)
-	    return FALSE;
+		if (($infos = getimagesize($filename, $additional)) === false) {
+			return false;
+		}
 
-	$this->filename = $filename;
-	$this->width = $infos[0];
-	$this->height = $infos[1];
-	$this->type = $infos[2];
-	$this->img = $infos[3];
-	$this->mime = $infos['mime'];
-	$this->channels = $infos['channels'];
-	$this->bits = $infos['bits'];
-	$this->iptc = (isset($additional["APP13"])) ? Iptc::create($additional["APP13"]) : Iptc::create();
-    }
+		$this->filename = $filename;
+		$this->width = $infos[0];
+		$this->height = $infos[1];
+		$this->type = $infos[2];
+		$this->img = $infos[3];
+		$this->mime = $infos['mime'];
+		$this->channels = $infos['channels'];
+		$this->bits = $infos['bits'];
+		$this->iptc = (isset($additional["APP13"])) ? Iptc::create($additional["APP13"]) : Iptc::create();
+	}
 
-    public static function create($filename) {
-	return new self($filename);
-    }
+	public static function create($filename)
+	{
+		return new self($filename);
+	}
 
-    public function __toString() {
-	return "
+	public function __toString()
+	{
+		return "
 	filename : $this->filename 
 	width : $this->width 
 	height : $this->height 
@@ -81,63 +86,71 @@ class ImageInfo {
 	channels : $this->channels 
 	bits : $this->bits 
 	$this->iptc ";
-    }
+	}
 
-    public function toArray() {
+	public function toArray()
+	{
 
-	$array = array();
+		$array = array();
 
-	$array['filename'] = $this->filename;
-	$array['width'] = $this->width;
-	$array['height'] = $this->height;
-	$array['type'] = $this->type;
-	$array['img'] = $this->img;
-	$array['mime'] = $this->mime;
-	$array['channels'] = $this->channels;
-	$array['bits'] = $this->bits;
+		$array['filename'] = $this->filename;
+		$array['width'] = $this->width;
+		$array['height'] = $this->height;
+		$array['type'] = $this->type;
+		$array['img'] = $this->img;
+		$array['mime'] = $this->mime;
+		$array['channels'] = $this->channels;
+		$array['bits'] = $this->bits;
 
-	if (!is_null($this->iptc))
-	    $array = array_merge($array, $this->iptc->toArray());
+		if (!is_null($this->iptc)) {
+			$array = array_merge($array, $this->iptc->toArray());
+		}
 
-	return $array;
-    }
+		return $array;
+	}
 
-    public function getFilename() {
-	return $this->filename;
-    }
+	public function getFilename()
+	{
+		return $this->filename;
+	}
 
-    public function getWidth() {
-	return $this->width;
-    }
+	public function getWidth()
+	{
+		return $this->width;
+	}
 
-    public function getHeight() {
-	return $this->height;
-    }
+	public function getHeight()
+	{
+		return $this->height;
+	}
 
-    public function getType() {
-	return $this->type;
-    }
+	public function getType()
+	{
+		return $this->type;
+	}
 
-    public function getImg() {
-	return $this->img;
-    }
+	public function getImg()
+	{
+		return $this->img;
+	}
 
-    public function getMime() {
-	return $this->mime;
-    }
+	public function getMime()
+	{
+		return $this->mime;
+	}
 
-    public function getChannels() {
-	return $this->channels;
-    }
+	public function getChannels()
+	{
+		return $this->channels;
+	}
 
-    public function getBits() {
-	return $this->bits;
-    }
+	public function getBits()
+	{
+		return $this->bits;
+	}
 
-    public function getIpct() {
-	return $this->iptc;
-    }
-
+	public function getIpct()
+	{
+		return $this->iptc;
+	}
 }
-
-?>

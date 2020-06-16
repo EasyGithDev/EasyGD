@@ -44,15 +44,15 @@ class Dimension
     protected $width;
     protected $height;
 
-    public function __construct(int $width, int $height)
+    public function __construct()
+    {
+    }
+
+    public function create($width, $height)
     {
         $this->width = $width;
         $this->height = $height;
-    }
-
-    public static function create($width, $height)
-    {
-        return new self($width, $height);
+        return $this;
     }
 
     public function __get($property)

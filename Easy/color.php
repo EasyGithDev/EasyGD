@@ -61,13 +61,22 @@ class Color
     private $rgb;
     private $alpha;
 
-    public function __construct(string $hexa, int $alpha = 0)
+    public function __construct()
     {
-        if (!preg_match('/^#?([a-f0-9]{6})$/i', $hexa))
-            throw new Exception('Hexa must be an hexadecimal value');
+        $this->hexa = '#000000';
+        $this->rgb = [0, 0, 0];
+        $this->alpha = 0;
+    }
 
-        if (!is_int($alpha))
+    public function create(string $hexa, int $alpha = 0)
+    {
+        if (!preg_match('/^#?([a-f0-9]{6})$/i', $hexa)) {
+            throw new Exception('Hexa must be an hexadecimal value');
+        }
+
+        if (!is_int($alpha)) {
             throw new Exception('Alpha must be integer [0-127]');
+        }
 
         $hexa = str_replace('#', '', $hexa);
         $this->hexa = $hexa;
@@ -75,19 +84,16 @@ class Color
         $this->rgb[1] = hexdec(substr($hexa, 2, 2));
         $this->rgb[2] = hexdec(substr($hexa, 4, 2));
         $this->alpha = ($alpha < 0 or $alpha > 127) ? 0 : $alpha;
+
+        return $this;
     }
 
-    public static function create(string $hexa, int $alpha = 0)
-    {
-        return new self($hexa, $alpha);
-    }
-
-    public static function createFromArray($array)
+    public function createFromArray($array)
     {
         $r = str_pad(dechex($array[0]), 2, '0', STR_PAD_LEFT);
         $g = str_pad(dechex($array[1]), 2, '0', STR_PAD_LEFT);
         $b = str_pad(dechex($array[2]), 2, '0', STR_PAD_LEFT);
-        return new self("#$r$g$b");
+        return (new self())->create("#$r$g$b");
     }
 
     public function getAlpha()
@@ -147,12 +153,13 @@ class Color
 
     public function __toString()
     {
-        return $this->hexa;
+        return (string) $this->hexa;
     }
 
     public static function __callStatic($name, $arguments)
     {
-        if (defined(__NAMESPACE__ . '\Color::' . $name))
-            return new Color(constant(__NAMESPACE__ . '\Color::' . $name));
+        if (defined(__NAMESPACE__ . '\Color::' . $name)) {
+            return (new Color())->create(constant(__NAMESPACE__ . '\Color::' . $name));
+        }
     }
 }

@@ -44,15 +44,15 @@ class Position
     protected $x;
     protected $y;
 
-    public function __construct(int $x = 0, int $y = 0)
+    public function __construct()
+    {
+    }
+
+    public function create($x = 0, $y = 0)
     {
         $this->x = $x;
         $this->y = $y;
-    }
-
-    public static function create($x = 0, $y = 0)
-    {
-        return new self($x, $y);
+        return $this;
     }
 
     public function offsetX($x)

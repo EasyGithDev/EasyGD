@@ -9,23 +9,18 @@ use Easy\Position;
 use Easy\Text;
 use Easy\TrueType;
 
-$position = Position::create(100, 125);
-echo $position;
-$position->x(20)->y(65);
-echo $position;
-
 /*
  * 
  * How to add a GD text into an image
  * 
  */
 
-// Image::create(Dimension::create(300, 300), Color::Blue())->addText(
-// 	Text::create('Hello World')
-// 		->setColor(Color::Silver())
-// 		->setSize(3)
-// 		->setPosition(Position::create(100, 125))
-// )->show();
+Image::create(Dimension::create(300, 300), Color::Blue())->addText(
+	Text::create('Hello World')
+		->setColor(Color::Silver())
+		->setSize(3)
+		->setPosition(Position::create(200, 125))
+)->show();
 
 /*
  * 
