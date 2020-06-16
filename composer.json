@@ -1,0 +1,24 @@
+{
+    "name": "easygithdev/easygd",
+    "description": "EasyGD - a PHP framework for use GD easier",
+    "keywords": [
+        "php",
+        "gd",
+        "image"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Florent Brusciano",
+            "email": "florent.brusciano@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Easygd\\": "src/"
+        }
+    }
+}
