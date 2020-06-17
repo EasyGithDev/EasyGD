@@ -166,8 +166,11 @@ class Text
         if (!file_exists($fontfile)) {
             throw new Exception('Unable to find the fontfile ' . $fontfile);
         }
+        
+        // if (!imageloadfont($fontfile)) {
+        //     throw new Exception('Unable to load the fontfile ' . $fontfile);
+        // }
 
-        imageloadfont($fontfile);
         $this->fontfile = $fontfile;
         return $this;
     }

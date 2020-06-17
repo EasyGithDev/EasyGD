@@ -29,7 +29,7 @@ EasyGD - a PHP framework for use GD easier
 
 # Include the image in the HTML
 
-You can use the data src property to render the image quickly in the HTML tag.
+You can use the data src property to render the image quickly in the HTML tag.<br />
 Use it only on small image, if you dont want that your html page becommes to big. 
 
 ```
@@ -131,7 +131,7 @@ Use it only on small image, if you dont want that your html page becommes to big
     $imageInfo = (new Image())->load($filename)->getInfos();
     echo '<pre>', $imageInfo, '</pre>';
 
-    ```
+
     filename : https://www.php.net/images/logos/new-php-logo.png 
 	width : 200 
 	height : 106 
@@ -140,7 +140,7 @@ Use it only on small image, if you dont want that your html page becommes to big
 	mime : image/png 
 	channels :  
 	bits : 8 
-    ```
+
 
 #### How to get / add the IPTC tag
     $fileDst = __DIR__ . '/iptc.jpg';
@@ -220,6 +220,40 @@ It will return an object Position ...
     $src8 = (new Image)->load('http://static.php.net/www.php.net/images/logos/php-med-trans.png')
         ->inlay($logo, (new Position)->create(30, 20), 100)
         ->show();
+
+## Make thumbnails
+
+Here you can find an example to, easyly, generate some thumbnails.
+
+```
+$text = (new Text)->create('Copyright (C) 2020 Your Name')
+	->setFontType(Text::TEXT_FONT_TRUETYPE)
+	->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+	->setSize(5)
+	->setColor(Color::White())
+	->setPosition((new Position())->create(40, 190));
+
+$path = __DIR__ . '/images/original/';
+
+foreach (new ImageFilterIterator(new DirectoryIterator($path)) as $file) {
+
+	if (($image = (new Image)->load($file->getPathname())) === false) {
+		continue;
+	}
+
+	$thumb1 = $image->thumbnail(100)->dataSrc();
+	$thumb2 = $image->thumbnail(200)->addText($text)->dataSrc();
+	$thumb3 = $image->thumbnail(400)->dataSrc();
+?>
+
+	<img src="<?php echo $thumb1 ?>" />
+	<img src="<?php echo $thumb2 ?>" />
+	<img src="<?php echo $thumb3 ?>" />
+	<br />
+<?php
+}
+?>
+```
 
 ----
 
