@@ -7,21 +7,23 @@ EasyGD - a PHP framework for use GD easier
 # The basic stuff 
 
 
-####How to load and show an image
+#### How to load and show an image
 
     (new Image())->load($filename)->show();
 	
-####How to load and save an image on disk
+#### How to load and save an image on disk
 
     (new Image())->load($filename)->save('php.png');
 
-####How to load, save and show an image in the same time
+#### How to load, save and show an image in the same time
 
     (new Image())->load($filename)->save('php.png')->show();
 
-####How to make multiple save
+#### How to make multiple save
 
-    (new Image())->load($filename)->save('php.png')->setType(IMAGETYPE_GIF)->save('php.gif')->setType(IMAGETYPE_JPEG)->save('php.jpg');
+    (new Image())->load($filename)->save('php.png')
+    ->setType(IMAGETYPE_GIF)->save('php.gif')
+    ->setType(IMAGETYPE_JPEG)->save('php.jpg');
 
 ----
 
@@ -30,14 +32,16 @@ EasyGD - a PHP framework for use GD easier
 You can use the data src property to render the image quickly in the HTML tag.
 Use it only on small image, if you dont want that your html page becommes to big. 
 
+```
 <img src="<?php echo (new Image())->load($filename)->dataSrc() ?>" />
+```
 
 # The other types
 
-#### define a dimension
+#### Define a dimension
     $dimension = (new Dimension)->create(300, 300);
 
-#### define a color
+#### Define a color
     // Create a color with hexadecimal code
     $color = (new Color())->create('#83d01e');
     // OR create a color from a preset
@@ -121,10 +125,22 @@ Use it only on small image, if you dont want that your html page becommes to big
 
 ----
 
+# Get the informations
+
 #### How to get the information about an image
-    $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
-    $imageInfo = Easy\Image::getInfos($filename);
-    echo '<pre>', print_r($imageInfo, 1), '</pre>';
+    $imageInfo = (new Image())->load($filename)->getInfos();
+    echo '<pre>', $imageInfo, '</pre>';
+
+    ```
+    filename : https://www.php.net/images/logos/new-php-logo.png 
+	width : 200 
+	height : 106 
+	type : 3 
+	img : width="200" height="106" 
+	mime : image/png 
+	channels :  
+	bits : 8 
+    ```
 
 #### How to get / add the IPTC tag
     $fileDst = __DIR__ . '/iptc.jpg';
@@ -139,15 +155,17 @@ Use it only on small image, if you dont want that your html page becommes to big
 
 #### How to have the preseted positions
 
-    echo $image->TOP_LEFT, '<br/>';
-    echo $image->TOP_CENTER, '<br/>';
-    echo $image->TOP_RIGHT, '<br/>';
-    echo $image->MIDDLE_LEFT, '<br/>';
-    echo $image->MIDDLE_CENTER, '<br/>';
-    echo $image->MIDDLE_RIGHT, '<br/>';
-    echo $image->BOTTOM_LEFT, '<br/>';
-    echo $image->BOTTOM_CENTER, '<br/>';
-    echo $image->BOTTOM_RIGHT, '<br/>';
+    $image = (new Image())->load($filename);
+
+    echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
+    echo 'TOP_CENTER:', $image->topCenter(), '<br/>';
+    echo 'TOP_RIGHT:', $image->topRight(), '<br/>';
+    echo 'MIDDLE_LEFT', $image->middleLeft(), '<br/>';
+    echo 'MIDDLE_CENTER', $image->middleCenter(), '<br/>';
+    echo 'MIDDLE_RIGHT', $image->middleRight(), '<br/>';
+    echo 'BOTTOM_LEFT', $image->bottomLeft(), '<br/>';
+    echo 'BOTTOM_CENTER', $image->bottomeCenter(), '<br/>';
+    echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 
 It will return an object Position ...
 
@@ -158,39 +176,50 @@ It will return an object Position ...
 ## Resizing the images
 
 #### How to resize an image
-    Easy\Transformation::resizeByPercent($image, 0.5)->show();
-
+    (new Image)->load($filename)
+    ->resizeByPercent(0.5)
+    ->show();
 
 #### How to resize an image by fixing the width or height
-    Easy\Transformation::resizeByWidth($image, 100)->show();
-    Easy\Transformation::resizeByHeight($image, 100)->show();
+    (new Image)->load($filename)
+    ->resizeByWidth(50)
+    ->show();
+
+    (new Image)->load($filename)
+    ->resizeByHeight(30)
+    ->show();
 
 #### How to safetly resize an image 
-    Easy\Transformation::resizeAuto($image, Easy\Dimension::create(600, 400))->show();
+    (new Image)->load($filename)
+    ->resizeAuto((new Dimension())->create(300, 200))
+    ->show();
 
 #### How to make a thumbnail
-    Easy\Transformation::thumbnail($image, 140)->show();
+    (new Image)->load($filename)
+    ->thumbnail(140, Color::Silver())
+    ->show();
 
 ## Croping and Rotation
 
 #### How to crop an image
-    Easy\Transformation::crop(
-        Easy\Image::createFrom($filename), 
-        Easy\Position::create(20, 13), 
-        Easy\Dimension::create(80, 40))
-        ->show();
+    (new Image)->load($filename)
+    ->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
+    ->show();
 
 #### How to make a rotation
-    Easy\Transformation::rotate($image, 90)->show();
+    (new Image)->load($filename)
+    ->rotate(90)
+    ->show();
 
 ## Merging two images
 
 #### How to insert a logo into an image
 
-    $logo = Easy\Image::createFrom('http://www.php.net/images/logos/php-med-trans.png');
-    $logo = Easy\Transformation::resizeByPercent($logo, 0.6);
-    Easy\Transformation::inlay($image, $logo, Easy\Position::create(30, 20), 50)->show();
-
+    $logo = (new Image)->load('http://www.php.net/images/logos/php-med-trans-light.gif')
+        ->resizeByPercent(0.6);
+    $src8 = (new Image)->load('http://static.php.net/www.php.net/images/logos/php-med-trans.png')
+        ->inlay($logo, (new Position)->create(30, 20), 100)
+        ->show();
 
 ----
 

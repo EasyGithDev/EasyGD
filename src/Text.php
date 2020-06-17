@@ -76,7 +76,7 @@ class Text
 
     public static function getFontList(string $fontDir)
     {
-        $list = array();
+        $list = [];
         foreach (new \DirectoryIterator($fontDir) as $file) {
             if (preg_match('/\.ttf$/', $file->getFilename())) {
                 $list[] = $file->getFilename();
