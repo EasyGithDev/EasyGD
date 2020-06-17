@@ -62,12 +62,12 @@ class Text
     {
     }
 
-    public function create(string $text, int $size = 1, Position $position = NULL, Color $color = NULL)
+    public function create(string $text, int $size = 1)
     {
         $this->text = $text;
         $this->size = $size;
-        $this->position = ($position == NULL) ? (new Position)->create() : $position;
-        $this->color = ($color == NULL) ? Color::Black() : $color;
+        $this->position = (new Position)->create();
+        $this->color = Color::Black();
         $this->drawtype = self::TEXT_DRAW_HORIZONTAL;
         $this->fonttype = self::TEXT_FONT_DEFAULT;
 
@@ -137,12 +137,23 @@ class Text
     public function setDrawtype($drawtype)
     {
         $this->drawtype = $drawtype;
+        if ($drawtype == Text::TEXT_DRAW_VERTICAL) {
+            $this->angle = 90;
+        } else if ($drawtype == Text::TEXT_DRAW_HORIZONTAL) {
+            $this->angle = 0;
+        }
         return $this;
     }
 
     public function getFonttype()
     {
         return $this->fonttype;
+    }
+
+    public function setFontType($fonttype)
+    {
+        $this->fonttype = $fonttype;
+        return $this;
     }
 
     public function getFontfile()
@@ -152,8 +163,23 @@ class Text
 
     public function setFontfile(string $fontfile)
     {
+        if (!file_exists($fontfile)) {
+            throw new Exception('Unable to find the fontfile ' . $fontfile);
+        }
+
         imageloadfont($fontfile);
         $this->fontfile = $fontfile;
+        return $this;
+    }
+
+    public function getAngle()
+    {
+        return $this->angle;
+    }
+
+    public function setAngle($angle)
+    {
+        $this->angle = $angle;
         return $this;
     }
 }

@@ -16,26 +16,81 @@ use Easygd\TrueType;
  * 
  */
 
-(new Image)->create((new Dimension)->create(300, 300), Color::Blue())->addText(
+$src1 = (new Image)->create((new Dimension)->create(300, 300), Color::Blue())->addText(
 	(new Text())->create('Hello World')
 		->setColor(Color::Silver())
 		->setSize(3)
 		->setPosition((new Position)->create(200, 125))
-)->show();
+)->dataSrc();
 
 /*
  * 
  * How to draw a string vertically into an image
  * 
  */
-// (new Image())->create((new Dimension())->create(200, 200))->addText(
-// 	(new Text())->create('gd library')
-// 		->setSize(5)
-// 		->setColor(Color::White())
-// 		->setdrawtype(Text::TEXT_DRAW_VERTICAL)
-// 		->setPosition((new Position())->create(40, 100))
-// )->show();
+$src2 = (new Image())->create((new Dimension())->create(200, 200))->addText(
+	(new Text())->create('gd library')
+		->setSize(5)
+		->setColor(Color::White())
+		->setDrawtype(Text::TEXT_DRAW_VERTICAL)
+		->setPosition((new Position())->create(40, 100))
+)->dataSrc();
 
+/*
+ * 
+ * How to apply an alpha color to a text into an image
+ * 
+ */
+$src3 = (new Image)->create((new Dimension())->create(300, 300), Color::White())
+	->addText(
+		(new Text())->create('Alpha Color')
+			->setColor(
+				(new Color())->create('#FF0000')->setAlpha(95)
+			)
+			->setSize(5)
+			->setPosition((new Position())->create(55, 35))
+	)
+	->dataSrc();
+
+/*
+ * 
+ * How to mix "GD text", "TrueType text", "FreeType text" into an image
+ * 
+ */
+$src4 = (new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
+	->addText(
+		(new Text())->create('True Type')
+			->setFontType(Text::TEXT_FONT_TRUETYPE)
+			->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+			->setColor(Color::Silver())
+			->setSize(16)
+			->setAngle(45)
+			->setPosition((new Position())->create(100, 100))
+	)
+	->addText(
+		(new Text())->create('Hello ' . PHP_EOL . 'Free Type')
+			->setFontType(Text::TEXT_FONT_FREETYPE)
+			->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+			->setColor(Color::Silver())
+			->setSize(16)
+			->setAngle(45)
+			->setPosition((new Position())->create(100, 175))
+	)
+	->addText(
+		(new Text())->create('hello world')
+			->setColor(Color::Maroon())
+			->setPosition((new Position())->create(98, 173))
+	)
+	->dataSrc();
+
+?>
+
+<img src="<?php echo $src1 ?>">
+<img src="<?php echo $src2 ?>">
+<img src="<?php echo $src3 ?>">
+<img src="<?php echo $src4 ?>">
+
+<?php
 
 /*
  * 
@@ -43,29 +98,9 @@ use Easygd\TrueType;
  * 
  */
 
-$list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
+// $list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
 // echo '<pre>', print_r($list, 1), '</pre>';
 
-/*
- * 
- * How to use "TrueType text" into an image
- * 
- */
-// (new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
-// 	->addText(
-// 		(new TrueType('Hello True World', Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf'))
-// 			->setColor(Color::Silver())
-// 			->setSize(16)
-// 			->setAngle(45)
-// 			->setPosition((new Position())->create(100, 175))
-
-// 	)
-// 	->addText(
-// 		(new Text('hello world'))
-// 			->setColor(Color::Maroon())
-// 			->setPosition((new Position())->create(98, 173))
-// 	)
-// 	->show();
 
 /*
  * 
@@ -80,22 +115,6 @@ $list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
 // 			->setSize(16)
 // 			->setAngle(45)
 // 			->setPosition((new Position())->create(100, 175))
-// 	)
-// 	->show();
-
-/*
- * 
- * How to apply an alpha color to a text into an image
- * 
- */
-// (new Image)->create((new Dimension())->create(300, 300), Color::White())
-// 	->addText(
-// 		(new Text())->create('Alpha Color')
-// 			->setColor(
-// 				(new Color())->create('#FF0000')->setAlpha(95)
-// 			)
-// 			->setSize(5)
-// 			->setPosition((new Position())->create(55, 35))
 // 	)
 // 	->show();
 

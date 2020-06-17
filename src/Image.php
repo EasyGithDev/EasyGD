@@ -306,20 +306,9 @@ class Image
 		$this->setColor($color);
 
 		switch ($text->getFonttype()) {
-			case TEXT::TEXT_FONT_TRUETYPE:
-				@imagettftext(
-					$this->img,
-					$text->getSize(),
-					$text->getAngle(),
-					$text->getPosition()->x,
-					$text->getPosition()->y,
-					$this->colors["$color"],
-					$text->getFontfile(),
-					$text->getText()
-				);
-				break;
+			case Text::TEXT_FONT_TRUETYPE:
 			case Text::TEXT_FONT_FREETYPE:
-				@imagefttext(
+				@imagettftext(
 					$this->img,
 					$text->getSize(),
 					$text->getAngle(),
@@ -332,7 +321,7 @@ class Image
 				break;
 			case Text::TEXT_FONT_DEFAULT:
 			default:
-				$function = ($text->getDrawtype() == TEXT::TEXT_DRAW_HORIZONTAL) ? 'imagestring' : 'imagestringup';
+				$function = ($text->getDrawtype() == Text::TEXT_DRAW_HORIZONTAL) ? 'imagestring' : 'imagestringup';
 				$function($this->img, $text->getSize(), $text->getPosition()->x, $text->getPosition()->y, $text->getText(), $this->colors["$color"]);
 				break;
 		}

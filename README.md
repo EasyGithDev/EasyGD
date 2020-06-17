@@ -9,133 +9,117 @@ EasyGD - a PHP framework for use GD easier
 
 ####How to load and show an image
 
-    Easy\Image::createfrom($filename)->show();
+    (new Image())->load($filename)->show();
 	
+####How to load and save an image on disk
 
-####How to load, change the mime type and show an image
-
-    Easy\Image::createfrom($filename)->setImagetype(IMAGETYPE_JPEG)->show();
-
-
-####How to test, load, and show an image
-
-    if(($image = Easy\Image::createFrom($filename)) !== FALSE) $image->show();
-
-
-####How to turn off the http headers output
-
-    Easy\Image::createfrom($filename)->show(FALSE);
-
-
-####How to load and save an image
-
-    Easy\Image::createfrom($filename)->save('zend');
-
-
-####How to load and convert an image
-
-    Easy\Image::createfrom($filename)->setImagetype(IMAGETYPE_GIF)->save('zend');
-
-
-####How to manage the image quality
-
-    Easy\Image::createfrom($filename)->setImagetype(IMAGETYPE_JPEG)->save('zend', 25);
-
+    (new Image())->load($filename)->save('php.png');
 
 ####How to load, save and show an image in the same time
 
-    Easy\Image::createfrom($filename)->save('zend')->show();
-
+    (new Image())->load($filename)->save('php.png')->show();
 
 ####How to make multiple save
 
-    Easy\Image::createfrom($filename)->save('zend')
-    ->setImagetype(IMAGETYPE_GIF)->save('zend')
-    ->setImagetype(IMAGETYPE_JPEG)->save('zend');
+    (new Image())->load($filename)->save('php.png')->setType(IMAGETYPE_GIF)->save('php.gif')->setType(IMAGETYPE_JPEG)->save('php.jpg');
 
 ----
 
-# Create your own images
+# Include the image in the HTML
+
+You can use the data src property to render the image quickly in the HTML tag.
+Use it only on small image, if you dont want that your html page becommes to big. 
+
+<img src="<?php echo (new Image())->load($filename)->dataSrc() ?>" />
+
+# The other types
 
 #### define a dimension
-    $dimension = Easy\Dimension::create(300, 300);
+    $dimension = (new Dimension)->create(300, 300);
 
-####How to create a truetype image
-    Easy\Image::create($dimension)->show();
+#### define a color
+    // Create a color with hexadecimal code
+    $color = (new Color())->create('#83d01e');
+    // OR create a color from a preset
+    $color = (new Color())->create(Color::Yellow);
+    // OR create a preseted color 
+    $color = Color::Yellow();
 
-####How to create a color with hexadecimal code
-    $color = Easy\Color::create('#83d01e');
+#### Define a position
+    $position = (new Position)->create(200, 125);
 
-####How to create a color from a preset
-    $color = Easy\Color::create(\Easy\Color::Yellow);
+#### Define a GD text
+    $text = (new Text())->create('Hello World');
 
-####How to create a preseted color 
-    $color = Easy\Color::Yellow();
+# Create your own images
 
-####How to fill an image with a color 
-    Easy\Image::create($dimension, Easy\Color::Gray())->show();
+#### How to create a truetype image
+    (new Image())->create($dimension, $color)->show();
 
 ----
 
 # Adding text in the images 
 
-#### How to create a GD text
-    $text = Easy\Text::create('Hello World');
-
-#### Define a position
-    $position = Easy\Position::create(100, 125);
-
 
 #### How to add a GD text into an image
-    $image = Easy\Image::create($dimension, Easy\Color::Blue())->addText(
-	$text->setColor(Easy\Color::Silver())
-		->setSize(3)
-		->setPosition($position)
-    );
-
+    (new Image)->create((new Dimension)->create(300, 300), Color::Blue())
+    ->addText(
+        (new Text())->create('Hello World')
+            ->setColor(Color::Silver())
+            ->setSize(3)
+            ->setPosition((new Position)->create(200, 125))
+    )->show();
 
 #### How to draw a string vertically into an image
-    $image = Easy\Image::create(Easy\Dimension::create(100, 100))->addText(
-	Easy\Text::create('gd library')
-		->setSize(3)
-		->setColor(Easy\Color::White())
-		->setdrawtype(Easy\Text::TEXT_DRAW_VERTICAL)
-		->setPosition(Easy\Position::create(40, 80))
-    );
-
-#### How to add a TrueType text into an image
-
-    $text = Easy\TrueType::create('Hello True World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
-	->setColor(Easy\Color::Silver())
-	->setSize(16)
-	->setAngle(45)
-	->setPosition($position);
-
-
-#### How to add a FreeType text into an image
-
-    $text = Easy\FreeType::create('Hello Free World', \Easy\Text::TEXT_MACOS_FONT_PATH . '/Arial Black.ttf')
-	->setColor(Easy\Color::Silver())
-	->setSize(16)
-	->setAngle(45)
-	->setPosition($position);
+    (new Image())->create((new Dimension())->create(200, 200))->addText(
+	(new Text())->create('gd library')
+		->setSize(5)
+		->setColor(Color::White())
+		->setDrawtype(Text::TEXT_DRAW_VERTICAL)
+		->setPosition((new Position())->create(40, 100))
+    )->show();
 
 #### How to apply an alpha color to a text into an image
-    $text =	Easy\Text::create('Alpha Color')
-	->setColor(
-		Easy\Color::create('#FF0000')
-		->setAlpha(90)
+    (new Image)->create((new Dimension())->create(300, 300), Color::White())
+	->addText(
+		(new Text())->create('Alpha Color')
+			->setColor(
+				(new Color())->create('#FF0000')->setAlpha(95)
+			)
+			->setSize(5)
+			->setPosition((new Position())->create(55, 35))
 	)
-	->setSize(5)
-	->setPosition($position);
+	->show();
+
+#### How to mix "GD text", "TrueType text", "FreeType text" into an image
+
+    (new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
+	->addText(
+		(new Text())->create('True Type')
+			->setFontType(Text::TEXT_FONT_TRUETYPE)
+			->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+			->setColor(Color::Silver())
+			->setSize(16)
+			->setAngle(45)
+			->setPosition((new Position())->create(100, 100))
+	)
+	->addText(
+		(new Text())->create('Hello ' . PHP_EOL . 'Free Type')
+			->setFontType(Text::TEXT_FONT_FREETYPE)
+			->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+			->setColor(Color::Silver())
+			->setSize(16)
+			->setAngle(45)
+			->setPosition((new Position())->create(100, 175))
+	)
+	->addText(
+		(new Text())->create('hello world')
+			->setColor(Color::Maroon())
+			->setPosition((new Position())->create(98, 173))
+	)
+	->show();
 
 ----
-
-# Using the help methods
-
-
-#### How to load an image for data src
-    <img src="<?php echo Easy\Image::getDataSource($filename); ?>" />
 
 #### How to get the information about an image
     $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
