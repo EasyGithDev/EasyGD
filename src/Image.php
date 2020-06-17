@@ -161,30 +161,6 @@ class Image
 		return $imDest;
 	}
 
-	public function getDataSource(string $stream)
-	{
-		if (parse_url($stream, PHP_URL_SCHEME) === false) {
-			if (!file_exists($stream)) {
-				return false;
-			}
-		}
-
-		if (($type = @exif_imagetype($stream)) === false) {
-			return false;
-		}
-
-		if (($mime = image_type_to_mime_type($type)) === false) {
-			return false;
-		}
-
-		return "data:$mime;base64," . base64_encode(file_get_contents($stream));
-	}
-
-	public function getInfos(string $stream)
-	{
-		return ImageInfo::create($stream);
-	}
-
 	protected function manage(&$function, &$param_array, int $quality)
 	{
 
@@ -204,20 +180,6 @@ class Image
 					break;
 			}
 		}
-	}
-
-	/**
-	 * Dont use this function in production
-	 * 
-	 * @return the image string 
-	 */
-	public function src()
-	{
-		$tmp = 'easy' . image_type_to_extension($this->type);
-		$this->save($tmp);
-		$content = $this->getDataSource($tmp);
-		unlink($tmp);
-		return $content;
 	}
 
 	public function show($header = true, $quality = 100)
@@ -242,6 +204,25 @@ class Image
 		call_user_func_array($function, $param_array);
 
 		return $this;
+	}
+
+	public function dataSrc()
+	{
+		if (($mime = image_type_to_mime_type($this->type)) === false) {
+			return false;
+		}
+
+		ob_start();
+		$this->show(false);
+		$content = ob_get_contents();
+		ob_end_clean();
+
+		return "data:$mime;base64," . base64_encode($content);
+	}
+
+	public function getInfos()
+	{
+		return (new ImageInfo)->create($this->stream);
 	}
 
 	public function getWidth()
@@ -379,52 +360,48 @@ class Image
 		imageline($this->img, $p1->getX(), $p1->getY(), $p2->getX(), $p2->getY(), $this->colors["$color"]);
 	}
 
-
-	public function __get($key)
+	public function __call($name, $arguments)
 	{
-
-		switch ($key) {
-			case 'IMG_WIDTH':
+		switch ($name) {
+			case 'width':
 				return ($this->img) ? imagesx($this->img) : false;
 				break;
-			case 'IMG_HEIGHT':
+			case 'height':
 				return ($this->img) ? imagesy($this->img) : false;
 				break;
-			case 'IMG_TYPE':
+			case 'type':
 				return $this->type;
 				break;
-			case 'IMG_SRC':
+			case 'src':
 				return $this->stream;
 				break;
-			case 'TOP_LEFT':
+			case 'topLeft':
 				return (new Position)->create();
 				break;
-			case 'TOP_CENTER':
+			case 'topCenter':
 				return (new Position)->create(intval($this->getWidth() / 2), 0);
 				break;
-			case 'TOP_RIGHT':
+			case 'topRight':
 				return (new Position)->create($this->getWidth(), 0);
 				break;
-			case 'MIDDLE_LEFT':
+			case 'middleLeft':
 				return (new Position)->create(0, intval($this->getHeight() / 2));
 				break;
-			case 'MIDDLE_CENTER':
+			case 'middleCenter':
 				return (new Position)->create(intval($this->getWidth() / 2), intval($this->getHeight() / 2));
 				break;
-			case 'MIDDLE_RIGHT':
+			case 'middleRight':
 				return (new Position)->create($this->getWidth(), intval($this->getHeight() / 2));
 				break;
-			case 'BOTTOM_LEFT':
+			case 'bottomLeft':
 				return (new Position)->create(0, $this->getHeight());
 				break;
-			case 'BOTTOM_CENTER':
+			case 'bottomCenter':
 				return (new Position)->create(intval($this->getWidth() / 2), $this->getHeight());
 				break;
-			case 'BOTTOM_RIGHT':
+			case 'bottomRight':
 				return (new Position)->create($this->getWidth(), $this->getHeight());
 				break;
 		}
-
-		return false;
 	}
 }

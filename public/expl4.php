@@ -17,7 +17,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  */
 ?>
 
-<img src="<?php echo (new Image())->getDataSource($filename) ?>" />
+<img src="<?php echo (new Image())->load($filename)->dataSrc() ?>" />
 
 <?php
 
@@ -28,15 +28,15 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 
 $image = (new Image())->load($filename);
 
-echo 'TOP_LEFT:', $image->TOP_LEFT, '<br/>';
-echo 'TOP_CENTER:', $image->TOP_CENTER, '<br/>';
-echo 'TOP_RIGHT:', $image->TOP_RIGHT, '<br/>';
-echo 'MIDDLE_LEFT', $image->MIDDLE_LEFT, '<br/>';
-echo 'MIDDLE_CENTER', $image->MIDDLE_CENTER, '<br/>';
-echo 'MIDDLE_RIGHT', $image->MIDDLE_RIGHT, '<br/>';
-echo 'BOTTOM_LEFT', $image->BOTTOM_LEFT, '<br/>';
-echo 'BOTTOM_CENTER', $image->BOTTOM_CENTER, '<br/>';
-echo 'BOTTOM_RIGHT', $image->BOTTOM_RIGHT, '<br/>';
+echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
+echo 'TOP_CENTER:', $image->topCenter(), '<br/>';
+echo 'TOP_RIGHT:', $image->topRight(), '<br/>';
+echo 'MIDDLE_LEFT', $image->middleLeft(), '<br/>';
+echo 'MIDDLE_CENTER', $image->middleCenter(), '<br/>';
+echo 'MIDDLE_RIGHT', $image->middleRight(), '<br/>';
+echo 'BOTTOM_LEFT', $image->bottomLeft(), '<br/>';
+echo 'BOTTOM_CENTER', $image->bottomeCenter(), '<br/>';
+echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 
 /*
  * It's VERY DANGEROUS to use this function in production. 
@@ -48,15 +48,15 @@ echo 'BOTTOM_RIGHT', $image->BOTTOM_RIGHT, '<br/>';
 
 $image = (new Image())->load($filename)
 	->addText(
-		(new Text())->create('Hello Zend')
+		(new Text())->create('GD & PHP')
 			->setColor(Color::Silver())
 			->setSize(4)
-			->setPosition((new Position)->create(60, 20))
+			->setPosition((new Position)->create(70, 85))
 	);
 
 ?>
 
-<img src="<?php echo $image->src(); ?>">
+<img src="<?php echo $image->dataSrc(); ?>">
 
 <?php
 
@@ -67,7 +67,7 @@ $image = (new Image())->load($filename)
 $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
 $fileDst = __DIR__ . '/iptc.jpg';
 
-$imageInfo = (new Image())->getInfos($filename);
+$imageInfo = (new Image())->load($filename)->getInfos();
 echo '<pre>', $imageInfo, '</pre>';
 
 /*
@@ -87,7 +87,5 @@ echo '<pre>', $imageInfo, '</pre>';
 // $imageInfo = (new Image())->getInfos($fileDst);
 
 // echo '<pre>', $imageInfo, '</pre>';
-
-
 
 ?>

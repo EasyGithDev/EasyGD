@@ -40,7 +40,6 @@ namespace Easygd;
  */
 class ImageInfo
 {
-
 	protected $filename;
 	protected $width;
 	protected $height;
@@ -51,7 +50,11 @@ class ImageInfo
 	protected $bits;
 	protected $iptc;
 
-	public function __construct($filename)
+	public function __construct()
+	{
+	}
+
+	public function create($filename)
 	{
 
 		if (($infos = getimagesize($filename, $additional)) === false) {
@@ -67,11 +70,8 @@ class ImageInfo
 		$this->channels = $infos['channels'];
 		$this->bits = $infos['bits'];
 		$this->iptc = (isset($additional["APP13"])) ? Iptc::create($additional["APP13"]) : Iptc::create();
-	}
 
-	public static function create($filename)
-	{
-		return new self($filename);
+		return $this;
 	}
 
 	public function __toString()
