@@ -11,7 +11,7 @@
  * @author florent
  */
 
-namespace Easy;
+namespace Easygd;
 
 /* * **********************************************************\
 

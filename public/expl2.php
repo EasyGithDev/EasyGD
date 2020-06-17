@@ -1,10 +1,10 @@
 <?php
 
-require '../autoload.php';
+require '../vendor/autoload.php';
 
-use Easy\Color;
-use Easy\Dimension;
-use Easy\Image;
+use Easygd\Color;
+use Easygd\Dimension;
+use Easygd\Image;
 
 /*
  * 

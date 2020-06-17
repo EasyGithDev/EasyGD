@@ -1,9 +1,9 @@
 <?php
 
-require '../autoload.php';
+require '../vendor/autoload.php';
 
-use Easy\Color;
-use Easy\Image;
+use Easygd\Color;
+use Easygd\Image;
 
 $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 

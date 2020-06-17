@@ -1,12 +1,12 @@
 <?php
 
-require '../autoload.php';
+require '../vendor/autoload.php';
 
-use Easy\Color;
-use Easy\Image;
-use Easy\Iptc;
-use Easy\Position;
-use Easy\Text;
+use Easygd\Color;
+use Easygd\Image;
+use Easygd\Iptc;
+use Easygd\Position;
+use Easygd\Text;
 
 $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 
@@ -22,6 +22,23 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 <?php
 
 /*
+ * 
+ * how to get the standard positions
+ */
+
+$image = (new Image())->load($filename);
+
+echo 'TOP_LEFT:', $image->TOP_LEFT, '<br/>';
+echo 'TOP_CENTER:', $image->TOP_CENTER, '<br/>';
+echo 'TOP_RIGHT:', $image->TOP_RIGHT, '<br/>';
+echo 'MIDDLE_LEFT', $image->MIDDLE_LEFT, '<br/>';
+echo 'MIDDLE_CENTER', $image->MIDDLE_CENTER, '<br/>';
+echo 'MIDDLE_RIGHT', $image->MIDDLE_RIGHT, '<br/>';
+echo 'BOTTOM_LEFT', $image->BOTTOM_LEFT, '<br/>';
+echo 'BOTTOM_CENTER', $image->BOTTOM_CENTER, '<br/>';
+echo 'BOTTOM_RIGHT', $image->BOTTOM_RIGHT, '<br/>';
+
+/*
  * It's VERY DANGEROUS to use this function in production. 
  * 
  * The src function use a temporary file to send the data.
@@ -31,11 +48,12 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 
 $image = (new Image())->load($filename)
 	->addText(
-		Text::create('Hello Zend')
+		(new Text())->create('Hello Zend')
 			->setColor(Color::Silver())
 			->setSize(4)
 			->setPosition((new Position)->create(60, 20))
 	);
+
 ?>
 
 <img src="<?php echo $image->src(); ?>">
@@ -57,32 +75,19 @@ echo '<pre>', $imageInfo, '</pre>';
  * how to get / add the ipct tag
  */
 
-$iptc = $imageInfo->getIpct();
-$iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
-	->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
-	->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')
-	->addTag(Iptc::IPTC_CATEGORY, 'JOURNEY');
+// $iptc = $imageInfo->getIpct();
+// $iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
+// 	->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
+// 	->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')
+// 	->addTag(Iptc::IPTC_CATEGORY, 'JOURNEY');
 
-if ($iptc->write($fileSrc, $fileDst) === false)
-	throw new Exception('Error to write IPTC');
+// if ($iptc->write($fileSrc, $fileDst) === false)
+// 	throw new Exception('Error to write IPTC');
 
-$imageInfo = (new Image())->getInfos($fileDst);
+// $imageInfo = (new Image())->getInfos($fileDst);
 
-echo '<pre>', $imageInfo, '</pre>';
+// echo '<pre>', $imageInfo, '</pre>';
 
 
-/*
- * 
- * how to get the standard positions
- */
 
-echo $image->TOP_LEFT, '<br/>';
-echo $image->TOP_CENTER, '<br/>';
-echo $image->TOP_RIGHT, '<br/>';
-echo $image->MIDDLE_LEFT, '<br/>';
-echo $image->MIDDLE_CENTER, '<br/>';
-echo $image->MIDDLE_RIGHT, '<br/>';
-echo $image->BOTTOM_LEFT, '<br/>';
-echo $image->BOTTOM_CENTER, '<br/>';
-echo $image->BOTTOM_RIGHT, '<br/>';
 ?>

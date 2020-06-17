@@ -1,11 +1,12 @@
 <?php
 
-use Easy\Color;
-use Easy\Dimension;
-use Easy\Image;
-use Easy\Position;
+require '../vendor/autoload.php';
 
-require '../autoload.php';
+use Easygd\Color;
+use Easygd\Dimension;
+use Easygd\Image;
+use Easygd\Position;
+
 
 $filename = 'http://www.php.net/images/logos/php-med-trans.png';
 

@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Easy;
+namespace Easygd;
 
 /**
  * Easy
@@ -58,19 +58,20 @@ class Text
     protected $fonttype;
     protected $fontfile;
 
-    public function __construct(string $text, int $size = 1, Position $position = NULL, Color $color = NULL)
+    public function __construct()
+    {
+    }
+
+    public function create(string $text, int $size = 1, Position $position = NULL, Color $color = NULL)
     {
         $this->text = $text;
         $this->size = $size;
-        $this->position = ($position == NULL) ? Position::create() : $position;
+        $this->position = ($position == NULL) ? (new Position)->create() : $position;
         $this->color = ($color == NULL) ? Color::Black() : $color;
         $this->drawtype = self::TEXT_DRAW_HORIZONTAL;
         $this->fonttype = self::TEXT_FONT_DEFAULT;
-    }
 
-    public static function create(string $text)
-    {
-        return new self($text);
+        return $this;
     }
 
     public static function getFontList(string $fontDir)

@@ -1,13 +1,14 @@
 <?php
-require '../autoload.php';
 
-use Easy\Color;
-use Easy\Dimension;
-use Easy\FreeType;
-use Easy\Image;
-use Easy\Position;
-use Easy\Text;
-use Easy\TrueType;
+require '../vendor/autoload.php';
+
+use Easygd\Color;
+use Easygd\Dimension;
+use Easygd\FreeType;
+use Easygd\Image;
+use Easygd\Position;
+use Easygd\Text;
+use Easygd\TrueType;
 
 /*
  * 
@@ -15,11 +16,11 @@ use Easy\TrueType;
  * 
  */
 
-Image::create(Dimension::create(300, 300), Color::Blue())->addText(
-	Text::create('Hello World')
+(new Image)->create((new Dimension)->create(300, 300), Color::Blue())->addText(
+	(new Text())->create('Hello World')
 		->setColor(Color::Silver())
 		->setSize(3)
-		->setPosition(Position::create(200, 125))
+		->setPosition((new Position)->create(200, 125))
 )->show();
 
 /*
@@ -27,12 +28,12 @@ Image::create(Dimension::create(300, 300), Color::Blue())->addText(
  * How to draw a string vertically into an image
  * 
  */
-// Image::create(Dimension::create(200, 200))->addText(
-// 	Text::create('gd library')
+// (new Image())->create((new Dimension())->create(200, 200))->addText(
+// 	(new Text())->create('gd library')
 // 		->setSize(5)
 // 		->setColor(Color::White())
 // 		->setdrawtype(Text::TEXT_DRAW_VERTICAL)
-// 		->setPosition(Position::create(40, 100))
+// 		->setPosition((new Position())->create(40, 100))
 // )->show();
 
 
@@ -50,19 +51,19 @@ $list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
  * How to use "TrueType text" into an image
  * 
  */
-// (new Image())->create(Dimension::create(300, 300), Color::create('#f2f2f2'))
+// (new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
 // 	->addText(
 // 		(new TrueType('Hello True World', Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf'))
 // 			->setColor(Color::Silver())
 // 			->setSize(16)
 // 			->setAngle(45)
-// 			->setPosition(Position::create(100, 175))
+// 			->setPosition((new Position())->create(100, 175))
 
 // 	)
 // 	->addText(
 // 		(new Text('hello world'))
 // 			->setColor(Color::Maroon())
-// 			->setPosition(Position::create(98, 173))
+// 			->setPosition((new Position())->create(98, 173))
 // 	)
 // 	->show();
 
@@ -72,13 +73,13 @@ $list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
  * 
  */
 
-// Image::create(Dimension::create(300, 300), Color::create('#f2f2f2'))
+// (new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
 // 	->addText(
 // 		FreeType::create('Hello ' . PHP_EOL . 'Free World', Text::TEXT_MACOS_FONT_PATH . '/Tahoma.ttf')
 // 			->setColor(Color::Silver())
 // 			->setSize(16)
 // 			->setAngle(45)
-// 			->setPosition(Position::create(100, 175))
+// 			->setPosition((new Position())->create(100, 175))
 // 	)
 // 	->show();
 
@@ -87,16 +88,16 @@ $list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
  * How to apply an alpha color to a text into an image
  * 
  */
-(new Image)->create(Dimension::create(300, 300), Color::White())
-	->addText(
-		Text::create('Alpha Color')
-			->setColor(
-				Color::create('#FF0000')->setAlpha(95)
-			)
-			->setSize(5)
-			->setPosition(Position::create(55, 35))
-	)
-	->show();
+// (new Image)->create((new Dimension())->create(300, 300), Color::White())
+// 	->addText(
+// 		(new Text())->create('Alpha Color')
+// 			->setColor(
+// 				(new Color())->create('#FF0000')->setAlpha(95)
+// 			)
+// 			->setSize(5)
+// 			->setPosition((new Position())->create(55, 35))
+// 	)
+// 	->show();
 
 
 /*
@@ -105,9 +106,9 @@ $list = Text::getFontList(Text::TEXT_UNIX_FONT_PATH);
  * 
  */
 
-// $position = Position::create(5, 5);
+// $position = (new Position())->create(5, 5);
 // $text = TrueType::create('', Text::TEXT_MACOS_FONT_PATH . '/' . $list[0]);
-// $image = Image::create(Dimension::create(1024, 768), Color::White());
+// $image = (new Image())->create((new Dimension())->create(1024, 768), Color::White());
 
 // $i = 1;
 // foreach ($list as $v) {

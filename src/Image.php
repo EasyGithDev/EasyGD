@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Easy;
+namespace Easygd;
 
 /**
  * Easy
@@ -379,13 +379,10 @@ class Image
 		imageline($this->img, $p1->getX(), $p1->getY(), $p2->getX(), $p2->getY(), $this->colors["$color"]);
 	}
 
-	public static function __callStatic($name, $arguments)
-	{
-		return (new self);
-	}
 
 	public function __get($key)
 	{
+
 		switch ($key) {
 			case 'IMG_WIDTH':
 				return ($this->img) ? imagesx($this->img) : false;
