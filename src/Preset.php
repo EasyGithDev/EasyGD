@@ -38,177 +38,163 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Preset extends Filter {
+class Preset extends Filter
+{
 
-    protected $presetName;
-    protected $paramArr;
+	protected $presetName = null;
+	protected $paramArr = [];
 
-    public function __construct() {
-	$this->paramArr = array();
-	$this->presetName = NULL;
-    }
-
-    public static function create() {
-
-	$numargs = func_num_args();
-
-	if ($numargs == 0) {
-	    return new self();
-	} else if ($numargs == 1) {
-	    $presetFunction = func_get_arg(0);
-	    return self::$presetFunction();
-	} else if ($numargs > 1) {
-	    $arg_list = func_get_args();
-	    $presetFunction = array_shift($arg_list);
-	    return call_user_func_array(array(__CLASS__, $presetFunction), $arg_list);
+	public function __construct()
+	{
 	}
-    }
 
-    public function getPresetName() {
-	return $this->presetName;
-    }
+	public function create()
+	{
+		// $numargs = func_num_args();
+		// die($numargs);
+		// if ($numargs == 0) {
+		// 	return new self();
+		// } else if ($numargs == 1) {
+		// 	$presetFunction = func_get_arg(0);
+		// 	return self::$presetFunction();
+		// } else if ($numargs > 1) {
+		// 	$arg_list = func_get_args();
+		// 	$presetFunction = array_shift($arg_list);
+		// 	return call_user_func_array(array(__CLASS__, $presetFunction), $arg_list);
+		// }
+	}
 
-    public function setPresetName($presetName) {
-	$this->presetName = $presetName;
-    }
+	public function getPresetName()
+	{
+		return $this->presetName;
+	}
 
-    public function getParamArr() {
-	return $this->paramArr;
-    }
+	public function setPresetName(string $presetName)
+	{
+		$this->presetName = $presetName;
+		return $this;
+	}
 
-    public function setParamArr($paramArr) {
-	$this->paramArr = $paramArr;
-	return $this;
-    }
+	public function getParamArr()
+	{
+		return $this->paramArr;
+	}
 
-    public function process(Image $imgSrc) {
+	public function setParamArr(array $paramArr)
+	{
+		$this->paramArr = $paramArr;
+		return $this;
+	}
 
-	if (is_null($this->presetName))
-	    throw new Exception('Filter name dont be NULL');
+	public function process(Image $imgSrc)
+	{
 
-	$paramArr[] = $imgSrc->getImg();
-	$paramArr[] = $this->presetName;
+		if (is_null($this->presetName)) {
+			throw new Exception('Filter name dont be null');
+		}
 
-	$paramArr = array_merge($paramArr, $this->paramArr);
+		$paramArr = array_merge([$imgSrc->getImg(), $this->presetName], $this->paramArr);
 
-	call_user_func_array('imagefilter', $paramArr);
+		call_user_func_array('imagefilter', $paramArr);
 
-	return $imgSrc;
-    }
+		return $imgSrc;
+	}
 
-    public static function PRESET_NEGATE() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_NEGATE;
-	return $filter;
-    }
+	public static function PRESET_NEGATE()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_NEGATE);
+	}
 
-    public static function PRESET_GRAYSCALE() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_GRAYSCALE;
-	return $filter;
-    }
+	public static function PRESET_GRAYSCALE()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_GRAYSCALE);
+	}
 
-    public static function PRESET_EDGEDETECT() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_EDGEDETECT;
-	return $filter;
-    }
+	public static function PRESET_EDGEDETECT()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_EDGEDETECT);
+	}
 
-    public static function PRESET_EMBOSS() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_EMBOSS;
-	return $filter;
-    }
+	public static function PRESET_EMBOSS()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_EMBOSS);
+	}
 
-    public static function PRESET_GAUSSIAN_BLUR() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_GAUSSIAN_BLUR;
-	return $filter;
-    }
+	public static function PRESET_GAUSSIAN_BLUR()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_GAUSSIAN_BLUR);
+	}
 
-    public static function PRESET_SELECTIVE_BLUR() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_SELECTIVE_BLUR;
-	return $filter;
-    }
+	public static function PRESET_SELECTIVE_BLUR()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_SELECTIVE_BLUR);
+	}
 
-    public static function PRESET_MEAN_REMOVAL() {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_MEAN_REMOVAL;
-	return $filter;
-    }
+	public static function PRESET_MEAN_REMOVAL()
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_MEAN_REMOVAL);
+	}
 
-    public static function PRESET_PIXELATE($blockSize, $type = FALSE) {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_PIXELATE;
-	$filter->paramArr[] = $blockSize;
-	$filter->paramArr[] = $type;
-	return $filter;
-    }
+	public static function PRESET_PIXELATE($blockSize, $type = false)
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_PIXELATE)->setParamArr([$blockSize, $type]);
+	}
 
-    /**
-     * 
-     * @param type $smooth, IMG_FILTER_SMOOTH, -8/+8
-     * @return type
-     */
-    public static function PRESET_SMOOTH($smooth) {
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_SMOOTH;
-	$filter->paramArr[] = $smooth;
-	return $filter;
-    }
+	/**
+	 * 
+	 * @param type $smooth, IMG_FILTER_SMOOTH, -8/+8
+	 * @return type
+	 */
+	public static function PRESET_SMOOTH($smooth)
+	{
+		return (new Preset())->setPresetName(IMG_FILTER_SMOOTH)->setParamArr([$smooth]);
+	}
 
-    /**
-     * 
-     * @param type $BRIGHTNESS, -255 = min brightness, 0 = no change, +255 = max brightness
-     * @return type
-     */
-    public static function PRESET_BRIGHTNESS($brightness) {
-	if ($brightness < -255 OR $brightness > 255)
-	    $brightness = 0;
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_BRIGHTNESS;
-	$filter->paramArr[] = $brightness;
-	return $filter;
-    }
+	/**
+	 * 
+	 * @param type $BRIGHTNESS, -255 = min brightness, 0 = no change, +255 = max brightness
+	 * @return type
+	 */
+	public static function PRESET_BRIGHTNESS(int $brightness)
+	{
+		if ($brightness < -255 or $brightness > 255) {
+			$brightness = 0;
+		}
+		return (new Preset())->setPresetName(IMG_FILTER_BRIGHTNESS)->setParamArr([$brightness]);
+	}
 
-    /**
-     * 
-     * @param type $contrast,  
-     * -100 = max contrast, 0 = no change, +100 = min contrast (note the direction!)
-     * @return type
-     */
-    public static function PRESET_CONTRAST($contrast) {
-	if ($contrast < -100 OR $contrast > 100)
-	    $contrast = 0;
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_CONTRAST;
-	$filter->paramArr[] = $contrast;
-	return $filter;
-    }
+	/**
+	 * 
+	 * @param type $contrast,  
+	 * -100 = max contrast, 0 = no change, +100 = min contrast (note the direction!)
+	 * @return type
+	 */
+	public static function PRESET_CONTRAST(int $contrast)
+	{
+		if ($contrast < -100 or $contrast > 100) {
+			$contrast = 0;
+		}
+		return (new Preset())->setPresetName(IMG_FILTER_CONTRAST)->setParamArr([$contrast]);
+	}
 
-    /**
-     * 
-     * @param type $colorize,     IMG_FILTER_COLORIZE, -127.12, -127.98, 127
-     * @return type
-     */
-    public static function PRESET_COLORIZE($red, $green, $blue) {
+	/**
+	 * 
+	 * @param type $colorize,     IMG_FILTER_COLORIZE, -127.12, -127.98, 127
+	 * @return type
+	 */
+	public static function PRESET_COLORIZE(int $red, int $green, int $blue)
+	{
 
-	if ($red < -255 OR $red > 255)
-	    $red = 0;
-	if ($green < -255 OR $blue > 255)
-	    $green = 0;
-	if ($blue < -255 OR $blue > 255)
-	    $blue = 0;
+		if ($red < -255 or $red > 255) {
+			$red = 0;
+		}
+		if ($green < -255 or $blue > 255) {
+			$green = 0;
+		}
+		if ($blue < -255 or $blue > 255) {
+			$blue = 0;
+		}
 
-	$filter = new self();
-	$filter->presetName = IMG_FILTER_COLORIZE;
-	$filter->paramArr[] = $red;
-	$filter->paramArr[] = $green;
-	$filter->paramArr[] = $blue;
-	return $filter;
-    }
-
+		return (new Preset())->setPresetName(IMG_FILTER_COLORIZE)->setParamArr([$red, $green, $blue]);
+	}
 }
-
-?>

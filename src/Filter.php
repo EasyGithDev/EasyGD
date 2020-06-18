@@ -38,41 +38,40 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-abstract class Filter {
+abstract class Filter
+{
 
-    const FILTER_PRESET = 1;
-    const FILTER_LOOKUPTABLE = 2;
-    const FILTER_CONVOLUTION = 3;
+	const FILTER_PRESET = 1;
+	const FILTER_LOOKUPTABLE = 2;
+	const FILTER_CONVOLUTION = 3;
 
-    public static function create() {
+	public function create()
+	{
 
-	$arg_list = func_get_args();
-	$filterType = array_shift($arg_list);
+		$arg_list = func_get_args();
+		$filterType = array_shift($arg_list);
 
-	switch ($filterType) {
-	    case self::FILTER_LOOKUPTABLE:
-		$filterName = $arg_list[0];
-		return LookUpTable::create($filterName);
-		break;
-	    case self::FILTER_CONVOLUTION:
-		$matrix = $arg_list[0];
-		return Convolution::create($matrix);
-		break;
-	    case self::FILTER_PRESET:
-		if (count($arg_list) == 1) {
-		    $presetName = $arg_list[0];
-		    return Preset::create($presetName);
-		} else {
-		    $presetName = array_shift($arg_list);
-		    return call_user_func_array(array(__NAMESPACE__ . '\Preset', $presetName), $arg_list);
+		switch ($filterType) {
+			case self::FILTER_LOOKUPTABLE:
+				$filterName = $arg_list[0];
+				return (new LookUpTable)->create($filterName);
+				break;
+			case self::FILTER_CONVOLUTION:
+				$matrix = $arg_list[0];
+				return Convolution::create($matrix);
+				break;
+			case self::FILTER_PRESET:
+				if (count($arg_list) == 1) {
+					$presetName = $arg_list[0];
+					return Preset::create($presetName);
+				} else {
+					$presetName = array_shift($arg_list);
+					return call_user_func_array(array(__NAMESPACE__ . '\Preset', $presetName), $arg_list);
+				}
+			default:
+				break;
 		}
-	    default :
-		break;
 	}
-    }
-    
-    abstract public function process(Image $image);
 
+	abstract public function process(Image $image);
 }
-
-?>

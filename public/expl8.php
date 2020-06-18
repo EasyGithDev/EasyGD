@@ -1,36 +1,43 @@
 <?php
 
-use Easygd\Color;
+use Easygd\Convolution;
 use Easygd\Image;
-use Easygd\ImageFilterIterator;
-use Easygd\Position;
-use Easygd\Text;
+use Easygd\LookUpTable;
+use Easygd\Preset;
 
 require '../vendor/autoload.php';
 
-$text = (new Text)->create('Copyright (C) 2013 Florent Brusciano')
-	->setFontType(Text::TEXT_FONT_TRUETYPE)
-	->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
-	->setSize(5)
-	->setColor(Color::White())
-	->setPosition((new Position())->create(40, 190));
+$filename = 'https://www.php.net/images/logos/new-php-logo.png';
 
-$path = __DIR__ . '/images/original/';
 
-foreach (new ImageFilterIterator(new DirectoryIterator($path)) as $file) {
-
-	if (($image = (new Image)->load($file->getPathname())) === false) {
-		continue;
-	}
-
-	$thumb1 = $image->thumbnail(100)->dataSrc();
-	$thumb2 = $image->thumbnail(200)->addText($text)->dataSrc();
-	$thumb3 = $image->thumbnail(400)->dataSrc();
+/***
+ * 
+ * How to use the convolution filter
+ * 
+ */
+$list = Convolution::getConvolutionList();
+foreach ($list as $convolutionName) {
+    $convolution = call_user_func_array('\Easygd\Convolution::' . $convolutionName, []);
+    $dataSrc = $convolution->process((new Image())->load($filename))->dataSrc();
 ?>
+    <p>
+        <?php echo $convolutionName ?>
+        <img src="<?php echo $dataSrc ?>">
+    </p>
 
-	<img src="<?php echo $thumb1 ?>" />
-	<img src="<?php echo $thumb2 ?>" />
-	<img src="<?php echo $thumb3 ?>" />
-	<br />
 <?php
 }
+
+$matrix = array(
+    -1, 7, -1,
+    0, 0, 0,
+    1, 7, 1
+);
+
+$dataSrc = (new Convolution())->create($matrix)->process((new Image())->load($filename))->dataSrc();
+
+?>
+<p>
+    My Convolution
+    <img src="<?php echo $dataSrc ?>">
+</p>

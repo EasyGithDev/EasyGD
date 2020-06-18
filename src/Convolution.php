@@ -38,381 +38,407 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Convolution extends Filter {
+class Convolution extends Filter
+{
 
-    public static $CONVOLUTION_IDENTITY = array(
-	0, 0, 0,
-	0, 1, 0,
-	0, 0, 0
-    );
-    public static $CONVOLUTION_SHARPEN_1 = array(
-	0, -1, 0,
-	-1, 5, -1,
-	0, -1, 0
-    );
-    public static $CONVOLUTION_SHARPEN_2 = array(
-	-1, -1, -1,
-	-1, 9, -1,
-	-1, -1, -1
-    );
-    public static $CONVOLUTION_DETECTION_EDGES = array(
-	0, 1, 0,
-	1, -4, 1,
-	0, 1, 0
-    );
-    public static $CONVOLUTION_FIND_EDGES_1 = array(
-	-1, -1, -1,
-	-2, 8, -1,
-	-1, -1, -1
-    );
-    public static $CONVOLUTION_FIND_EDGES_2 = array(
-	0, 1, 0,
-	1, -4, 1,
-	0, 1, 0
-    );
-    public static $CONVOLUTION_FIND_EDGES_3 = array(
-	1, -2, 1,
-	-2, 4, -2,
-	1, -2, 1
-    );
-    public static $CONVOLUTION_BLUR = array(
-	1, 1, 1,
-	1, 1, 1,
-	1, 1, 1
-    );
-    public static $CONVOLUTION_GAUSSIAN = array(
-	1, 2, 1,
-	2, 4, 2,
-	1, 2, 1
-    );
-// Repoussage
-    public static $CONVOLUTION_EMBOSS = array(
-	-2, -1, 0,
-	-1, 1, 1,
-	0, 1, 2
-    );
-// Renforcement des bords
-// Edge Enhancement 
-    public static $CONVOLUTION_ENHANCEMENT_EDGES_1 = array(
-	0, 0, 0,
-	-1, 1, 0,
-	0, 0, 0
-    );
-    public static $CONVOLUTION_ENHANCEMENT_EDGES_2 = array(
-	0, -1, 0,
-	0, 1, 0,
-	0, 0, 0
-    );
-    public static $CONVOLUTION_ENHANCEMENT_EDGES_3 = array(
-	-1, 0, 0,
-	0, 1, 0,
-	0, 0, 0
-    );
-// Laplacien 1
-    public static $CONVOLUTION_LAPLACIEN_1 = array(
-	0, -1, 0,
-	-1, 4, -1,
-	0, -1, 0
-    );
-// Laplacien 2
-    public static $CONVOLUTION_LAPLACIEN_2 = array(
-	-1, -1, -1,
-	-1, 8, -1,
-	-1, -1, -1
-    );
-// Laplacien 3
-    public static $CONVOLUTION_LAPLACIEN_3 = array(
-	1, -2, 1,
-	-2, 4, -2,
-	1, -2, 1
-    );
-//Gradient 3x3 4-connex 
-    public static $CONVOLUTION_4_CONNEX = array(
-	0., -1, 0,
-	-1, 4, -1,
-	0, -1, 0);
-//Gradient 3x3 8-connex 
-    public static $CONVOLUTION_8_CONNEX = array(
-	-1, -1, -1,
-	-1, 8, -1,
-	-1, -1, -1);
-// EW
-    public static $CONVOLUTION_GRADIENT_EW = array(
-	1, 0, -1,
-	1, 0, -1,
-	1, 0, -1
-    );
-//WE
-    public static $CONVOLUTION_GRADIENT_WE = array(
-	-1, 0, 1,
-	-1, 0, 1,
-	-1, 0, 1
-    );
-// NS
-    public static $CONVOLUTION_GRADIENT_NS = array(
-	-1, -1, -1,
-	0, 0, 0,
-	1, 1, 1
-    );
-// SN
-    public static $CONVOLUTION_GRADIENT_SN = array(
-	1, 1, 1,
-	0, 0, 0,
-	-1, -1, -1
-    );
-// NW-SE
-    public static $CONVOLUTION_GRADIENT_NWSE = array(
-	-1, -1, 0,
-	-1, 0, 1,
-	0, 1, 1
-    );
-// Pratt Filter
-    public static $CONVOLUTION_PRATT = array(
-	-1, -1, -1,
-	-1, 17, -1,
-	-1, -1, -1
-    );
-    private $matrix;
-    private $offset;
-    private $divisor;
+	public static $CONVOLUTION_IDENTITY = array(
+		0, 0, 0,
+		0, 1, 0,
+		0, 0, 0
+	);
+	public static $CONVOLUTION_SHARPEN_1 = array(
+		0, -1, 0,
+		-1, 5, -1,
+		0, -1, 0
+	);
+	public static $CONVOLUTION_SHARPEN_2 = array(
+		-1, -1, -1,
+		-1, 9, -1,
+		-1, -1, -1
+	);
+	public static $CONVOLUTION_DETECTION_EDGES = array(
+		0, 1, 0,
+		1, -4, 1,
+		0, 1, 0
+	);
+	public static $CONVOLUTION_FIND_EDGES_1 = array(
+		-1, -1, -1,
+		-2, 8, -1,
+		-1, -1, -1
+	);
+	public static $CONVOLUTION_FIND_EDGES_2 = array(
+		0, 1, 0,
+		1, -4, 1,
+		0, 1, 0
+	);
+	public static $CONVOLUTION_FIND_EDGES_3 = array(
+		1, -2, 1,
+		-2, 4, -2,
+		1, -2, 1
+	);
+	public static $CONVOLUTION_BLUR = array(
+		1, 1, 1,
+		1, 1, 1,
+		1, 1, 1
+	);
+	public static $CONVOLUTION_GAUSSIAN = array(
+		1, 2, 1,
+		2, 4, 2,
+		1, 2, 1
+	);
+	// Repoussage
+	public static $CONVOLUTION_EMBOSS = array(
+		-2, -1, 0,
+		-1, 1, 1,
+		0, 1, 2
+	);
+	// Renforcement des bords
+	// Edge Enhancement 
+	public static $CONVOLUTION_ENHANCEMENT_EDGES_1 = array(
+		0, 0, 0,
+		-1, 1, 0,
+		0, 0, 0
+	);
+	public static $CONVOLUTION_ENHANCEMENT_EDGES_2 = array(
+		0, -1, 0,
+		0, 1, 0,
+		0, 0, 0
+	);
+	public static $CONVOLUTION_ENHANCEMENT_EDGES_3 = array(
+		-1, 0, 0,
+		0, 1, 0,
+		0, 0, 0
+	);
+	// Laplacien 1
+	public static $CONVOLUTION_LAPLACIEN_1 = array(
+		0, -1, 0,
+		-1, 4, -1,
+		0, -1, 0
+	);
+	// Laplacien 2
+	public static $CONVOLUTION_LAPLACIEN_2 = array(
+		-1, -1, -1,
+		-1, 8, -1,
+		-1, -1, -1
+	);
+	// Laplacien 3
+	public static $CONVOLUTION_LAPLACIEN_3 = array(
+		1, -2, 1,
+		-2, 4, -2,
+		1, -2, 1
+	);
+	//Gradient 3x3 4-connex 
+	public static $CONVOLUTION_4_CONNEX = array(
+		0., -1, 0,
+		-1, 4, -1,
+		0, -1, 0
+	);
+	//Gradient 3x3 8-connex 
+	public static $CONVOLUTION_8_CONNEX = array(
+		-1, -1, -1,
+		-1, 8, -1,
+		-1, -1, -1
+	);
+	// EW
+	public static $CONVOLUTION_GRADIENT_EW = array(
+		1, 0, -1,
+		1, 0, -1,
+		1, 0, -1
+	);
+	//WE
+	public static $CONVOLUTION_GRADIENT_WE = array(
+		-1, 0, 1,
+		-1, 0, 1,
+		-1, 0, 1
+	);
+	// NS
+	public static $CONVOLUTION_GRADIENT_NS = array(
+		-1, -1, -1,
+		0, 0, 0,
+		1, 1, 1
+	);
+	// SN
+	public static $CONVOLUTION_GRADIENT_SN = array(
+		1, 1, 1,
+		0, 0, 0,
+		-1, -1, -1
+	);
+	// NW-SE
+	public static $CONVOLUTION_GRADIENT_NWSE = array(
+		-1, -1, 0,
+		-1, 0, 1,
+		0, 1, 1
+	);
+	// Pratt Filter
+	public static $CONVOLUTION_PRATT = array(
+		-1, -1, -1,
+		-1, 17, -1,
+		-1, -1, -1
+	);
+	private $matrix = [];
+	private $offset = 0.0;
+	private $divisor = 1.0;
 
-    public function __construct($matrix = array(), $divisor = 1.0, $offset = 0.0) {
-	if (!count($matrix))
-	    $matrix = self::$CONVOLUTION_IDENTITY;
-	$this->setMatrix($matrix);
-	$this->offset = floatval($offset);
-	$this->divisor = floatval($divisor);
-    }
-
-    public static function create() {
-	if (is_array(func_get_arg(0))) {
-	    $matrix = func_get_arg(0);
-	    $obj = new self($matrix);
-	    $divisor = floatval(array_sum(array_map('array_sum', $obj->getMatrix())));
-	    if ($divisor != 0)
-		$obj->setDivisor($divisor);
-	    return $obj;
+	public function __construct()
+	{
 	}
-	else {
-	    $arg_list = func_get_args();
-	    $presetFunction = array_shift($arg_list);
-	    return call_user_func_array(array(__CLASS__, $presetFunction), $arg_list);
+
+	public function create($matrix = [])
+	{
+
+		if (!count($matrix)) {
+			$matrix = self::$CONVOLUTION_IDENTITY;
+		}
+
+		$this->setMatrix($matrix);
+		$this->offset = 0.0;
+		$this->divisor = floatval(array_sum(array_map('array_sum', $this->getMatrix())));
+
+		// if (is_array(func_get_arg(0))) {
+		// 	$matrix = func_get_arg(0);
+		// 	$obj = new self($matrix);
+		// 	$divisor = floatval(array_sum(array_map('array_sum', $obj->getMatrix())));
+		// 	if ($divisor != 0)
+		// 		$obj->setDivisor($divisor);
+		// 	return $obj;
+		// } else {
+		// 	$arg_list = func_get_args();
+		// 	$presetFunction = array_shift($arg_list);
+		// 	return call_user_func_array(array(__CLASS__, $presetFunction), $arg_list);
+		// }
+
+		return $this;
 	}
-    }
 
-    public function getMatrix() {
-	return $this->matrix;
-    }
-
-    public function setMatrix($matrix) {
-	if (count($matrix) == 9) {
-
-	    $matrix = array_map('floatval', $matrix);
-
-	    $this->matrix = array(
-		array($matrix[0], $matrix[1], $matrix[2]),
-		array($matrix[3], $matrix[4], $matrix[5]),
-		array($matrix[6], $matrix[7], $matrix[8])
-	    );
-	} else if (count($matrix) == 3) {
-	    for ($i = 0; $i < 3; $i++)
-		$matrix = array_map('floatval', $matrix[$i]);
-	    $this->matrix = $matrix;
+	public function getMatrix()
+	{
+		return $this->matrix;
 	}
-	else
-	    throw new Exception('Matrix must be 3x3');
-	return $this;
-    }
 
-    public function getOffset() {
-	return $this->offset;
-    }
+	public function setMatrix($matrix)
+	{
+		if (count($matrix) == 9) {
 
-    public function setOffset($offset) {
-	$this->offset = floatval($offset);
-	return $this;
-    }
+			$matrix = array_map('floatval', $matrix);
 
-    public function getDivisor() {
-	return $this->divisor;
-    }
+			$this->matrix = array(
+				array($matrix[0], $matrix[1], $matrix[2]),
+				array($matrix[3], $matrix[4], $matrix[5]),
+				array($matrix[6], $matrix[7], $matrix[8])
+			);
+		} else if (count($matrix) == 3) {
+			for ($i = 0; $i < 3; $i++) {
+				$matrix = array_map('floatval', $matrix[$i]);
+			}
+			$this->matrix = $matrix;
+		} else {
+			throw new Exception('Matrix must be 3x3');
+		}
+		return $this;
+	}
 
-    public function setDivisor($divisor) {
+	public function getOffset()
+	{
+		return $this->offset;
+	}
 
-	if ($divisor == 0)
-	    throw new \Exception('oups');
-	$this->divisor = floatval($divisor);
-	return $this;
-    }
+	public function setOffset($offset)
+	{
+		$this->offset = floatval($offset);
+		return $this;
+	}
 
-    public function process(Image $imgSrc) {
-	imageconvolution($imgSrc->getImg(), $this->getMatrix(), round($this->getDivisor(), 2), $this->getOffset());
-	return $imgSrc;
-    }
+	public function getDivisor()
+	{
+		return $this->divisor;
+	}
 
-    public static function getConvolutionList() {
-	$reflection = new \ReflectionClass(new self);
-	$staticProperties = $reflection->getStaticProperties();
-	return array_keys($staticProperties);
-    }
+	public function setDivisor($divisor)
+	{
+		if ($divisor == 0) {
+			throw new \Exception('oups');
+		}
+		$this->divisor = floatval($divisor);
+		return $this;
+	}
 
-    public static function CONVOLUTION_IDENTITY() {
-	return Convolution::create(self::$CONVOLUTION_IDENTITY);
-    }
+	public function process(Image $imgSrc)
+	{
+		imageconvolution($imgSrc->getImg(), $this->getMatrix(), round($this->getDivisor(), 2), $this->getOffset());
+		return $imgSrc;
+	}
 
-// Contraste (Sharpen)
-    public static function CONVOLUTION_SHARPEN_1() {
-	return Convolution::create(self::$CONVOLUTION_SHARPEN_1);
-    }
+	public static function getConvolutionList()
+	{
+		$reflection = new \ReflectionClass(__CLASS__);
+		$staticProperties = $reflection->getStaticProperties();
+		return array_keys($staticProperties);
+	}
 
-    public static function CONVOLUTION_SHARPEN_2() {
-	return Convolution::create(self::$CONVOLUTION_SHARPEN_2);
-    }
+	public static function CONVOLUTION_IDENTITY()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_IDENTITY);
+	}
 
-// Border detection (Edge)
-    public static function CONVOLUTION_DETECTION_EDGES() {
-	return Convolution::create(self::$CONVOLUTION_DETECTION_EDGES);
-    }
+	// Contraste (Sharpen)
+	public static function CONVOLUTION_SHARPEN_1()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_SHARPEN_1);
+	}
 
-    public static function CONVOLUTION_FIND_EDGES_1() {
-	return Convolution::create(self::$CONVOLUTION_FIND_EDGES_1);
-    }
+	public static function CONVOLUTION_SHARPEN_2()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_SHARPEN_2);
+	}
 
-    public static function CONVOLUTION_FIND_EDGES_2() {
-	return Convolution::create(self::$CONVOLUTION_FIND_EDGES_2);
-    }
+	// Border detection (Edge)
+	public static function CONVOLUTION_DETECTION_EDGES()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_DETECTION_EDGES);
+	}
 
-    public static function CONVOLUTION_FIND_EDGES_3() {
-	return Convolution::create(self::$CONVOLUTION_FIND_EDGES_3);
-    }
+	public static function CONVOLUTION_FIND_EDGES_1()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_FIND_EDGES_1);
+	}
 
-// Median Blur
-    public static function CONVOLUTION_BLUR() {
-	return Convolution::create(self::$CONVOLUTION_BLUR);
-    }
+	public static function CONVOLUTION_FIND_EDGES_2()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_FIND_EDGES_2);
+	}
 
-// Gaussian Blur
-    public static function CONVOLUTION_GAUSSIAN() {
-	return Convolution::create(self::$CONVOLUTION_GAUSSIAN);
-    }
+	public static function CONVOLUTION_FIND_EDGES_3()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_FIND_EDGES_3);
+	}
 
-    public static function CONVOLUTION_EMBOSS() {
-	return Convolution::create(self::$CONVOLUTION_EMBOSS);
-    }
+	// Median Blur
+	public static function CONVOLUTION_BLUR()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_BLUR);
+	}
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES_1() {
-	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES_1);
-    }
+	// Gaussian Blur
+	public static function CONVOLUTION_GAUSSIAN()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_GAUSSIAN);
+	}
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES_2() {
-	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES_2);
-    }
+	public static function CONVOLUTION_EMBOSS()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_EMBOSS);
+	}
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES_3() {
-	return Convolution::create(self::$CONVOLUTION_ENHANCEMENT_EDGES_3);
-    }
+	public static function CONVOLUTION_ENHANCEMENT_EDGES_1()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_ENHANCEMENT_EDGES_1);
+	}
 
-    public static function CONVOLUTION_LAPLACIEN_1($alpha = 2) {
+	public static function CONVOLUTION_ENHANCEMENT_EDGES_2()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_ENHANCEMENT_EDGES_2);
+	}
 
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_LAPLACIEN_1[$i] * $alpha;
+	public static function CONVOLUTION_ENHANCEMENT_EDGES_3()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_ENHANCEMENT_EDGES_3);
+	}
 
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(4)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_LAPLACIEN_1($alpha = 2)
+	{
 
-    public static function CONVOLUTION_LAPLACIEN_2($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_LAPLACIEN_2[$i] * $alpha;
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_LAPLACIEN_1[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
+	}
 
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(4)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_LAPLACIEN_2($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_LAPLACIEN_2[$i] * $alpha;
+		}
 
-    public static function CONVOLUTION_LAPLACIEN_3($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_LAPLACIEN_3[$i] * $alpha;
+		return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
+	}
 
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(4)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_LAPLACIEN_3($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_LAPLACIEN_3[$i] * $alpha;
+		}
 
-    public static function CONVOLUTION_GRADIENT_EW($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_GRADIENT_EW[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(6)->setOffset(128);
-	return $convolution;
-    }
+		return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_GRADIENT_WE($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_GRADIENT_WE[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(6)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_GRADIENT_EW($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_GRADIENT_EW[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_GRADIENT_NS($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_GRADIENT_NS[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(6)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_GRADIENT_WE($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_GRADIENT_WE[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_GRADIENT_SN($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_GRADIENT_SN[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(6)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_GRADIENT_NS($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_GRADIENT_NS[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_GRADIENT_NWSE($alpha = 2) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_GRADIENT_NWSE[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor((4 * sqrt(2) / 3) * 3)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_GRADIENT_SN($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_GRADIENT_SN[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_4_CONNEX($alpha = 10) {
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_4_CONNEX[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(4)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_GRADIENT_NWSE($alpha = 2)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_GRADIENT_NWSE[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor((4 * sqrt(2) / 3) * 3)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_8_CONNEX($alpha = 10) {
+	public static function CONVOLUTION_4_CONNEX($alpha = 10)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_4_CONNEX[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
+	}
 
-	$matrix = array();
-	for ($i = 0; $i < 9; $i++)
-	    $matrix[$i] = self::$CONVOLUTION_8_CONNEX[$i] * $alpha;
-	$convolution = Convolution::create($matrix);
-	$convolution->setDivisor(9.657)->setOffset(128);
-	return $convolution;
-    }
+	public static function CONVOLUTION_8_CONNEX($alpha = 10)
+	{
+		$matrix = [];
+		for ($i = 0; $i < 9; $i++) {
+			$matrix[$i] = self::$CONVOLUTION_8_CONNEX[$i] * $alpha;
+		}
+		return (new Convolution())->create($matrix)->setDivisor(9.657)->setOffset(128);
+	}
 
-    public static function CONVOLUTION_PRATT() {
-	$convolution = Convolution::create(self::$CONVOLUTION_PRATT);
-	$convolution->setDivisor(9);
-	return $convolution;
-    }
-
+	public static function CONVOLUTION_PRATT()
+	{
+		return (new Convolution())->create(self::$CONVOLUTION_PRATT)->setDivisor(9);
+	}
 }
-
-?>
