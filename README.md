@@ -276,19 +276,15 @@ You can use :
 + PRESET_BRIGHTNESS
 + PRESET_COLORIZE
 
-#### How to create a preset filter
-    $filter = Easy\Preset::PRESET_GRAYSCALE();
-
-#### How to apply the filter
-    $filter->process($image)->show();
+#### How to create and apply a preset filter
+    Preset::PRESET_NEGATE()->process((new Image())->load($filename))->show();
 
 ## Using the convolution filter
 
 You can use preseted convolution or your own convolution filters.
 
 #### How to use a preseted convolution
-    $filter = Easy\Convolution::CONVOLUTION_LAPLACIEN_1();
-    $filter->process($image)->show();
+    Convolution::CONVOLUTION_LAPLACIEN_1()->process((new Image())->load($filename))->show();
 
 #### How to use your own convolution
     $matrix = array(-1, 7, -1,
@@ -296,16 +292,14 @@ You can use preseted convolution or your own convolution filters.
     1, 7, 1
     );
 
-    $filter = \Easy\Convolution::create($matrix);
-    $filter->process($image)->show();
+    (new Convolution())->create($matrix)->process((new Image())->load($filename))->show();
 
 ## Using the lookuptable filter
 
 You can use preseted lookuptable or your own lookuptable filters.
 
 #### How to use a preseted lookuptable
-    $filter = \Easy\LookUpTable::create('Negative');
-    $filter->process($image)->show();
+    (new LookUpTable())->create('LightnessGray')->process((new Image())->load($filename))->show();
 
 #### To create a new lookuptable filter, you must create a callback method like this :
 

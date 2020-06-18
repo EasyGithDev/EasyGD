@@ -23,7 +23,8 @@ namespace Easygd;
 
   \*********************************************************** */
 
-class Iptc {
+class Iptc
+{
 
     const IPTC_OBJECT_NAME = '005';
     const IPTC_EDIT_STATUS = '007';
@@ -59,79 +60,84 @@ class Iptc {
 
     private $metas = array();
 
-    public function __construct($app13 = '') {
-	if (!empty($app13)) {
-	    $this->metas = iptcparse($app13);
-	}
+    public function __construct($app13 = '')
+    {
+        if (!empty($app13)) {
+            $this->metas = iptcparse($app13);
+        }
     }
 
-    public static function create($app13 = '') {
-	return new self($app13);
+    public static function create($app13 = '')
+    {
+        return new self($app13);
     }
 
-    public function addTag($tag, $data) {
-	$this->metas["2#$tag"][0] = $data;
-	return $this;
+    public function addTag($tag, $data)
+    {
+        $this->metas["2#$tag"][0] = $data;
+        return $this;
     }
 
-    public function getTag($tag) {
-	return isset($this->metas["2#$tag"]) ? $this->metas["2#$tag"][0] : FALSE;
+    public function getTag($tag)
+    {
+        return isset($this->metas["2#$tag"]) ? $this->metas["2#$tag"][0] : FALSE;
     }
 
-    public function __toString() {
-	$iptc_new = '';
-	foreach ($this->metas as $k => $v) {
-	    $iptc_new .= "
+    public function __toString()
+    {
+        $iptc_new = '';
+        foreach ($this->metas as $k => $v) {
+            $iptc_new .= "
 	    $k : $v[0]";
-	}
-	return $iptc_new;
+        }
+        return $iptc_new;
     }
 
-    public function toArray() {
-	return $this->metas;
+    public function toArray()
+    {
+        return $this->metas;
     }
 
     // Fonction iptc_make_tag() par Thies C. Arntzen
-    private function iptc_maketag($rec, $data, $value) {
-	$length = strlen($value);
-	$retval = chr(0x1C) . chr($rec) . chr($data);
+    private function iptc_maketag($rec, $data, $value)
+    {
+        $length = strlen($value);
+        $retval = chr(0x1C) . chr($rec) . chr($data);
 
-	if ($length < 0x8000) {
-	    $retval .= chr($length >> 8) . chr($length & 0xFF);
-	} else {
-	    $retval .= chr(0x80) .
-		    chr(0x04) .
-		    chr(($length >> 24) & 0xFF) .
-		    chr(($length >> 16) & 0xFF) .
-		    chr(($length >> 8) & 0xFF) .
-		    chr($length & 0xFF);
-	}
+        if ($length < 0x8000) {
+            $retval .= chr($length >> 8) . chr($length & 0xFF);
+        } else {
+            $retval .= chr(0x80) .
+                chr(0x04) .
+                chr(($length >> 24) & 0xFF) .
+                chr(($length >> 16) & 0xFF) .
+                chr(($length >> 8) & 0xFF) .
+                chr($length & 0xFF);
+        }
 
-	return $retval . $value;
+        return $retval . $value;
     }
 
-    public function write($fileSrc, $fileDest) {
-	if (!function_exists('iptcembed'))
-	    return FALSE;
+    public function write($fileSrc, $fileDest)
+    {
+        if (!function_exists('iptcembed'))
+            return FALSE;
 
-	$iptc_new = '';
-	foreach ($this->metas as $tag => $val) {
-	    $tag = substr($tag, 2);
-	    $iptc_new .= $this->iptc_maketag(2, $tag, $val[0]);
-	}
+        $iptc_new = '';
+        foreach ($this->metas as $tag => $val) {
+            $tag = substr($tag, 2);
+            $iptc_new .= $this->iptc_maketag(2, $tag, $val[0]);
+        }
 
-	if (($content = @iptcembed($iptc_new, $fileSrc)) === FALSE)
-	    return FALSE;
+        if (($content = @iptcembed($iptc_new, $fileSrc)) === FALSE)
+            return FALSE;
 
-	$handle = fopen($fileDest, "w");
-	if (!$handle)
-	    return FALSE;
-	fwrite($handle, $content);
-	fclose($handle);
+        $handle = fopen($fileDest, "w");
+        if (!$handle)
+            return FALSE;
+        fwrite($handle, $content);
+        fclose($handle);
 
-	return TRUE;
+        return TRUE;
     }
-
 }
-
-?>
