@@ -180,14 +180,18 @@ $text = (new Text())->create('Hello World');
 # Get the informations
 
 #### How to get the information about an image
+
+```php
     $infos = (new Image())->load($stream)->getInfos();
     echo '<pre>', $infos, '</pre>';
 
     $infos = (new Image())->load($stream)->getInfos()->toArray();
     echo '<pre>', print_r($infos, true), '</pre>'; 
-
+```
 
 #### How to get / add the IPTC tag
+
+```php
     $fileDst = __DIR__ . '/iptc.jpg';
     $iptc = $imageInfo->getIpct();
     $iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
@@ -197,9 +201,11 @@ $text = (new Text())->create('Hello World');
 
     if ($iptc->write($fileSrc, $fileDst) === false)
 	throw new Exception('Error to write IPTC');
+```
 
 #### How to have the preseted positions
 
+```php
     $image = (new Image())->load($stream);
 
     echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
@@ -211,6 +217,7 @@ $text = (new Text())->create('Hello World');
     echo 'BOTTOM_LEFT', $image->bottomLeft(), '<br/>';
     echo 'BOTTOM_CENTER', $image->bottomeCenter(), '<br/>';
     echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
+```
 
 It will return an object Position ...
 
@@ -221,56 +228,76 @@ It will return an object Position ...
 ## Resizing the images
 
 #### How to resize an image
+
+```php
     (new Image)->load($stream)
     ->resizeByPercent(0.5)
     ->show();
+```
 
 #### How to resize an image by fixing the width or height
-    (new Image)->load($stream)
+
+```php
+(new Image)->load($stream)
     ->resizeByWidth(50)
     ->show();
 
     (new Image)->load($stream)
     ->resizeByHeight(30)
     ->show();
+```
 
 #### How to safetly resize an image 
-    (new Image)->load($stream)
+
+```php
+(new Image)->load($stream)
     ->resizeAuto((new Dimension())->create(300, 200))
     ->show();
+```
 
 #### How to make a thumbnail
+
+    ```php
     (new Image)->load($stream)
     ->thumbnail(140, Color::Silver())
     ->show();
+```
 
 ## Croping and Rotation
 
 #### How to crop an image
+
+```php
     (new Image)->load($stream)
     ->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
     ->show();
+```
 
 #### How to make a rotation
-    (new Image)->load($stream)
+
+```php
+(new Image)->load($stream)
     ->rotate(90)
     ->show();
+```
 
 ## Merging two images
 
 #### How to insert a logo into an image
 
+```php
     $logo = (new Image)->load('http://www.php.net/images/logos/php-med-trans-light.gif')
         ->resizeByPercent(0.6);
     $src8 = (new Image)->load('http://static.php.net/www.php.net/images/logos/php-med-trans.png')
         ->inlay($logo, (new Position)->create(30, 20), 100)
         ->show();
+```
 
 ## Make thumbnails
 
 Here you can find an example to, easyly, generate some thumbnails.
 
-```
+```php
 $text = (new Text)->create('Copyright (C) 2020 Your Name')
 	->setFontType(Text::TEXT_FONT_TRUETYPE)
 	->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
@@ -314,9 +341,11 @@ The factory, use the three types of filters :
 
 You ca use this way to call, preset/convolution/lookuptable filters like this :
 
+```php
     $src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
     $src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
     $src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
+```
 
 ## Using the preset filter
 
@@ -336,17 +365,25 @@ You can use :
 + PRESET_COLORIZE
 
 #### How to create and apply a preset filter
+
+```php
     (new PresetFilter())->create(PresetFunctions::negate())->process((new Image())->load($stream))->show();
+```
 
 ## Using the convolution filter
 
 You can use preseted convolution or your own convolution filters.
 
 #### How to use a preseted convolution
-    (new ConvolutionFilter())->create(ConvolutionFunctions::CONVOLUTION_GAUSSIAN())->process((new Image())->load($stream))->show();
+
+```php
+(new ConvolutionFilter())->create(ConvolutionFunctions::CONVOLUTION_GAUSSIAN())->process((new Image())->load($stream))->show();
+```
 
 #### How to use your own convolution
-    $matrix = [
+
+```php
+$matrix = [
         -1, 7, -1,
         0, 0, 0,
         1, 7, 1
@@ -354,6 +391,7 @@ You can use preseted convolution or your own convolution filters.
 
     $convolution = (new Convolution())->create($matrix);;
     $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
+```
 
 ## Using the lookuptable filter
 
@@ -361,11 +399,14 @@ You can use preseted lookuptable or your own lookuptable filters.
 
 #### How to use a preseted lookuptable
 
+```php
     $closure = \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
     (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+```
 
 #### To create a new lookuptable filter, you must create a callback method like this :
 
+```php
     function personnal($rgb)
     {
         $r = ($rgb['red'] > 128) ? 255 : 128;
@@ -376,3 +417,4 @@ You can use preseted lookuptable or your own lookuptable filters.
 
     $closure = \Closure::fromCallable('personnal');
     $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+```
