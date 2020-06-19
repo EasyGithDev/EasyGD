@@ -66,7 +66,7 @@ Use it only on small image, if you dont want that your html page becommes to big
 #### Define a dimension
 
 ```php
-$dimension = (new Dimension)->create(300, 300);
+$dimension = (new Dimension())->create(300, 300);
 ```
 
 #### Define a color
@@ -85,10 +85,10 @@ $color = Color::Yellow();
 #### Define a position
 
 ```php
-$position = (new Position)->create(200, 125);
+$position = (new Position())->create(200, 125);
 ```
 
-#### Define a GD text
+#### Define a text
 
 ```php
 $text = (new Text())->create('Hello World');
