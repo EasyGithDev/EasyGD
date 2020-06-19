@@ -70,23 +70,37 @@ $dimension = (new Dimension)->create(300, 300);
 ```
 
 #### Define a color
-    // Create a color with hexadecimal code
-    $color = (new Color())->create('#83d01e');
-    // OR create a color from a preset
-    $color = (new Color())->create(Color::Yellow);
-    // OR create a preseted color 
-    $color = Color::Yellow();
+
+```php
+// Create a color with hexadecimal code
+$color = (new Color())->create('#83d01e');
+
+// OR create a color from a preset
+$color = (new Color())->create(Color::Yellow);
+
+// OR create a preseted color 
+$color = Color::Yellow();
+```
 
 #### Define a position
-    $position = (new Position)->create(200, 125);
+
+```php
+$position = (new Position)->create(200, 125);
+```
 
 #### Define a GD text
-    $text = (new Text())->create('Hello World');
+
+```php
+$text = (new Text())->create('Hello World');
+```
 
 # Create your own images
 
 #### How to create a truetype image
-    (new Image())->create($dimension, $color)->show();
+
+```php
+(new Image())->create($dimension, $color)->show();
+```
 
 ----
 
@@ -94,62 +108,72 @@ $dimension = (new Dimension)->create(300, 300);
 
 
 #### How to add a GD text into an image
-    (new Image)->create((new Dimension)->create(300, 300), Color::Blue())
-    ->addText(
-        (new Text())->create('Hello World')
-            ->setColor(Color::Silver())
-            ->setSize(3)
-            ->setPosition((new Position)->create(200, 125))
-    )->show();
+
+```php
+(new Image)->create((new Dimension)->create(300, 300), Color::Blue())
+->addText(
+(new Text())->create('Hello World')
+    ->setColor(Color::Silver())
+    ->setSize(3)
+    ->setPosition((new Position)->create(200, 125))
+)->show();
+```
 
 #### How to draw a string vertically into an image
-    (new Image())->create((new Dimension())->create(200, 200))->addText(
+
+```php
+(new Image())->create((new Dimension())->create(200, 200))->addText(
 	(new Text())->create('gd library')
-		->setSize(5)
-		->setColor(Color::White())
-		->setDrawtype(Text::TEXT_DRAW_VERTICAL)
-		->setPosition((new Position())->create(40, 100))
-    )->show();
+	->setSize(5)
+	->setColor(Color::White())
+	->setDrawtype(Text::TEXT_DRAW_VERTICAL)
+	->setPosition((new Position())->create(40, 100))
+)->show();
+```
 
 #### How to apply an alpha color to a text into an image
-    (new Image)->create((new Dimension())->create(300, 300), Color::White())
-	->addText(
-		(new Text())->create('Alpha Color')
-			->setColor(
-				(new Color())->create('#FF0000')->setAlpha(95)
-			)
-			->setSize(5)
-			->setPosition((new Position())->create(55, 35))
+    
+```php    
+(new Image)->create((new Dimension())->create(300, 300), Color::White())->addText(
+	(new Text())->create('Alpha Color')
+	->setColor(
+		(new Color())->create('#FF0000')->setAlpha(95)
 	)
-	->show();
+	->setSize(5)
+	->setPosition((new Position())->create(55, 35))
+)
+->show();
+```
 
 #### How to mix "GD text", "TrueType text", "FreeType text" into an image
 
-    (new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
-	->addText(
-		(new Text())->create('True Type')
-			->setFontType(Text::TEXT_FONT_TRUETYPE)
-			->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
-			->setColor(Color::Silver())
-			->setSize(16)
-			->setAngle(45)
-			->setPosition((new Position())->create(100, 100))
-	)
-	->addText(
-		(new Text())->create('Hello ' . PHP_EOL . 'Free Type')
-			->setFontType(Text::TEXT_FONT_FREETYPE)
-			->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
-			->setColor(Color::Silver())
-			->setSize(16)
-			->setAngle(45)
-			->setPosition((new Position())->create(100, 175))
-	)
-	->addText(
-		(new Text())->create('hello world')
-			->setColor(Color::Maroon())
-			->setPosition((new Position())->create(98, 173))
-	)
-	->show();
+```php
+(new Image())->create((new Dimension())->create(300, 300), (new Color())->create('#f2f2f2'))
+->addText(
+	(new Text())->create('True Type')
+		->setFontType(Text::TEXT_FONT_TRUETYPE)
+		->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+		->setColor(Color::Silver())
+		->setSize(16)
+		->setAngle(45)
+		->setPosition((new Position())->create(100, 100))
+)
+->addText(
+	(new Text())->create('Hello ' . PHP_EOL . 'Free Type')
+		->setFontType(Text::TEXT_FONT_FREETYPE)
+		->setFontfile(Text::TEXT_UNIX_FONT_PATH . '/truetype/dejavu/DejaVuSans.ttf')
+		->setColor(Color::Silver())
+		->setSize(16)
+		->setAngle(45)
+		->setPosition((new Position())->create(100, 175))
+)
+->addText(
+	(new Text())->create('hello world')
+		->setColor(Color::Maroon())
+		->setPosition((new Position())->create(98, 173))
+)
+->show();
+```
 
 ----
 
