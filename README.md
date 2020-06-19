@@ -269,6 +269,20 @@ foreach (new ImageFilterIterator(new DirectoryIterator($path)) as $file) {
 
 # Filters
 
+## Using all the filters with the factory
+
+You can use filters with a common syntax.
+The factory, use the three types of filters :
++ FILTER_PRESET
++ FILTER_LOOKUPTABLE
++ FILTER_CONVOLUTION
+
+You ca use this way to call, preset/convolution/lookuptable filters like this :
+
+    $src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
+    $src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
+    $src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
+
 ## Using the preset filter
 
 You can use : 
@@ -287,22 +301,24 @@ You can use :
 + PRESET_COLORIZE
 
 #### How to create and apply a preset filter
-    Preset::PRESET_NEGATE()->process((new Image())->load($stream))->show();
+    (new PresetFilter())->create(PresetFunctions::negate())->process((new Image())->load($stream))->show();
 
 ## Using the convolution filter
 
 You can use preseted convolution or your own convolution filters.
 
 #### How to use a preseted convolution
-    Convolution::CONVOLUTION_LAPLACIEN_1()->process((new Image())->load($stream))->show();
+    (new ConvolutionFilter())->create(ConvolutionFunctions::CONVOLUTION_GAUSSIAN())->process((new Image())->load($stream))->show();
 
 #### How to use your own convolution
-    $matrix = array(-1, 7, -1,
-    0, 0, 0,
-    1, 7, 1
-    );
+    $matrix = [
+        -1, 7, -1,
+        0, 0, 0,
+        1, 7, 1
+    ];
 
-    (new Convolution())->create($matrix)->process((new Image())->load($stream))->show();
+    $convolution = (new Convolution())->create($matrix);;
+    $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
 
 ## Using the lookuptable filter
 
@@ -311,7 +327,7 @@ You can use preseted lookuptable or your own lookuptable filters.
 #### How to use a preseted lookuptable
 
     $closure = \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
-    (new LookUpTable())->create($closure)->process((new Image())->load($stream))->show();
+    (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 
 #### To create a new lookuptable filter, you must create a callback method like this :
 
@@ -324,32 +340,4 @@ You can use preseted lookuptable or your own lookuptable filters.
     }
 
     $closure = \Closure::fromCallable('personnal');
-    $lut = (new LookUpTable())->create($closure)->process((new Image())->load($stream))->dataSrc();
-    
-## Using all the filters with the factory
-
-You can use filters with a common syntax.
-The factory, use the three types of filter :
-+ FILTER_PRESET
-+ FILTER_LOOKUPTABLE
-+ FILTER_CONVOLUTION
-
-#### Using the factory, it is easy !!!!
-
-    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_LOOKUPTABLE, 'Negative');
-
-OR
-    
-    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
-
-OR
-
-    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, $matrix);
-
-OR
-
-    $filter = Easy\FilterFactory::create(Easy\FilterFactory::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
-
-AND APPLY THE FILTER
-
-    $filter->process($image)->show();
+    $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();

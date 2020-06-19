@@ -40,26 +40,41 @@ namespace Easygd;
  */
 abstract class Filter
 {
-
 	const FILTER_PRESET = 1;
 	const FILTER_LOOKUPTABLE = 2;
 	const FILTER_CONVOLUTION = 3;
 
-	public static function make($filterType)
+	public static function factory($filtered)
 	{
-		switch ($filterType) {
+		switch ($filtered->getType()) {
 			case self::FILTER_LOOKUPTABLE:
-				return (new LookUpTable());
+				return (new LookupTableFilter())->create($filtered);
 				break;
 			case self::FILTER_CONVOLUTION:
-				return (new Convolution());
+				return (new ConvolutionFilter())->create($filtered);
 				break;
 			case self::FILTER_PRESET:
-				return (new Preset());
+				return (new PresetFilter())->create($filtered);
 			default:
 				break;
 		}
 	}
 
+	abstract public function create($filtered);
 	abstract public function process(Image $image);
+
+	public static function __callStatic($name, $arguments)
+	{
+		$filtered = null;
+		if (method_exists(PresetFunctions::class, $name)) {
+			$filtered = call_user_func_array([PresetFunctions::class, $name], $arguments);
+		} elseif (method_exists(ConvolutionFunctions::class, $name)) {
+			$filtered = call_user_func_array([ConvolutionFunctions::class, $name], $arguments);
+		} elseif (method_exists(LookupTableFunctions::class, $name)) {
+			$closure = \Closure::fromCallable([new LookupTableFunctions(), $name]);
+			$filtered = (new LookUpTable())->create($closure);
+		}
+
+		return static::factory($filtered);
+	}
 }

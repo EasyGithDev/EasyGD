@@ -38,31 +38,31 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class LookupTable
+class LookUpTableFilter extends Filter
 {
 
-	protected $callbackFunction;
+	protected $lut;
 
-
-	public function create(callable $callbackFunction)
+	public function create($lut)
 	{
-		$this->callbackFunction = $callbackFunction;
+		$this->lut = $lut;
 		return $this;
 	}
 
-	public function setCallbackFunction($callbackFunction)
+	public function process(Image $imgSrc)
 	{
-		$this->callbackFunction = $callbackFunction;
-		return $this;
-	}
+		$im = $imgSrc->getImg();
 
-	public function getCallbackFunction()
-	{
-		return $this->callbackFunction;
-	}
+		if (imageistruecolor($im)) {
+			imagetruecolortopalette($im, false, 256);
+		}
 
-	public function getType()
-	{
-		return Filter::FILTER_LOOKUPTABLE;
+		for ($i = 0; $i < imagecolorstotal($im); $i++) {
+			$rgb = imagecolorsforindex($im, $i);
+			$color = call_user_func($this->lut->getCallbackFunction(), $rgb);
+			imagecolorset($im, $i, $color[0], $color[1], $color[2]);
+		}
+
+		return $imgSrc;
 	}
 }

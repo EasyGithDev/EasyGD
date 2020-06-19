@@ -2,14 +2,10 @@
 
 use Easygd\Filter;
 use Easygd\Image;
-use Easygd\LookUpTable;
-use Easygd\LookupTableFunctions;
-
 
 require '../vendor/autoload.php';
 
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
-
 
 /***
  * 
@@ -17,19 +13,11 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
  * 
  */
 
-$lut = Filter::make(Filter::FILTER_LOOKUPTABLE)
-    ->create(\Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']))
-    ->process((new Image())->load($stream))
-    ->dataSrc();
+$src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
+$src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
+$src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
 
 ?>
-
-<img src="<?php echo $lut ?>">
-
-
-<?php
-
-$filter = Filter::make(Filter::FILTER_PRESET, 'PRESET_EMBOSS');
-$filter = Filter::make(Filter::FILTER_PRESET, 'PRESET_PIXELATE', 3, true);
-$filter = Filter::make(Filter::FILTER_CONVOLUTION, $matrix);
-$filter = Filter::make(Filter::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
+<img src="<?php echo $src1 ?>">
+<img src="<?php echo $src2 ?>">
+<img src="<?php echo $src3 ?>">

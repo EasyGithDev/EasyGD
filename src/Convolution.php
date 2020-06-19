@@ -38,7 +38,7 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Convolution extends Filter
+class Convolution
 {
 
 	public static $CONVOLUTION_IDENTITY = array(
@@ -115,15 +115,14 @@ class Convolution extends Filter
 	public function setDivisor($divisor)
 	{
 		if ($divisor == 0) {
-			throw new \Exception('oups');
+			throw new Exception('oups');
 		}
 		$this->divisor = floatval($divisor);
 		return $this;
 	}
 
-	public function process(Image $imgSrc)
+	public function getType()
 	{
-		imageconvolution($imgSrc->getImg(), $this->getMatrix(), round($this->getDivisor(), 2), $this->getOffset());
-		return $imgSrc;
+		return Filter::FILTER_CONVOLUTION;
 	}
 }

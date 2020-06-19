@@ -38,31 +38,23 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class LookupTable
+class ConvolutionFilter extends Filter
 {
+	protected $convolution;
 
-	protected $callbackFunction;
-
-
-	public function create(callable $callbackFunction)
+	public function __construct()
 	{
-		$this->callbackFunction = $callbackFunction;
+	}
+
+	public function create($convolution)
+	{
+		$this->convolution = $convolution;
 		return $this;
 	}
 
-	public function setCallbackFunction($callbackFunction)
+	public function process(Image $imgSrc)
 	{
-		$this->callbackFunction = $callbackFunction;
-		return $this;
-	}
-
-	public function getCallbackFunction()
-	{
-		return $this->callbackFunction;
-	}
-
-	public function getType()
-	{
-		return Filter::FILTER_LOOKUPTABLE;
+		imageconvolution($imgSrc->getImg(), $this->convolution->getMatrix(), round($this->convolution->getDivisor(), 2), $this->convolution->getOffset());
+		return $imgSrc;
 	}
 }

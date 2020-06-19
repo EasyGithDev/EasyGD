@@ -38,11 +38,10 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class Preset extends Filter
+class Preset
 {
-
-	protected $presetName = null;
-	protected $paramArr = [];
+	protected $name = null;
+	protected $parametters = [];
 
 	public function __construct()
 	{
@@ -52,39 +51,30 @@ class Preset extends Filter
 	{
 	}
 
-	public function getPresetName()
+	public function getName()
 	{
-		return $this->presetName;
+		return $this->name;
 	}
 
-	public function setPresetName(string $presetName)
+	public function setName(string $name)
 	{
-		$this->presetName = $presetName;
+		$this->name = $name;
 		return $this;
 	}
 
-	public function getParamArr()
+	public function getParametters()
 	{
-		return $this->paramArr;
+		return $this->parametters;
 	}
 
-	public function setParamArr(array $paramArr)
+	public function setParametters(array $parametters)
 	{
-		$this->paramArr = $paramArr;
+		$this->parametters = $parametters;
 		return $this;
 	}
 
-	public function process(Image $imgSrc)
+	public function getType()
 	{
-
-		if (is_null($this->presetName)) {
-			throw new Exception('Filter name dont be null');
-		}
-
-		$paramArr = array_merge([$imgSrc->getImg(), $this->presetName], $this->paramArr);
-
-		call_user_func_array('imagefilter', $paramArr);
-
-		return $imgSrc;
+		return Filter::FILTER_PRESET;
 	}
 }

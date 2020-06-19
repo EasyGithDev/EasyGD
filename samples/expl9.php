@@ -2,6 +2,7 @@
 
 use Easygd\Image;
 use Easygd\LookUpTable;
+use Easygd\LookUpTableFilter;
 use Easygd\LookupTableFunctions;
 
 
@@ -25,7 +26,7 @@ $closures = [
 ];
 
 foreach ($closures as $closure) {
-    $lut = (new LookUpTable())->create($closure)->process((new Image())->load($stream))->dataSrc();
+    $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 ?>
 
     <img src="<?php echo $lut ?>">
@@ -43,7 +44,7 @@ function personnal($rgb)
 }
 
 $closure = \Closure::fromCallable('personnal');
-$lut = (new LookUpTable())->create($closure)->process((new Image())->load($stream))->dataSrc();
+$lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 ?>
 
 <img src="<?php echo $lut ?>">

@@ -7,42 +7,42 @@ class PresetFunctions
 
     public static function negate()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_NEGATE);
+        return (new Preset())->setName(IMG_FILTER_NEGATE);
     }
 
     public static function grayscale()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_GRAYSCALE);
+        return (new Preset())->setName(IMG_FILTER_GRAYSCALE);
     }
 
     public static function edgedetect()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_EDGEDETECT);
+        return (new Preset())->setName(IMG_FILTER_EDGEDETECT);
     }
 
     public static function emboss()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_EMBOSS);
+        return (new Preset())->setName(IMG_FILTER_EMBOSS);
     }
 
     public static function gaussian_blur()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_GAUSSIAN_BLUR);
+        return (new Preset())->setName(IMG_FILTER_GAUSSIAN_BLUR);
     }
 
     public static function selective_blur()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_SELECTIVE_BLUR);
+        return (new Preset())->setName(IMG_FILTER_SELECTIVE_BLUR);
     }
 
     public static function mean_removal()
     {
-        return (new Preset())->setPresetName(IMG_FILTER_MEAN_REMOVAL);
+        return (new Preset())->setName(IMG_FILTER_MEAN_REMOVAL);
     }
 
     public static function pixelate($blockSize, $type = false)
     {
-        return (new Preset())->setPresetName(IMG_FILTER_PIXELATE)->setParamArr([$blockSize, $type]);
+        return (new Preset())->setName(IMG_FILTER_PIXELATE)->setParametters([$blockSize, $type]);
     }
 
     /**
@@ -52,7 +52,7 @@ class PresetFunctions
      */
     public static function smooth($smooth)
     {
-        return (new Preset())->setPresetName(IMG_FILTER_SMOOTH)->setParamArr([$smooth]);
+        return (new Preset())->setName(IMG_FILTER_SMOOTH)->setParametters([$smooth]);
     }
 
     /**
@@ -65,7 +65,7 @@ class PresetFunctions
         if ($brightness < -255 or $brightness > 255) {
             $brightness = 0;
         }
-        return (new Preset())->setPresetName(IMG_FILTER_BRIGHTNESS)->setParamArr([$brightness]);
+        return (new Preset())->setName(IMG_FILTER_BRIGHTNESS)->setParametters([$brightness]);
     }
 
     /**
@@ -79,7 +79,7 @@ class PresetFunctions
         if ($contrast < -100 or $contrast > 100) {
             $contrast = 0;
         }
-        return (new Preset())->setPresetName(IMG_FILTER_CONTRAST)->setParamArr([$contrast]);
+        return (new Preset())->setName(IMG_FILTER_CONTRAST)->setParametters([$contrast]);
     }
 
     /**
@@ -100,6 +100,6 @@ class PresetFunctions
             $blue = 0;
         }
 
-        return (new Preset())->setPresetName(IMG_FILTER_COLORIZE)->setParamArr([$red, $green, $blue]);
+        return (new Preset())->setName(IMG_FILTER_COLORIZE)->setParametters([$red, $green, $blue]);
     }
 }

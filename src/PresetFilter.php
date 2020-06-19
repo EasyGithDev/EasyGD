@@ -38,31 +38,28 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class LookupTable
+class PresetFilter extends Filter
 {
 
-	protected $callbackFunction;
+	protected $preset;
 
-
-	public function create(callable $callbackFunction)
+	public function create($preset)
 	{
-		$this->callbackFunction = $callbackFunction;
+		$this->preset = $preset;
 		return $this;
 	}
 
-	public function setCallbackFunction($callbackFunction)
+	public function process(Image $imgSrc)
 	{
-		$this->callbackFunction = $callbackFunction;
-		return $this;
-	}
 
-	public function getCallbackFunction()
-	{
-		return $this->callbackFunction;
-	}
+		if (is_null($this->preset->getName())) {
+			throw new Exception('Filter name dont be null');
+		}
 
-	public function getType()
-	{
-		return Filter::FILTER_LOOKUPTABLE;
+		$paramArr = array_merge([$imgSrc->getImg(), $this->preset->getName()], $this->preset->getParametters());
+
+		call_user_func_array('imagefilter', $paramArr);
+
+		return $imgSrc;
 	}
 }

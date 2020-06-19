@@ -1,12 +1,21 @@
 <?php
 
 use Easygd\Convolution;
+use Easygd\ConvolutionFilter;
 use Easygd\ConvolutionFunctions;
 use Easygd\Image;
 
 require '../vendor/autoload.php';
 
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
+
+$dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::CONVOLUTION_GAUSSIAN())->process((new Image())->load($stream))->dataSrc();
+
+?>
+<p>
+    <img src="<?php echo $dataSrc ?>">
+</p>
+<?php
 
 
 /***
@@ -16,8 +25,10 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
  */
 $list = ConvolutionFunctions::getConvolutionList();
 foreach ($list as $convolutionName) {
+
     $convolution = call_user_func_array('\Easygd\ConvolutionFunctions::' . $convolutionName, []);
-    $dataSrc = $convolution->process((new Image())->load($stream))->dataSrc();
+    $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
+
 ?>
     <p>
         <?php echo $convolutionName ?>
@@ -27,13 +38,14 @@ foreach ($list as $convolutionName) {
 <?php
 }
 
-$matrix = array(
+$matrix = [
     -1, 7, -1,
     0, 0, 0,
     1, 7, 1
-);
+];
 
-$dataSrc = (new Convolution())->create($matrix)->process((new Image())->load($stream))->dataSrc();
+$convolution = (new Convolution())->create($matrix);;
+$dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
 
 ?>
 <p>
