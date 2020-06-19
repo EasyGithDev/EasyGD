@@ -1,7 +1,7 @@
 EasyGD
 ======
 
-EasyGD - a PHP framework for use GD easier<br/>
+EasyGD is a PHP framework to use GD easier<br/>
 The frame allows you to easily load images from a file, URL or string.<br/>
 After loading the image, you can apply transformations.<br/>
 You can then choose to save the result as a file, either to return a character string, or to send the image directly to the browser.<br/>
