@@ -106,8 +106,7 @@ $text = (new Text())->create('Hello World');
 
 ## Adding text in the images 
 
-
-#### How to add a GD text into an image
+#### How to draw a text into an image
 
 ```php
 (new Image)->create((new Dimension)->create(300, 300), Color::Blue())
@@ -222,8 +221,6 @@ echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 It will return an object Position ...
 
 ----
-
-## Transformations
 
 ## Resizing the images
 
@@ -422,4 +419,4 @@ $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))-
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
