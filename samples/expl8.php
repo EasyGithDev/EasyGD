@@ -1,6 +1,7 @@
 <?php
 
 use Easygd\Convolution;
+use Easygd\ConvolutionFunctions;
 use Easygd\Image;
 
 require '../vendor/autoload.php';
@@ -13,9 +14,9 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to use the convolution filter
  * 
  */
-$list = Convolution::getConvolutionList();
+$list = ConvolutionFunctions::getConvolutionList();
 foreach ($list as $convolutionName) {
-    $convolution = call_user_func_array('\Easygd\Convolution::' . $convolutionName, []);
+    $convolution = call_user_func_array('\Easygd\ConvolutionFunctions::' . $convolutionName, []);
     $dataSrc = $convolution->process((new Image())->load($stream))->dataSrc();
 ?>
     <p>

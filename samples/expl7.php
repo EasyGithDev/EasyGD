@@ -2,6 +2,7 @@
 
 use Easygd\Image;
 use Easygd\Preset;
+use Easygd\PresetFunctions;
 
 require '../vendor/autoload.php';
 
@@ -14,29 +15,29 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
  * 
  */
 
-$preset1 = Preset::PRESET_NEGATE()->process((new Image())->load($stream))->dataSrc();
-$preset2 = Preset::PRESET_GRAYSCALE()->process((new Image())->load($stream))->dataSrc();
-$preset3 = Preset::PRESET_EDGEDETECT()->process((new Image())->load($stream))->dataSrc();
-$preset4 = Preset::PRESET_EMBOSS()->process((new Image())->load($stream))->dataSrc();
-$preset5 = Preset::PRESET_GAUSSIAN_BLUR()->process((new Image())->load($stream))->dataSrc();
-$preset6 = Preset::PRESET_MEAN_REMOVAL()->process((new Image())->load($stream))->dataSrc();
-$preset7 = Preset::PRESET_SELECTIVE_BLUR()->process((new Image())->load($stream))->dataSrc();
+$preset1 = PresetFunctions::negate()->process((new Image())->load($stream))->dataSrc();
+$preset2 = PresetFunctions::grayscale()->process((new Image())->load($stream))->dataSrc();
+$preset3 = PresetFunctions::edgedetect()->process((new Image())->load($stream))->dataSrc();
+$preset4 = PresetFunctions::emboss()->process((new Image())->load($stream))->dataSrc();
+$preset5 = PresetFunctions::gaussian_blur()->process((new Image())->load($stream))->dataSrc();
+$preset6 = PresetFunctions::mean_removal()->process((new Image())->load($stream))->dataSrc();
+$preset7 = PresetFunctions::selective_blur()->process((new Image())->load($stream))->dataSrc();
 
 $blockSize = 3;
 $type = true;
-$preset8 = Preset::PRESET_PIXELATE($blockSize, $type)->process((new Image())->load($stream))->dataSrc();
+$preset8 = PresetFunctions::pixelate($blockSize, $type)->process((new Image())->load($stream))->dataSrc();
 
 $smooth = 100;
-$preset9 = Preset::PRESET_SMOOTH($smooth)->process((new Image())->load($stream))->dataSrc();
+$preset9 = PresetFunctions::smooth($smooth)->process((new Image())->load($stream))->dataSrc();
 
 $contrast = 10;
-$preset10 = Preset::PRESET_CONTRAST($contrast)->process((new Image())->load($stream))->dataSrc();
+$preset10 = PresetFunctions::contrast($contrast)->process((new Image())->load($stream))->dataSrc();
 
 $brightness = 100;
-$preset11 = Preset::PRESET_BRIGHTNESS($brightness)->process((new Image())->load($stream))->dataSrc();
+$preset11 = PresetFunctions::brigthness($brightness)->process((new Image())->load($stream))->dataSrc();
 
 $red = $green = $blue = 128;
-$preset12 = Preset::PRESET_COLORIZE($red, $green, $blue)->process((new Image())->load($stream))->dataSrc();
+$preset12 = PresetFunctions::colorize($red, $green, $blue)->process((new Image())->load($stream))->dataSrc();
 
 ?>
 

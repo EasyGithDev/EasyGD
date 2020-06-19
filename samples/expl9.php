@@ -47,18 +47,3 @@ $lut = (new LookUpTable())->create($closure)->process((new Image())->load($strea
 ?>
 
 <img src="<?php echo $lut ?>">
-
-
-<?php
-
-/***
- * 
- * How to use the filter factory
- * 
- */
-
-//$filter = Filter::create(Filter::FILTER_LOOKUPTABLE, 'Negative');
-//$filter = FilterFactory::create(FilterFactory::FILTER_PRESET, 'PRESET_EMBOSS');
-//$filter = FilterFactory::create(FilterFactory::FILTER_PRESET, 'PRESET_PIXELATE', 3, true);
-//$filter = FilterFactory::create(FilterFactory::FILTER_CONVOLUTION, $matrix);
-//$filter = FilterFactory::create(FilterFactory::FILTER_CONVOLUTION, 'CONVOLUTION_LAPLACIEN_1');
