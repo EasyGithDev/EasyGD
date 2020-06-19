@@ -38,18 +38,18 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class LookUpTable extends Filter
+class LookUpTable 
 {
 
-	private $filterName;
+	private $callbackFilter;
 
 	public function __construct()
 	{
 	}
 
-	public function create($filterName)
+	public function create(callable $callbackFilter)
 	{
-		$this->filterName = $filterName;
+		$this->callbackFilter = $callbackFilter;
 		return $this;
 	}
 
@@ -64,58 +64,10 @@ class LookUpTable extends Filter
 
 		for ($i = 0; $i < imagecolorstotal($im); $i++) {
 			$rgb = imagecolorsforindex($im, $i);
-			$color = call_user_func_array([__CLASS__, $this->filterName], [$rgb]);
+			$color = call_user_func($this->callbackFilter, $rgb);
 			imagecolorset($im, $i, $color[0], $color[1], $color[2]);
 		}
 
 		return $imgSrc;
-	}
-
-	private function LightnessGray($rgb)
-	{
-		//(max(R, G, B) + min(R, G, B)) / 2.
-		$max = max(array_values($rgb));
-		$min = min(array_values($rgb));
-		$gray = round(($max + $min) / 2);
-		return [$gray, $gray, $gray];
-	}
-
-	private function AverageGray($rgb)
-	{
-		//(R + G + B) / 3
-		$gray = round(($rgb['red'] + $rgb['green'] + $rgb['blue']) / 3);
-
-		return [$gray, $gray, $gray];
-	}
-
-	private function LuminosityGray($rgb)
-	{
-		//0.21 R + 0.71 G + 0.07 B.
-		$gray = round(0.299 * $rgb['red'] + 0.587 * $rgb['green'] + 0.114 * $rgb['blue']);
-		return [$gray, $gray, $gray];
-	}
-
-	private function Thresholding($rgb, $threshold = 128)
-	{
-		$r = ($rgb['red'] > $threshold) ? 255 : 0;
-		$g = ($rgb['green'] > $threshold) ? 255 : 0;
-		$b = ($rgb['blue'] > $threshold) ? 255 : 0;
-		return [$r, $g, $b];
-	}
-
-	private function Negative($rgb)
-	{
-		$r = 255 - $rgb['red'];
-		$g = 255 - $rgb['green'];
-		$b = 255 - $rgb['blue'];
-		return [$r, $g, $b];
-	}
-
-	private function Special($rgb)
-	{
-		$r = ($rgb['red'] > 128) ? max($rgb['green'], $rgb['blue']) : min($rgb['green'], $rgb['blue']);
-		$g = ($rgb['green'] > 128) ? max($rgb['red'], $rgb['blue']) : min($rgb['red'], $rgb['blue']);
-		$b = ($rgb['blue'] > 128) ? max($rgb['green'], $rgb['red']) : min($rgb['green'], $rgb['red']);
-		return [$r, $g, $b];
 	}
 }

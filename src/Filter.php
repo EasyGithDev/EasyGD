@@ -58,12 +58,12 @@ abstract class Filter
 				break;
 			case self::FILTER_CONVOLUTION:
 				$matrix = $arg_list[0];
-				return Convolution::create($matrix);
+				return (new Convolution)->create($matrix);
 				break;
 			case self::FILTER_PRESET:
 				if (count($arg_list) == 1) {
 					$presetName = $arg_list[0];
-					return Preset::create($presetName);
+					return (new Preset)->create($presetName);
 				} else {
 					$presetName = array_shift($arg_list);
 					return call_user_func_array(array(__NAMESPACE__ . '\Preset', $presetName), $arg_list);
