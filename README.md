@@ -27,22 +27,28 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 #### How to load and show an image
 
 ```php
-    (new Image())->load($stream)->show();
+(new Image())->load($stream)->show();
 ```	
 
 #### How to load and save an image on disk
 
-    (new Image())->load($stream)->save('php.png');
+```php
+(new Image())->load($stream)->save('php.png');
+```
 
 #### How to load, save and show an image in the same time
 
-    (new Image())->load($stream)->save('php.png')->show();
+```php
+(new Image())->load($stream)->save('php.png')->show();
+```
 
 #### How to make multiple save
 
-    (new Image())->load($stream)->save('php.png')
-    ->setType(IMAGETYPE_GIF)->save('php.gif')
-    ->setType(IMAGETYPE_JPEG)->save('php.jpg');
+```php
+(new Image())->load($stream)->save('php.png')
+->setType(IMAGETYPE_GIF)->save('php.gif')
+->setType(IMAGETYPE_JPEG)->save('php.jpg');
+```
 
 ----
 
@@ -51,14 +57,17 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 You can use the data src property to render the image quickly in the HTML tag.<br />
 Use it only on small image, if you dont want that your html page becommes to big. 
 
-```
+```php
 <img src="<?php echo (new Image())->load($stream)->dataSrc() ?>" />
 ```
 
 # The other types
 
 #### Define a dimension
-    $dimension = (new Dimension)->create(300, 300);
+
+```php
+$dimension = (new Dimension)->create(300, 300);
+```
 
 #### Define a color
     // Create a color with hexadecimal code
