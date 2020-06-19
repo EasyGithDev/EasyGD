@@ -20,14 +20,16 @@ composer require easygithdev/easygd:master-dev
 In all the examples that follow, the $stream variable is either a URL or a file or a character string.
 For example, you can use the following URL:
 
-```
+```php
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 ```
 
 #### How to load and show an image
 
+```php
     (new Image())->load($stream)->show();
-	
+```	
+
 #### How to load and save an image on disk
 
     (new Image())->load($stream)->save('php.png');
