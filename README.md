@@ -17,7 +17,7 @@ composer require easygithdev/easygd:master-dev
 
 # The basic stuff 
 
-In all the examples that follow, the $stream variable is either a URL or a file or a character string.
+In all the examples that follow, the $stream variable is either a URL or a file or a character string.<br/>
 For example, you can use the following URL:
 
 ```php
@@ -182,41 +182,41 @@ $text = (new Text())->create('Hello World');
 #### How to get the information about an image
 
 ```php
-    $infos = (new Image())->load($stream)->getInfos();
-    echo '<pre>', $infos, '</pre>';
+$infos = (new Image())->load($stream)->getInfos();
+echo '<pre>', $infos, '</pre>';
 
-    $infos = (new Image())->load($stream)->getInfos()->toArray();
-    echo '<pre>', print_r($infos, true), '</pre>'; 
+$infos = (new Image())->load($stream)->getInfos()->toArray();
+echo '<pre>', print_r($infos, true), '</pre>'; 
 ```
 
 #### How to get / add the IPTC tag
 
 ```php
-    $fileDst = __DIR__ . '/iptc.jpg';
-    $iptc = $imageInfo->getIpct();
-    $iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
-	    ->addTag(Easy\Iptc::IPTC_COUNTRY, 'FRANCE')
-	    ->addTag(Easy\Iptc::IPTC_CREATED_DATE, '2012-03-01')
-	    ->addTag(Easy\Iptc::IPTC_CATEGORY, 'JOURNEY');
+$fileDst = __DIR__ . '/iptc.jpg';
+$iptc = $imageInfo->getIpct();
+$iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
+    ->addTag(Easy\Iptc::IPTC_COUNTRY, 'FRANCE')
+    ->addTag(Easy\Iptc::IPTC_CREATED_DATE, '2012-03-01')
+    ->addTag(Easy\Iptc::IPTC_CATEGORY, 'JOURNEY');
 
-    if ($iptc->write($fileSrc, $fileDst) === false)
-	throw new Exception('Error to write IPTC');
+if ($iptc->write($fileSrc, $fileDst) === false)
+throw new Exception('Error to write IPTC');
 ```
 
 #### How to have the preseted positions
 
 ```php
-    $image = (new Image())->load($stream);
+$image = (new Image())->load($stream);
 
-    echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
-    echo 'TOP_CENTER:', $image->topCenter(), '<br/>';
-    echo 'TOP_RIGHT:', $image->topRight(), '<br/>';
-    echo 'MIDDLE_LEFT', $image->middleLeft(), '<br/>';
-    echo 'MIDDLE_CENTER', $image->middleCenter(), '<br/>';
-    echo 'MIDDLE_RIGHT', $image->middleRight(), '<br/>';
-    echo 'BOTTOM_LEFT', $image->bottomLeft(), '<br/>';
-    echo 'BOTTOM_CENTER', $image->bottomeCenter(), '<br/>';
-    echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
+echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
+echo 'TOP_CENTER:', $image->topCenter(), '<br/>';
+echo 'TOP_RIGHT:', $image->topRight(), '<br/>';
+echo 'MIDDLE_LEFT', $image->middleLeft(), '<br/>';
+echo 'MIDDLE_CENTER', $image->middleCenter(), '<br/>';
+echo 'MIDDLE_RIGHT', $image->middleRight(), '<br/>';
+echo 'BOTTOM_LEFT', $image->bottomLeft(), '<br/>';
+echo 'BOTTOM_CENTER', $image->bottomeCenter(), '<br/>';
+echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 ```
 
 It will return an object Position ...
@@ -230,37 +230,37 @@ It will return an object Position ...
 #### How to resize an image
 
 ```php
-    (new Image)->load($stream)
-    ->resizeByPercent(0.5)
-    ->show();
+(new Image)->load($stream)
+->resizeByPercent(0.5)
+->show();
 ```
 
 #### How to resize an image by fixing the width or height
 
 ```php
 (new Image)->load($stream)
-    ->resizeByWidth(50)
-    ->show();
+->resizeByWidth(50)
+->show();
 
-    (new Image)->load($stream)
-    ->resizeByHeight(30)
-    ->show();
+(new Image)->load($stream)
+->resizeByHeight(30)
+->show();
 ```
 
 #### How to safetly resize an image 
 
 ```php
 (new Image)->load($stream)
-    ->resizeAuto((new Dimension())->create(300, 200))
-    ->show();
+->resizeAuto((new Dimension())->create(300, 200))
+->show();
 ```
 
 #### How to make a thumbnail
 
-    ```php
-    (new Image)->load($stream)
-    ->thumbnail(140, Color::Silver())
-    ->show();
+```php
+(new Image)->load($stream)
+->thumbnail(140, Color::Silver())
+->show();
 ```
 
 ## Croping and Rotation
@@ -268,17 +268,17 @@ It will return an object Position ...
 #### How to crop an image
 
 ```php
-    (new Image)->load($stream)
-    ->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
-    ->show();
+(new Image)->load($stream)
+->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
+->show();
 ```
 
 #### How to make a rotation
 
 ```php
 (new Image)->load($stream)
-    ->rotate(90)
-    ->show();
+->rotate(90)
+->show();
 ```
 
 ## Merging two images
@@ -286,11 +286,12 @@ It will return an object Position ...
 #### How to insert a logo into an image
 
 ```php
-    $logo = (new Image)->load('http://www.php.net/images/logos/php-med-trans-light.gif')
-        ->resizeByPercent(0.6);
-    $src8 = (new Image)->load('http://static.php.net/www.php.net/images/logos/php-med-trans.png')
-        ->inlay($logo, (new Position)->create(30, 20), 100)
-        ->show();
+$logo = (new Image)->load('http://www.php.net/images/logos/php-med-trans-light.gif')
+->resizeByPercent(0.6);
+
+(new Image)->load('http://static.php.net/www.php.net/images/logos/php-med-trans.png')
+->inlay($logo, (new Position)->create(30, 20), 100)
+->show();
 ```
 
 ## Make thumbnails
@@ -342,9 +343,9 @@ The factory, use the three types of filters :
 You ca use this way to call, preset/convolution/lookuptable filters like this :
 
 ```php
-    $src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
-    $src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
-    $src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
+$src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
+$src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
+$src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
 ```
 
 ## Using the preset filter
@@ -367,7 +368,7 @@ You can use :
 #### How to create and apply a preset filter
 
 ```php
-    (new PresetFilter())->create(PresetFunctions::negate())->process((new Image())->load($stream))->show();
+(new PresetFilter())->create(PresetFunctions::negate())->process((new Image())->load($stream))->show();
 ```
 
 ## Using the convolution filter
@@ -384,13 +385,13 @@ You can use preseted convolution or your own convolution filters.
 
 ```php
 $matrix = [
-        -1, 7, -1,
-        0, 0, 0,
-        1, 7, 1
-    ];
+-1, 7, -1,
+0, 0, 0,
+1, 7, 1
+];
 
-    $convolution = (new Convolution())->create($matrix);;
-    $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
+$convolution = (new Convolution())->create($matrix);;
+$dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
 ```
 
 ## Using the lookuptable filter
@@ -400,21 +401,21 @@ You can use preseted lookuptable or your own lookuptable filters.
 #### How to use a preseted lookuptable
 
 ```php
-    $closure = \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
-    (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+$closure = \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
+(new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 ```
 
 #### To create a new lookuptable filter, you must create a callback method like this :
 
 ```php
-    function personnal($rgb)
-    {
-        $r = ($rgb['red'] > 128) ? 255 : 128;
-        $g = ($rgb['green'] > 128) ? 255 : 128;
-        $b = ($rgb['blue'] > 128) ? 255 : 128;
-        return [$r, $g, $b];
-    }
+function personnal($rgb)
+{
+$r = ($rgb['red'] > 128) ? 255 : 128;
+$g = ($rgb['green'] > 128) ? 255 : 128;
+$b = ($rgb['blue'] > 128) ? 255 : 128;
+return [$r, $g, $b];
+}
 
-    $closure = \Closure::fromCallable('personnal');
-    $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+$closure = \Closure::fromCallable('personnal');
+$lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 ```
