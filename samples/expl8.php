@@ -2,12 +2,10 @@
 
 use Easygd\Convolution;
 use Easygd\Image;
-use Easygd\LookUpTable;
-use Easygd\Preset;
 
 require '../vendor/autoload.php';
 
-$filename = 'https://www.php.net/images/logos/new-php-logo.png';
+$stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 
 /***
@@ -18,7 +16,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
 $list = Convolution::getConvolutionList();
 foreach ($list as $convolutionName) {
     $convolution = call_user_func_array('\Easygd\Convolution::' . $convolutionName, []);
-    $dataSrc = $convolution->process((new Image())->load($filename))->dataSrc();
+    $dataSrc = $convolution->process((new Image())->load($stream))->dataSrc();
 ?>
     <p>
         <?php echo $convolutionName ?>
@@ -34,7 +32,7 @@ $matrix = array(
     1, 7, 1
 );
 
-$dataSrc = (new Convolution())->create($matrix)->process((new Image())->load($filename))->dataSrc();
+$dataSrc = (new Convolution())->create($matrix)->process((new Image())->load($stream))->dataSrc();
 
 ?>
 <p>

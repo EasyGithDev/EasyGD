@@ -145,18 +145,11 @@ Use it only on small image, if you dont want that your html page becommes to big
 # Get the informations
 
 #### How to get the information about an image
-    $imageInfo = (new Image())->load($stream)->getInfos();
-    echo '<pre>', $imageInfo, '</pre>';
+    $infos = (new Image())->load($stream)->getInfos();
+    echo '<pre>', $infos, '</pre>';
 
-
-    filename : https://www.php.net/images/logos/new-php-logo.png 
-	width : 200 
-	height : 106 
-	type : 3 
-	img : width="200" height="106" 
-	mime : image/png 
-	channels :  
-	bits : 8 
+    $infos = (new Image())->load($stream)->getInfos()->toArray();
+    echo '<pre>', print_r($infos, true), '</pre>'; 
 
 
 #### How to get / add the IPTC tag

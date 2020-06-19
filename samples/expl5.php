@@ -8,16 +8,16 @@ use Easygd\Image;
 use Easygd\Position;
 
 
-$filename = 'http://www.php.net/images/logos/php-med-trans.png';
+$stream = 'http://www.php.net/images/logos/php-med-trans.png';
 
-$src0 = (new Image)->load($filename)->dataSrc();
+$src0 = (new Image)->load($stream)->dataSrc();
 
 /*
  * 
  * How to resize an image
  * 
  */
-$src1 = (new Image)->load($filename)
+$src1 = (new Image)->load($stream)
     ->resizeByPercent(0.5)
     ->dataSrc();
 
@@ -28,7 +28,7 @@ $src1 = (new Image)->load($filename)
  * How to resize an image by fixing the width
  * 
  */
-$src2 = (new Image)->load($filename)
+$src2 = (new Image)->load($stream)
     ->resizeByWidth(50)
     ->dataSrc();
 
@@ -37,7 +37,7 @@ $src2 = (new Image)->load($filename)
  * How to resize an image by fixing the height
  * 
  */
-$src3 = (new Image)->load($filename)
+$src3 = (new Image)->load($stream)
     ->resizeByHeight(30)
     ->dataSrc();
 
@@ -46,7 +46,7 @@ $src3 = (new Image)->load($filename)
  * How to safetly resize an image 
  * 
  */
-$src4 = (new Image)->load($filename)
+$src4 = (new Image)->load($stream)
     ->resizeAuto((new Dimension())->create(300, 200))
     ->dataSrc();
 
@@ -55,8 +55,8 @@ $src4 = (new Image)->load($filename)
  * How to crop an image
  * Original script : http://www.php.net/manual/en/function.imagecopy.php
  */
-$filename = 'http://static.php.net/www.php.net/images/php.gif';
-$src5 = (new Image)->load($filename)
+$stream = 'http://static.php.net/www.php.net/images/php.gif';
+$src5 = (new Image)->load($stream)
     ->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
     ->dataSrc();
 
@@ -65,7 +65,7 @@ $src5 = (new Image)->load($filename)
  * How to make a thumbnail
  * 
  */
-$src6 = (new Image)->load($filename)
+$src6 = (new Image)->load($stream)
     ->thumbnail(140, Color::Silver())
     ->dataSrc();
 
@@ -75,7 +75,7 @@ $src6 = (new Image)->load($filename)
  * How to make a rotation
  * 
  */
-$src7 = (new Image)->load($filename)
+$src7 = (new Image)->load($stream)
     ->rotate(90)
     ->dataSrc();
 

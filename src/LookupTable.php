@@ -38,7 +38,7 @@ namespace Easygd;
  * @author  Florent Brusciano
  * @since   1.0.0
  */
-class LookUpTable 
+class LookUpTable
 {
 
 	private $callbackFilter;

@@ -2,10 +2,17 @@
 
 require '../vendor/autoload.php';
 
-use Easygd\Color;
 use Easygd\Image;
 
-$filename = 'https://www.php.net/images/logos/new-php-logo.png';
+/*
+ * 
+ * Choose your stream type : file, URL or base64 string
+ * 
+ */
+
+$stream = '[your assets path]/new-php-logo.png';
+$stream = 'data:image/png;base64,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';
+$stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 /*
  * 
@@ -13,21 +20,21 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * 
  */
 
-// (new Image())->load($filename)->show();
+(new Image())->load($stream)->show();
 
 /*
  * 
  * How to load, change the mime type and show an image
  * 
  */
-// (new Image())->load($filename)->setType(IMAGETYPE_PNG)->show();
+// (new Image())->load($stream)->setType(IMAGETYPE_PNG)->show();
 
 /*
  * 
  * How to test, load, and show an image
  * 
  */
-// if (($image = (new Image())->load($filename)) !== FALSE) {
+// if (($image = (new Image())->load($stream)) !== FALSE) {
 //     $image->show();
 // }
 
@@ -39,7 +46,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to turn off the http headers output
  * 
  */
-// (new Image())->load($filename)->show(FALSE);
+// (new Image())->load($stream)->show(FALSE);
 
 
 /*
@@ -47,7 +54,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to load and save an image
  * 
  */
-// (new Image())->load($filename)->save('php.png');
+// (new Image())->load($stream)->save('php.png');
 
 
 /*
@@ -55,7 +62,7 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to load and convert an image
  * 
  */
-// (new Image())->load($filename)->setType(IMAGETYPE_GIF)->save('php.gif');
+// (new Image())->load($stream)->setType(IMAGETYPE_GIF)->save('php.gif');
 
 
 /*
@@ -63,14 +70,15 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to manage the image quality
  * 
  */
-// (new Image())->load($filename)->setType(IMAGETYPE_JPEG)->save('php.jpg', 25);
+// (new Image())->load($stream)->setType(IMAGETYPE_JPEG)->save('php.jpg', 25);
+// (new Image())->load($stream)->setType(IMAGETYPE_WEBP)->save('php.webp', 25);
 
 /*
  * 
  * How to load, save and show an image in the same time
  * 
  */
-// (new Image())->load($filename)->save('php.png')->show();
+// (new Image())->load($stream)->save('php.png')->show();
 
 
 /*
@@ -78,4 +86,4 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  * How to make multiple save
  * 
  */
-// (new Image())->load($filename)->save('php.png')->setType(IMAGETYPE_GIF)->save('php.gif')->setType(IMAGETYPE_JPEG)->save('php.jpg');
+// (new Image())->load($stream)->save('php.png')->setType(IMAGETYPE_GIF)->save('php.gif')->setType(IMAGETYPE_JPEG)->save('php.jpg');

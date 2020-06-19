@@ -222,7 +222,7 @@ class Image
 
 	public function getInfos()
 	{
-		return (new ImageInfo)->create($this->stream);
+		return (new ImageInfo())->create($this->stream);
 	}
 
 	public function getWidth()

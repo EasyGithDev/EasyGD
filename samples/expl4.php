@@ -2,31 +2,27 @@
 
 require '../vendor/autoload.php';
 
-use Easygd\Color;
 use Easygd\Image;
-use Easygd\Iptc;
-use Easygd\Position;
-use Easygd\Text;
 
-$filename = 'https://www.php.net/images/logos/new-php-logo.png';
+
+$stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 /*
  * 
- * How to load an image for data src
- * Use it only on small image, if you dont want that your html page becommes to big 
+ * how to get the information about an image
  */
-?>
+$infos = (new Image())->load($stream)->getInfos();
+echo '<pre>', $infos, '</pre>';
 
-<img src="<?php echo (new Image())->load($filename)->dataSrc() ?>" />
-
-<?php
+$infos = (new Image())->load($stream)->getInfos()->toArray();
+echo '<pre>', print_r($infos, true), '</pre>';
 
 /*
  * 
  * how to get the standard positions
  */
 
-$image = (new Image())->load($filename);
+$image = (new Image())->load($stream);
 
 echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
 echo 'TOP_CENTER:', $image->topCenter(), '<br/>';
@@ -39,41 +35,12 @@ echo 'BOTTOM_CENTER', $image->bottomeCenter(), '<br/>';
 echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 
 /*
- * It's VERY DANGEROUS to use this function in production. 
- * 
- * The src function use a temporary file to send the data.
- * Use only this function for testing your application.
- * 
- */
-
-$image = (new Image())->load($filename)
-	->addText(
-		(new Text())->create('GD & PHP')
-			->setColor(Color::Silver())
-			->setSize(4)
-			->setPosition((new Position)->create(70, 85))
-	);
-
-?>
-
-<img src="<?php echo $image->dataSrc(); ?>">
-
-<?php
-
-/*
- * 
- * how to get the information about an image
- */
-$fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
-$fileDst = __DIR__ . '/iptc.jpg';
-
-$imageInfo = (new Image())->load($filename)->getInfos();
-echo '<pre>', $imageInfo, '</pre>';
-
-/*
  * 
  * how to get / add the ipct tag
  */
+
+// $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
+// $fileDst = __DIR__ . '/iptc.jpg';
 
 // $iptc = $imageInfo->getIpct();
 // $iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
@@ -87,5 +54,3 @@ echo '<pre>', $imageInfo, '</pre>';
 // $imageInfo = (new Image())->getInfos($fileDst);
 
 // echo '<pre>', $imageInfo, '</pre>';
-
-?>

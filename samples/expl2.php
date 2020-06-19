@@ -23,8 +23,10 @@ $dimension = (new Dimension)->create(300, 300);
 
 // Create a color with hexadecimal code
 $color = (new Color())->create('#83d01e');
+
 // How to create a color from a preset
 $color = (new Color())->create(Color::Yellow);
+
 // How to create a preseted color 
 $color = Color::Yellow();
 

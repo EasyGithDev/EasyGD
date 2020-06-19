@@ -4,11 +4,9 @@ require '../vendor/autoload.php';
 
 use Easygd\Color;
 use Easygd\Dimension;
-use Easygd\FreeType;
 use Easygd\Image;
 use Easygd\Position;
 use Easygd\Text;
-use Easygd\TrueType;
 
 /*
  * 

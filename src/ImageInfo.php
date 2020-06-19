@@ -90,23 +90,7 @@ class ImageInfo
 
 	public function toArray()
 	{
-
-		$array = array();
-
-		$array['filename'] = $this->filename;
-		$array['width'] = $this->width;
-		$array['height'] = $this->height;
-		$array['type'] = $this->type;
-		$array['img'] = $this->img;
-		$array['mime'] = $this->mime;
-		$array['channels'] = $this->channels;
-		$array['bits'] = $this->bits;
-
-		if (!is_null($this->iptc)) {
-			$array = array_merge($array, $this->iptc->toArray());
-		}
-
-		return $array;
+		return (get_object_vars($this));
 	}
 
 	public function getFilename()
