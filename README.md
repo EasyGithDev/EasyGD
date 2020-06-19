@@ -6,7 +6,7 @@ The frame allows you to easily load images from a file, URL or string.<br/>
 After loading the image, you can apply transformations.<br/>
 You can then choose to save the result as a file, either to return a character string, or to send the image directly to the browser.<br/>
 
-# Installing
+## Installing
 
 Installation is quite typical - with composer:
 
@@ -15,7 +15,7 @@ composer require easygithdev/easygd:master-dev
 ```
 
 
-# The basic stuff 
+## The basic stuff 
 
 In all the examples that follow, the $stream variable is either a URL or a file or a character string.<br/>
 For example, you can use the following URL:
@@ -52,7 +52,7 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 ----
 
-# Include the image in the HTML
+## Include the image in the HTML
 
 You can use the data src property to render the image quickly in the HTML tag.<br />
 Use it only on small image, if you dont want that your html page becommes to big. 
@@ -61,7 +61,7 @@ Use it only on small image, if you dont want that your html page becommes to big
 <img src="<?php echo (new Image())->load($stream)->dataSrc() ?>" />
 ```
 
-# The other types
+## The other types
 
 #### Define a dimension
 
@@ -94,7 +94,7 @@ $position = (new Position)->create(200, 125);
 $text = (new Text())->create('Hello World');
 ```
 
-# Create your own images
+## Create your own images
 
 #### How to create a truetype image
 
@@ -104,7 +104,7 @@ $text = (new Text())->create('Hello World');
 
 ----
 
-# Adding text in the images 
+## Adding text in the images 
 
 
 #### How to add a GD text into an image
@@ -177,7 +177,7 @@ $text = (new Text())->create('Hello World');
 
 ----
 
-# Get the informations
+## Get the informations
 
 #### How to get the information about an image
 
@@ -223,7 +223,7 @@ It will return an object Position ...
 
 ----
 
-# Transformations
+## Transformations
 
 ## Resizing the images
 
@@ -330,9 +330,9 @@ foreach (new ImageFilterIterator(new DirectoryIterator($path)) as $file) {
 
 ----
 
-# Filters
+## Filters
 
-## Using all the filters with the factory
+#### Using all the filters with the factory
 
 You can use filters with a common syntax.
 The factory, use the three types of filters :
@@ -348,7 +348,7 @@ $src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dat
 $src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
 ```
 
-## Using the preset filter
+#### Using the preset filter
 
 You can use : 
 
@@ -371,7 +371,7 @@ You can use :
 (new PresetFilter())->create(PresetFunctions::negate())->process((new Image())->load($stream))->show();
 ```
 
-## Using the convolution filter
+#### Using the convolution filter
 
 You can use preseted convolution or your own convolution filters.
 
@@ -394,7 +394,7 @@ $convolution = (new Convolution())->create($matrix);;
 $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
 ```
 
-## Using the lookuptable filter
+#### Using the lookuptable filter
 
 You can use preseted lookuptable or your own lookuptable filters.
 
@@ -419,3 +419,7 @@ return [$r, $g, $b];
 $closure = \Closure::fromCallable('personnal');
 $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
