@@ -1,27 +1,44 @@
 EasyGD
 ======
 
-EasyGD - a PHP framework for use GD easier
+EasyGD - a PHP framework for use GD easier<br/>
+The frame allows you to easily load images from a file, URL or string.<br/>
+After loading the image, you can apply transformations.<br/>
+You can then choose to save the result as a file, either to return a character string, or to send the image directly to the browser.<br/>
+
+# Installing
+
+Installation is quite typical - with composer:
+
+```
+composer require easygithdev/imgmetaeasygd:master-dev
+```
 
 
 # The basic stuff 
 
+In all the examples that follow, the $stream variable is either a URL or a file or a character string.
+For example, you can use the following URL:
+
+```
+$stream = 'https://www.php.net/images/logos/new-php-logo.png';
+```
 
 #### How to load and show an image
 
-    (new Image())->load($filename)->show();
+    (new Image())->load($stream)->show();
 	
 #### How to load and save an image on disk
 
-    (new Image())->load($filename)->save('php.png');
+    (new Image())->load($stream)->save('php.png');
 
 #### How to load, save and show an image in the same time
 
-    (new Image())->load($filename)->save('php.png')->show();
+    (new Image())->load($stream)->save('php.png')->show();
 
 #### How to make multiple save
 
-    (new Image())->load($filename)->save('php.png')
+    (new Image())->load($stream)->save('php.png')
     ->setType(IMAGETYPE_GIF)->save('php.gif')
     ->setType(IMAGETYPE_JPEG)->save('php.jpg');
 
@@ -33,7 +50,7 @@ You can use the data src property to render the image quickly in the HTML tag.<b
 Use it only on small image, if you dont want that your html page becommes to big. 
 
 ```
-<img src="<?php echo (new Image())->load($filename)->dataSrc() ?>" />
+<img src="<?php echo (new Image())->load($stream)->dataSrc() ?>" />
 ```
 
 # The other types
@@ -128,7 +145,7 @@ Use it only on small image, if you dont want that your html page becommes to big
 # Get the informations
 
 #### How to get the information about an image
-    $imageInfo = (new Image())->load($filename)->getInfos();
+    $imageInfo = (new Image())->load($stream)->getInfos();
     echo '<pre>', $imageInfo, '</pre>';
 
 
@@ -155,7 +172,7 @@ Use it only on small image, if you dont want that your html page becommes to big
 
 #### How to have the preseted positions
 
-    $image = (new Image())->load($filename);
+    $image = (new Image())->load($stream);
 
     echo 'TOP_LEFT:', $image->topLeft(), '<br/>';
     echo 'TOP_CENTER:', $image->topCenter(), '<br/>';
@@ -176,38 +193,38 @@ It will return an object Position ...
 ## Resizing the images
 
 #### How to resize an image
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->resizeByPercent(0.5)
     ->show();
 
 #### How to resize an image by fixing the width or height
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->resizeByWidth(50)
     ->show();
 
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->resizeByHeight(30)
     ->show();
 
 #### How to safetly resize an image 
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->resizeAuto((new Dimension())->create(300, 200))
     ->show();
 
 #### How to make a thumbnail
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->thumbnail(140, Color::Silver())
     ->show();
 
 ## Croping and Rotation
 
 #### How to crop an image
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
     ->show();
 
 #### How to make a rotation
-    (new Image)->load($filename)
+    (new Image)->load($stream)
     ->rotate(90)
     ->show();
 
@@ -277,14 +294,14 @@ You can use :
 + PRESET_COLORIZE
 
 #### How to create and apply a preset filter
-    Preset::PRESET_NEGATE()->process((new Image())->load($filename))->show();
+    Preset::PRESET_NEGATE()->process((new Image())->load($stream))->show();
 
 ## Using the convolution filter
 
 You can use preseted convolution or your own convolution filters.
 
 #### How to use a preseted convolution
-    Convolution::CONVOLUTION_LAPLACIEN_1()->process((new Image())->load($filename))->show();
+    Convolution::CONVOLUTION_LAPLACIEN_1()->process((new Image())->load($stream))->show();
 
 #### How to use your own convolution
     $matrix = array(-1, 7, -1,
@@ -292,26 +309,29 @@ You can use preseted convolution or your own convolution filters.
     1, 7, 1
     );
 
-    (new Convolution())->create($matrix)->process((new Image())->load($filename))->show();
+    (new Convolution())->create($matrix)->process((new Image())->load($stream))->show();
 
 ## Using the lookuptable filter
 
 You can use preseted lookuptable or your own lookuptable filters.
 
 #### How to use a preseted lookuptable
-    (new LookUpTable())->create('LightnessGray')->process((new Image())->load($filename))->show();
+
+    $closure = \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
+    (new LookUpTable())->create($closure)->process((new Image())->load($stream))->show();
 
 #### To create a new lookuptable filter, you must create a callback method like this :
 
-    private function Special($rgb) {
-	$r = ($rgb['red'] > 128) ? max($rgb['green'], $rgb['blue']) : min($rgb['green'], $rgb['blue']);
-	$g = ($rgb['green'] > 128) ? max($rgb['red'], $rgb['blue']) : min($rgb['red'], $rgb['blue']);
-	$b = ($rgb['blue'] > 128) ? max($rgb['green'], $rgb['red']) : min($rgb['green'], $rgb['red']);
-	return array($r, $g, $b);
+    function personnal($rgb)
+    {
+        $r = ($rgb['red'] > 128) ? 255 : 128;
+        $g = ($rgb['green'] > 128) ? 255 : 128;
+        $b = ($rgb['blue'] > 128) ? 255 : 128;
+        return [$r, $g, $b];
     }
 
-    $filter = \Easy\LookUpTable::create('Special');
-    $filter->process($image)->show();
+    $closure = \Closure::fromCallable('personnal');
+    $lut = (new LookUpTable())->create($closure)->process((new Image())->load($stream))->dataSrc();
     
 ## Using all the filters with the factory
 

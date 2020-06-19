@@ -7,7 +7,7 @@ use Easygd\LookupTableFunctions;
 
 require '../vendor/autoload.php';
 
-$filename = 'https://www.php.net/images/logos/new-php-logo.png';
+$stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 /***
  * 
@@ -25,7 +25,7 @@ $closures = [
 ];
 
 foreach ($closures as $closure) {
-    $lut = (new LookUpTable())->create($closure)->process((new Image())->load($filename))->dataSrc();
+    $lut = (new LookUpTable())->create($closure)->process((new Image())->load($stream))->dataSrc();
 ?>
 
     <img src="<?php echo $lut ?>">
@@ -33,6 +33,24 @@ foreach ($closures as $closure) {
 
 <?php
 }
+
+function personnal($rgb)
+{
+    $r = ($rgb['red'] > 128) ? 255 : 128;
+    $g = ($rgb['green'] > 128) ? 255 : 128;
+    $b = ($rgb['blue'] > 128) ? 255 : 128;
+    return [$r, $g, $b];
+}
+
+$closure = \Closure::fromCallable('personnal');
+$lut = (new LookUpTable())->create($closure)->process((new Image())->load($stream))->dataSrc();
+?>
+
+<img src="<?php echo $lut ?>">
+
+
+<?php
+
 /***
  * 
  * How to use the filter factory
