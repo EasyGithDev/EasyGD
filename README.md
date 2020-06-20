@@ -11,7 +11,7 @@ You can then choose to save the result as a file, either to return a character s
 Installation is quite typical - with composer:
 
 ```
-composer require easygithdev/easygd:master-dev
+composer require easygithdev/easygd
 ```
 
 
