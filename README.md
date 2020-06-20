@@ -340,9 +340,14 @@ The factory, use the three types of filters :
 You ca use this way to call, preset/convolution/lookuptable filters like this :
 
 ```php
+// Preset filters
 $src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
-$src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
-$src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
+
+// Convolution filters
+$src2 = Filter::emboss()->process((new Image())->load($stream))->dataSrc();
+
+// LookupTable filters
+$src3 = Filter::thresholding()->process((new Image())->load($stream))->dataSrc();
 ```
 
 #### Using the preset filter

@@ -42,9 +42,6 @@ class ConvolutionFilter extends Filter
 {
 	protected $convolution;
 
-	public function __construct()
-	{
-	}
 
 	public function create($convolution)
 	{

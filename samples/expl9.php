@@ -16,20 +16,17 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
  * 
  */
 
-$closures = [
-    \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
-    \Closure::fromCallable([new LookupTableFunctions(), 'AverageGray']),
-    \Closure::fromCallable([new LookupTableFunctions(), 'LuminosityGray']),
-    \Closure::fromCallable([new LookupTableFunctions(), 'Thresholding']),
-    \Closure::fromCallable([new LookupTableFunctions(), 'Negative']),
-    \Closure::fromCallable([new LookupTableFunctions(), 'Special']),
-];
-
-foreach ($closures as $closure) {
+foreach (get_class_methods(LookupTableFunctions::class) as $name) {
+    
+    $closure = \Closure::fromCallable([new LookupTableFunctions(), $name]);
     $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
 ?>
 
-    <img src="<?php echo $lut ?>">
+    <p>
+        <?php echo $name ?>
+        <img src="<?php echo $lut ?>">
+    </p>
+
 
 
 <?php

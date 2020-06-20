@@ -1,5 +1,6 @@
 <?php
 
+use Easygd\ConvolutionFunctions;
 use Easygd\Filter;
 use Easygd\Image;
 
@@ -13,9 +14,14 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
  * 
  */
 
+// Preset filters
 $src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
-$src2 = Filter::CONVOLUTION_EMBOSS()->process((new Image())->load($stream))->dataSrc();
-$src3 = Filter::Thresholding()->process((new Image())->load($stream))->dataSrc();
+
+// Convolution filters
+$src2 = Filter::emboss()->process((new Image())->load($stream))->dataSrc();
+
+// LookupTable filters
+$src3 = Filter::thresholding()->process((new Image())->load($stream))->dataSrc();
 
 ?>
 <img src="<?php echo $src1 ?>">

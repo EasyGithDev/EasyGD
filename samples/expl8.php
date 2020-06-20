@@ -9,7 +9,7 @@ require '../vendor/autoload.php';
 
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
-$dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::CONVOLUTION_GAUSSIAN())->process((new Image())->load($stream))->dataSrc();
+$dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::gaussian())->process((new Image())->load($stream))->dataSrc();
 
 ?>
 <p>
@@ -18,20 +18,15 @@ $dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::CONVOLUTION_G
 <?php
 
 
-/***
- * 
- * How to use the convolution filter
- * 
- */
-$list = ConvolutionFunctions::getConvolutionList();
-foreach ($list as $convolutionName) {
+// All convolution
+foreach (get_class_methods(ConvolutionFunctions::class) as $name) {
 
-    $convolution = call_user_func_array('\Easygd\ConvolutionFunctions::' . $convolutionName, []);
+    $convolution = ConvolutionFunctions::$name();
     $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
 
 ?>
     <p>
-        <?php echo $convolutionName ?>
+        <?php echo $name ?>
         <img src="<?php echo $dataSrc ?>">
     </p>
 

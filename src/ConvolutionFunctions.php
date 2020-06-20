@@ -140,83 +140,77 @@ class ConvolutionFunctions
         -1, -1, -1
     );
 
-    public static function getConvolutionList()
-    {
-        $reflection = new \ReflectionClass(__CLASS__);
-        $staticProperties = $reflection->getStaticProperties();
-        return array_keys($staticProperties);
-    }
-
-    public static function CONVOLUTION_IDENTITY()
+    public static function identity()
     {
         return (new Convolution())->create(self::$CONVOLUTION_IDENTITY);
     }
 
     // Contraste (Sharpen)
-    public static function CONVOLUTION_SHARPEN_1()
+    public static function sharpen_1()
     {
         return (new Convolution())->create(self::$CONVOLUTION_SHARPEN_1);
     }
 
-    public static function CONVOLUTION_SHARPEN_2()
+    public static function sharpen_2()
     {
         return (new Convolution())->create(self::$CONVOLUTION_SHARPEN_2);
     }
 
     // Border detection (Edge)
-    public static function CONVOLUTION_DETECTION_EDGES()
+    public static function detection_edges()
     {
         return (new Convolution())->create(self::$CONVOLUTION_DETECTION_EDGES);
     }
 
-    public static function CONVOLUTION_FIND_EDGES_1()
+    public static function find_edges_1()
     {
         return (new Convolution())->create(self::$CONVOLUTION_FIND_EDGES_1);
     }
 
-    public static function CONVOLUTION_FIND_EDGES_2()
+    public static function find_edges_2()
     {
         return (new Convolution())->create(self::$CONVOLUTION_FIND_EDGES_2);
     }
 
-    public static function CONVOLUTION_FIND_EDGES_3()
+    public static function find_edges_3()
     {
         return (new Convolution())->create(self::$CONVOLUTION_FIND_EDGES_3);
     }
 
     // Median Blur
-    public static function CONVOLUTION_BLUR()
+    public static function blur()
     {
         return (new Convolution())->create(self::$CONVOLUTION_BLUR);
     }
 
     // Gaussian Blur
-    public static function CONVOLUTION_GAUSSIAN()
+    public static function gaussian()
     {
         return (new Convolution())->create(self::$CONVOLUTION_GAUSSIAN);
     }
 
-    public static function CONVOLUTION_EMBOSS()
+    public static function emboss()
     {
         return (new Convolution())->create(self::$CONVOLUTION_EMBOSS);
     }
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES_1()
+
+    public static function enhancement_edges_1()
     {
         return (new Convolution())->create(self::$CONVOLUTION_ENHANCEMENT_EDGES_1);
     }
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES_2()
+    public static function enhancement_edges_2()
     {
         return (new Convolution())->create(self::$CONVOLUTION_ENHANCEMENT_EDGES_2);
     }
 
-    public static function CONVOLUTION_ENHANCEMENT_EDGES_3()
+    public static function enhancement_edges_3()
     {
         return (new Convolution())->create(self::$CONVOLUTION_ENHANCEMENT_EDGES_3);
     }
 
-    public static function CONVOLUTION_LAPLACIEN_1($alpha = 2)
+    public static function laplacien_1($alpha = 2)
     {
 
         $matrix = [];
@@ -226,7 +220,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
     }
 
-    public static function CONVOLUTION_LAPLACIEN_2($alpha = 2)
+    public static function laplacien_2($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -236,7 +230,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
     }
 
-    public static function CONVOLUTION_LAPLACIEN_3($alpha = 2)
+    public static function laplacien_3($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -246,7 +240,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
     }
 
-    public static function CONVOLUTION_GRADIENT_EW($alpha = 2)
+    public static function gradient_ew($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -255,7 +249,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
     }
 
-    public static function CONVOLUTION_GRADIENT_WE($alpha = 2)
+    public static function gradient_we($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -264,7 +258,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
     }
 
-    public static function CONVOLUTION_GRADIENT_NS($alpha = 2)
+    public static function gradient_ns($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -273,7 +267,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
     }
 
-    public static function CONVOLUTION_GRADIENT_SN($alpha = 2)
+    public static function gradient_sn($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -282,7 +276,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(6)->setOffset(128);
     }
 
-    public static function CONVOLUTION_GRADIENT_NWSE($alpha = 2)
+    public static function gradient_nwse($alpha = 2)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -291,7 +285,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor((4 * sqrt(2) / 3) * 3)->setOffset(128);
     }
 
-    public static function CONVOLUTION_4_CONNEX($alpha = 10)
+    public static function four_connex($alpha = 10)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -300,7 +294,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(4)->setOffset(128);
     }
 
-    public static function CONVOLUTION_8_CONNEX($alpha = 10)
+    public static function eight_connex($alpha = 10)
     {
         $matrix = [];
         for ($i = 0; $i < 9; $i++) {
@@ -309,7 +303,7 @@ class ConvolutionFunctions
         return (new Convolution())->create($matrix)->setDivisor(9.657)->setOffset(128);
     }
 
-    public static function CONVOLUTION_PRATT()
+    public static function pratt()
     {
         return (new Convolution())->create(self::$CONVOLUTION_PRATT)->setDivisor(9);
     }
