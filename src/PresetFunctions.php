@@ -60,7 +60,7 @@ class PresetFunctions
      * @param type $BRIGHTNESS, -255 = min brightness, 0 = no change, +255 = max brightness
      * @return type
      */
-    public static function brigthness(int $brightness)
+    public static function brightness(int $brightness)
     {
         if ($brightness < -255 or $brightness > 255) {
             $brightness = 0;
