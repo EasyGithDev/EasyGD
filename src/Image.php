@@ -121,9 +121,9 @@ class Image
 			return false;
 		}
 
-		$imDest->settype($this->gettype());
+		$imDest->settype($this->getType());
 
-		if (($this->gettype() == IMAGETYPE_GIF) || ($this->gettype() == IMAGETYPE_PNG)) {
+		if (($this->getType() == IMAGETYPE_GIF) || ($this->getType() == IMAGETYPE_PNG)) {
 			$trnprt_indx = imagecolortransparent($this->getImg());
 
 			// If we have a specific transparent color
@@ -142,7 +142,7 @@ class Image
 				imagecolortransparent($imDest->getImg(), $trnprt_indx);
 			}
 			// Always make a transparent background color for PNGs that don't have one allocated already
-			elseif ($this->gettype() == IMAGETYPE_PNG) {
+			elseif ($this->getType() == IMAGETYPE_PNG) {
 
 				// Turn off transparency blending (temporarily)
 				imagealphablending($imDest->getImg(), false);
@@ -161,47 +161,50 @@ class Image
 		return $imDest;
 	}
 
-	protected function manage(&$function, &$param_array, int $quality)
+	protected function manage(&$function, &$params, int $quality)
 	{
 
 		$function = 'image' . image_type_to_extension($this->type, false);
-		$param_array[] = $this->img;
-		$param_array[] = null;
-		if ($this->type == IMAGETYPE_JPEG || $this->type == IMAGETYPE_PNG) {
-			$quality = intval($quality);
-			switch ($this->type) {
-				case IMAGETYPE_JPEG:
-					$param_array[] = ($quality < 0 or $quality > 100) ? 75 : $quality;
-					break;
-				case IMAGETYPE_PNG:
-					// Restore transparency blending
-					imagesavealpha($this->getImg(), true);
-					$param_array[] = ($quality < 0 or $quality > 9) ? 9 : $quality;
-					break;
-			}
+
+		switch ($this->type) {
+			case IMAGETYPE_WEBP:
+			case IMAGETYPE_JPEG:
+				$params[] = ($quality < 0 or $quality > 100) ? 75 : $quality;
+				break;
+			case IMAGETYPE_PNG:
+				// Restore transparency blending
+				imagesavealpha($this->getImg(), true);
+				$params[] = ($quality < 0 or $quality > 9) ? 9 : $quality;
+				break;
 		}
 	}
 
 	public function show($header = true, $quality = 100)
 	{
-
 		if ($header) {
 			header('Content-type: ' . image_type_to_mime_type($this->type));
 		}
 
-		$this->manage($function, $param_array, $quality);
-		call_user_func_array($function, $param_array);
+		$params = [
+			$this->img,
+			null,
+		];
+		$this->manage($function, $params, $quality);
+		call_user_func_array($function, $params);
 
 		return $this;
 	}
 
 	public function save(string $fileDest, int $quality = 100)
 	{
+		$params = [
+			$this->img,
+			$fileDest,
+		];
 
-		$this->manage($function, $param_array, $quality);
-		$param_array[1] = $fileDest;
+		$this->manage($function, $params, $quality);
 
-		call_user_func_array($function, $param_array);
+		call_user_func_array($function, $params);
 
 		return $this;
 	}
@@ -250,7 +253,7 @@ class Image
 		return $this->type;
 	}
 
-	public function getstream()
+	public function getStream()
 	{
 		return $this->stream;
 	}
@@ -352,18 +355,6 @@ class Image
 	public function __call($name, $arguments)
 	{
 		switch ($name) {
-			case 'width':
-				return ($this->img) ? imagesx($this->img) : false;
-				break;
-			case 'height':
-				return ($this->img) ? imagesy($this->img) : false;
-				break;
-			case 'type':
-				return $this->type;
-				break;
-			case 'src':
-				return $this->stream;
-				break;
 			case 'topLeft':
 				return (new Position)->create();
 				break;
