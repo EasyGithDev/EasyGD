@@ -14,23 +14,50 @@ Installation is quite typical - with composer:
 composer require easygithdev/easygd
 ```
 
+## The header script
+
+You will need to include the autoloader before using the classes.
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Easygd\Image;
+
+```
 
 ## The basic stuff 
 
 In all the examples that follow, the $stream variable is either a URL or a file or a character string.<br/>
-For example, you can use the following URL:
+For example, you can use the PHP logo with the following URL:
 
 ```php
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 ```
 
+![PHP Logo](https://www.php.net/images/logos/new-php-logo.png)
+
 #### How to load and show an image
+
+In this case, the stream is directly sent to the browser.
 
 ```php
 (new Image())->load($stream)->show();
 ```	
 
+#### How to load and render an image in a HTML tag
+
+You can use the data src property to render the image in the HTML tag.<br />
+Use it only on small image, if you dont want that your HTML page becommes to big. 
+
+```php
+<img src="<?php echo (new Image())->load($stream)->dataSrc() ?>" />
+```
+
 #### How to load and save an image on disk
+
+In this case, the stream is saved to the browser.
 
 ```php
 (new Image())->load($stream)->save('php.png');
@@ -52,14 +79,6 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 ----
 
-## Include the image in the HTML
-
-You can use the data src property to render the image quickly in the HTML tag.<br />
-Use it only on small image, if you dont want that your html page becommes to big. 
-
-```php
-<img src="<?php echo (new Image())->load($stream)->dataSrc() ?>" />
-```
 
 ## The other types
 
