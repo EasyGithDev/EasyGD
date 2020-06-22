@@ -43,6 +43,7 @@ abstract class Filter
 	const FILTER_PRESET = 1;
 	const FILTER_LOOKUPTABLE = 2;
 	const FILTER_CONVOLUTION = 3;
+	const FILTER_AFFINE = 4;
 
 	public static function factory($filtered)
 	{
@@ -55,6 +56,8 @@ abstract class Filter
 				break;
 			case self::FILTER_PRESET:
 				return (new PresetFilter())->create($filtered);
+			case self::FILTER_AFFINE:
+				return (new AffineFilter())->create($filtered);
 			default:
 				break;
 		}
@@ -73,6 +76,9 @@ abstract class Filter
 		} elseif (method_exists(LookupTableFunctions::class, $name)) {
 			$closure = \Closure::fromCallable([new LookupTableFunctions(), $name]);
 			$filtered = (new LookUpTable())->create($closure);
+		}
+		if (method_exists(AffineFunctions::class, $name)) {
+			$filtered = call_user_func_array([AffineFunctions::class, $name], $arguments);
 		}
 
 		return static::factory($filtered);
