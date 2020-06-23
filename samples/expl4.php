@@ -38,14 +38,17 @@ echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 /*
  * 
  * how to get / add the ipct tag
+ * IPTC work only with JPEG file
  */
 
-$fileSrc = 'https://www.php.net/images/logos/new-php-logo.png';
-$fileDst = __DIR__ . '/iptc.jpg';
+(new Image())->load('https://www.php.net/images/logos/new-php-logo.png')->setType(IMG_JPEG)->save('iptc.jpg');
 
-$imageInfo = (new ImageInfo())->create($fileSrc);
+$fileSrc = __DIR__ . '/iptc.jpg';
+$fileDst = __DIR__ . '/iptc2.jpg';
 
-$iptc = $imageInfo->getIpct();
+$iptc = (new Iptc())->create($fileSrc, null); 
+// $imageInfo->getIpct();
+var_dump($iptc);
 $iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
     ->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
     ->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')

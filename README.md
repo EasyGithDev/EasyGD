@@ -207,20 +207,6 @@ $infos = (new Image())->load($stream)->getInfos()->toArray();
 echo '<pre>', print_r($infos, true), '</pre>'; 
 ```
 
-#### How to get / add the IPTC tag
-
-```php
-$fileDst = __DIR__ . '/iptc.jpg';
-$iptc = $imageInfo->getIpct();
-$iptc->addTag(\Easy\Iptc::IPTC_CITY, 'CHEVERNY')
-    ->addTag(Easy\Iptc::IPTC_COUNTRY, 'FRANCE')
-    ->addTag(Easy\Iptc::IPTC_CREATED_DATE, '2012-03-01')
-    ->addTag(Easy\Iptc::IPTC_CATEGORY, 'JOURNEY');
-
-if ($iptc->write($fileSrc, $fileDst) === false)
-throw new Exception('Error to write IPTC');
-```
-
 #### How to have the preseted positions
 
 ```php
@@ -238,6 +224,28 @@ echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
 ```
 
 It will return an object Position ...
+
+#### How to get / add the IPTC tag
+
+Remember IPTC work with JPEG files.
+
+```php
+(new Image())->load($stream)->setType(IMG_JPEG)->save('iptc.jpg');
+
+$fileSrc = __DIR__ . '/iptc.jpg';
+$fileDst = __DIR__ . '/iptc2.jpg';
+
+$iptc = (new Iptc())->create($fileSrc, null);
+$iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
+    ->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
+    ->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')
+    ->addTag(Iptc::IPTC_CATEGORY, 'JOURNEY');
+
+if ($iptc->write($fileDst) === false) {
+    throw new Exception('Error to write IPTC');
+}
+echo '<pre>', (new Image())->load($fileDst)->getInfos(), '</pre>';
+```
 
 ----
 

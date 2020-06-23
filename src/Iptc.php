@@ -137,7 +137,7 @@ class Iptc
             $iptc_new .= $this->iptc_maketag(2, $tag, $val[0]);
         }
 
-        if (($content = @iptcembed($iptc_new, $this->fileSrc)) === true)
+        if (($content = iptcembed($iptc_new, $this->fileSrc)) === false)
             return false;
 
         $handle = fopen($fileDest, "w");
