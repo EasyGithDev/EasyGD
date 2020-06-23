@@ -10,7 +10,7 @@ use Easygd\Position;
 
 $stream = 'http://www.php.net/images/logos/php-med-trans.png';
 
-$src0 = (new Image)->load($stream)->dataSrc();
+$src0 = (new Image)->load($stream)->src();
 
 /*
  * 
@@ -19,7 +19,7 @@ $src0 = (new Image)->load($stream)->dataSrc();
  */
 $src1 = (new Image)->load($stream)
     ->resizeByPercent(0.5)
-    ->dataSrc();
+    ->src();
 
 
 
@@ -30,7 +30,7 @@ $src1 = (new Image)->load($stream)
  */
 $src2 = (new Image)->load($stream)
     ->resizeByWidth(50)
-    ->dataSrc();
+    ->src();
 
 /*
  * 
@@ -39,7 +39,7 @@ $src2 = (new Image)->load($stream)
  */
 $src3 = (new Image)->load($stream)
     ->resizeByHeight(30)
-    ->dataSrc();
+    ->src();
 
 /*
  * 
@@ -48,7 +48,7 @@ $src3 = (new Image)->load($stream)
  */
 $src4 = (new Image)->load($stream)
     ->resizeAuto((new Dimension())->create(300, 200))
-    ->dataSrc();
+    ->src();
 
 /*
  * 
@@ -58,7 +58,7 @@ $src4 = (new Image)->load($stream)
 $stream = 'http://static.php.net/www.php.net/images/php.gif';
 $src5 = (new Image)->load($stream)
     ->crop((new Position)->create(20, 13), (new Dimension())->create(80, 40))
-    ->dataSrc();
+    ->src();
 
 /*
  * 
@@ -67,7 +67,7 @@ $src5 = (new Image)->load($stream)
  */
 $src6 = (new Image)->load($stream)
     ->thumbnail(140, Color::Silver())
-    ->dataSrc();
+    ->src();
 
 
 /*
@@ -77,7 +77,7 @@ $src6 = (new Image)->load($stream)
  */
 $src7 = (new Image)->load($stream)
     ->rotate(90)
-    ->dataSrc();
+    ->src();
 
 /*
  * 
@@ -87,7 +87,7 @@ $src7 = (new Image)->load($stream)
 $logo = (new Image)->load('http://www.php.net/images/logos/php-med-trans-light.gif')
     ->resizeByPercent(0.6);
 $src8 = (new Image)->load('http://static.php.net/www.php.net/images/logos/php-med-trans.png')
-    ->inlay($logo, (new Position)->create(30, 20), 100)->dataSrc();
+    ->inlay($logo, (new Position)->create(30, 20), 100)->src();
 
 
 // Chargement d'un image pour le fond
@@ -102,7 +102,7 @@ imagesettile($image->getImg(), $logo->getImg());
 // // Répétition de l'image
 imagefilledrectangle($image->getImg(), 0, 0, $image->getWidth() - 1, $image->getHeight() - 1, IMG_COLOR_TILED);
 
-$src9 = $image->dataSrc();
+$src9 = $image->src();
 ?>
 <img src="<?php echo $src0 ?>"><br>
 <img src="<?php echo $src1 ?>"><br>

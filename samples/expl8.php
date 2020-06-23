@@ -9,7 +9,7 @@ require '../vendor/autoload.php';
 
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
-$dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::gaussian())->process((new Image())->load($stream))->dataSrc();
+$dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::gaussian())->process((new Image())->load($stream))->src();
 
 ?>
 <p>
@@ -22,7 +22,7 @@ $dataSrc = (new ConvolutionFilter())->create(ConvolutionFunctions::gaussian())->
 foreach (get_class_methods(ConvolutionFunctions::class) as $name) {
 
     $convolution = ConvolutionFunctions::$name();
-    $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
+    $dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->src();
 
 ?>
     <p>
@@ -40,7 +40,7 @@ $matrix = [
 ];
 
 $convolution = (new Convolution())->create($matrix);;
-$dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
+$dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->src();
 
 ?>
 <p>

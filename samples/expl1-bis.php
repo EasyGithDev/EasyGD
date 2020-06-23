@@ -13,4 +13,4 @@ $filename = 'https://www.php.net/images/logos/new-php-logo.png';
  */
 ?>
 
-<img src="<?php echo (new Image())->load($filename)->dataSrc() ?>" />
+<img src="<?php echo (new Image())->load($filename)->src() ?>" />

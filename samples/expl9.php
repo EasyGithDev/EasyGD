@@ -19,7 +19,7 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 foreach (get_class_methods(LookupTableFunctions::class) as $name) {
     
     $closure = \Closure::fromCallable([new LookupTableFunctions(), $name]);
-    $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+    $lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->src();
 ?>
 
     <p>
@@ -41,7 +41,7 @@ function personnal($rgb)
 }
 
 $closure = \Closure::fromCallable('personnal');
-$lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+$lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->src();
 ?>
 
 <img src="<?php echo $lut ?>">

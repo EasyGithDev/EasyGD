@@ -23,9 +23,9 @@ foreach (new ImageFilterIterator(new DirectoryIterator($path)) as $file) {
 		continue;
 	}
 
-	$thumb1 = $image->thumbnail(100)->dataSrc();
-	$thumb2 = $image->thumbnail(200)->addText($text)->dataSrc();
-	$thumb3 = $image->thumbnail(400)->dataSrc();
+	$thumb1 = $image->thumbnail(100)->src();
+	$thumb2 = $image->thumbnail(200)->addText($text)->src();
+	$thumb3 = $image->thumbnail(400)->src();
 ?>
 
 	<img src="<?php echo $thumb1 ?>" />

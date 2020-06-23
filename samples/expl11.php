@@ -20,7 +20,7 @@ $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
 foreach (get_class_methods(AffineFunctions::class) as $name) {
 
-    $affine = (new AffineFilter())->create(AffineFunctions::$name())->process((new Image())->load($stream))->dataSrc();
+    $affine = (new AffineFilter())->create(AffineFunctions::$name())->process((new Image())->load($stream))->src();
 ?>
 
     <p>

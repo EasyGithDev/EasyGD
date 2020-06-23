@@ -209,7 +209,7 @@ class Image
 		return $this;
 	}
 
-	public function dataSrc()
+	public function src()
 	{
 		if (($mime = image_type_to_mime_type($this->type)) === false) {
 			return false;

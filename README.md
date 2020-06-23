@@ -52,7 +52,7 @@ You can use the data src property to render the image in the HTML tag.<br />
 Use it only on small image, if you dont want that your HTML page becommes to big. 
 
 ```php
-<img src="<?php echo (new Image())->load($stream)->dataSrc() ?>" />
+<img src="<?php echo (new Image())->load($stream)->src() ?>" />
 ```
 
 #### How to load and save an image on disk
@@ -338,9 +338,9 @@ foreach (new ImageFilterIterator(new DirectoryIterator($path)) as $file) {
 		continue;
 	}
 
-	$thumb1 = $image->thumbnail(100)->dataSrc();
-	$thumb2 = $image->thumbnail(200)->addText($text)->dataSrc();
-	$thumb3 = $image->thumbnail(400)->dataSrc();
+	$thumb1 = $image->thumbnail(100)->src();
+	$thumb2 = $image->thumbnail(200)->addText($text)->src();
+	$thumb3 = $image->thumbnail(400)->src();
 ?>
 
 	<img src="<?php echo $thumb1 ?>" />
@@ -368,13 +368,13 @@ You ca use this way to call, preset/convolution/lookuptable filters like this :
 
 ```php
 // Preset filters
-$src1 = Filter::negate()->process((new Image())->load($stream))->dataSrc();
+$src1 = Filter::negate()->process((new Image())->load($stream))->src();
 
 // Convolution filters
-$src2 = Filter::emboss()->process((new Image())->load($stream))->dataSrc();
+$src2 = Filter::emboss()->process((new Image())->load($stream))->src();
 
 // LookupTable filters
-$src3 = Filter::thresholding()->process((new Image())->load($stream))->dataSrc();
+$src3 = Filter::thresholding()->process((new Image())->load($stream))->src();
 ```
 
 #### Using the preset filter
@@ -420,7 +420,7 @@ $matrix = [
 ];
 
 $convolution = (new Convolution())->create($matrix);;
-$dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->dataSrc();
+$dataSrc = (new ConvolutionFilter())->create($convolution)->process((new Image())->load($stream))->src();
 ```
 
 #### Using the lookuptable filter
@@ -431,7 +431,7 @@ You can use preseted lookuptable or your own lookuptable filters.
 
 ```php
 $closure = \Closure::fromCallable([new LookupTableFunctions(), 'LightnessGray']),
-(new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+(new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->src();
 ```
 
 #### To create a new lookuptable filter, you must create a callback method like this :
@@ -446,7 +446,7 @@ return [$r, $g, $b];
 }
 
 $closure = \Closure::fromCallable('personnal');
-$lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->dataSrc();
+$lut = (new LookUpTableFilter())->create((new LookUpTable())->create($closure))->process((new Image())->load($stream))->src();
 ```
 
 ## License

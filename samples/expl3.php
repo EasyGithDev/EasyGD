@@ -19,7 +19,7 @@ $src1 = (new Image)->create((new Dimension)->create(300, 300), Color::Blue())->a
 		->setColor(Color::Silver())
 		->setSize(3)
 		->setPosition((new Position)->create(200, 125))
-)->dataSrc();
+)->src();
 
 /*
  * 
@@ -32,7 +32,7 @@ $src2 = (new Image())->create((new Dimension())->create(200, 200))->addText(
 		->setColor(Color::White())
 		->setDrawtype(Text::TEXT_DRAW_VERTICAL)
 		->setPosition((new Position())->create(40, 100))
-)->dataSrc();
+)->src();
 
 /*
  * 
@@ -48,7 +48,7 @@ $src3 = (new Image)->create((new Dimension())->create(300, 300), Color::White())
 			->setSize(5)
 			->setPosition((new Position())->create(55, 35))
 	)
-	->dataSrc();
+	->src();
 
 /*
  * 
@@ -79,7 +79,7 @@ $src4 = (new Image())->create((new Dimension())->create(300, 300), (new Color())
 			->setColor(Color::Maroon())
 			->setPosition((new Position())->create(98, 173))
 	)
-	->dataSrc();
+	->src();
 
 ?>
 
