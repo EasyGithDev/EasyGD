@@ -33,7 +33,7 @@ $contrast = 10;
 $preset10 = (new PresetFilter())->create(PresetFunctions::contrast($contrast))->process((new Image())->load($stream))->src();
 
 $brightness = 100;
-$preset11 = (new PresetFilter())->create(PresetFunctions::brigthness($brightness))->process((new Image())->load($stream))->src();
+$preset11 = (new PresetFilter())->create(PresetFunctions::brightness($brightness))->process((new Image())->load($stream))->src();
 
 $red = $green = $blue = 128;
 $preset12 = (new PresetFilter())->create(PresetFunctions::colorize($red, $green, $blue))->process((new Image())->load($stream))->src();
