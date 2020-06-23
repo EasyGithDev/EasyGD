@@ -3,7 +3,8 @@
 require '../vendor/autoload.php';
 
 use Easygd\Image;
-
+use Easygd\ImageInfo;
+use Easygd\Iptc;
 
 $stream = 'https://www.php.net/images/logos/new-php-logo.png';
 
@@ -39,18 +40,18 @@ echo 'BOTTOM_RIGHT', $image->bottomRight(), '<br/>';
  * how to get / add the ipct tag
  */
 
-// $fileSrc = __DIR__ . '/2012-05-07 11.57.45.jpg';
-// $fileDst = __DIR__ . '/iptc.jpg';
+$fileSrc = 'https://www.php.net/images/logos/new-php-logo.png';
+$fileDst = __DIR__ . '/iptc.jpg';
 
-// $iptc = $imageInfo->getIpct();
-// $iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
-// 	->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
-// 	->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')
-// 	->addTag(Iptc::IPTC_CATEGORY, 'JOURNEY');
+$imageInfo = (new ImageInfo())->create($fileSrc);
 
-// if ($iptc->write($fileSrc, $fileDst) === false)
-// 	throw new Exception('Error to write IPTC');
+$iptc = $imageInfo->getIpct();
+$iptc->addTag(Iptc::IPTC_CITY, 'CHEVERNY')
+    ->addTag(Iptc::IPTC_COUNTRY, 'FRANCE')
+    ->addTag(Iptc::IPTC_CREATED_DATE, '2012-03-01')
+    ->addTag(Iptc::IPTC_CATEGORY, 'JOURNEY');
 
-// $imageInfo = (new Image())->getInfos($fileDst);
-
-// echo '<pre>', $imageInfo, '</pre>';
+if ($iptc->write($fileDst) === false) {
+    throw new Exception('Error to write IPTC');
+}
+echo '<pre>', (new Image())->load($fileDst)->getInfos(), '</pre>';

@@ -69,28 +69,33 @@ class ImageInfo
 		$this->mime = $infos['mime'];
 		$this->channels = $infos['channels'];
 		$this->bits = $infos['bits'];
-		$this->iptc = (isset($additional["APP13"])) ? Iptc::create($additional["APP13"]) : Iptc::create();
+		$this->iptc = (isset($additional["APP13"])) ? (new Iptc())->create($filename, $additional["APP13"])->parse() : null;
 
 		return $this;
 	}
 
 	public function __toString()
 	{
-		return "
-	filename : $this->filename 
-	width : $this->width 
-	height : $this->height 
-	type : $this->type 
-	img : $this->img 
-	mime : $this->mime 
-	channels : $this->channels 
-	bits : $this->bits 
-	$this->iptc ";
+		return 'filename :' . $this->filename . PHP_EOL .
+			'width :' . $this->width . PHP_EOL .
+			'height :' . $this->height . PHP_EOL .
+			'type :' . $this->type . PHP_EOL .
+			'img :' . $this->img . PHP_EOL .
+			'mime :' . $this->mime . PHP_EOL .
+			'channels :' . $this->channels . PHP_EOL .
+			'bits :' . $this->bits . PHP_EOL .
+			$this->iptc;
 	}
 
 	public function toArray()
 	{
-		return (get_object_vars($this));
+		$vars = get_object_vars($this);
+		foreach ($vars as $k => &$v) {
+			if (is_object($v)) {
+				$vars[$k] = $v->toArray();
+			}
+		}
+		return $vars;
 	}
 
 	public function getFilename()

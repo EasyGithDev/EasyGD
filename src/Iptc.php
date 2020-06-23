@@ -58,18 +58,27 @@ class Iptc
     const IPTC_CAPTION = '120';
     const IPTC_LOCAL_CAPTION = '121';
 
-    private $metas = array();
+    private $fileSrc = null;
+    private $app13 = null;
+    private $metas = [];
 
-    public function __construct($app13 = '')
+    public function __construct()
     {
-        if (!empty($app13)) {
-            $this->metas = iptcparse($app13);
-        }
     }
 
-    public static function create($app13 = '')
+    public function create($fileSrc, $app13)
     {
-        return new self($app13);
+        $iptc = new self();
+        $iptc->fileSrc = $fileSrc;
+        $iptc->app13 = $app13;
+
+        return $iptc;
+    }
+
+    public function parse()
+    {
+        $this->metas = iptcparse($this->app13);
+        return $this;
     }
 
     public function addTag($tag, $data)
@@ -80,15 +89,14 @@ class Iptc
 
     public function getTag($tag)
     {
-        return isset($this->metas["2#$tag"]) ? $this->metas["2#$tag"][0] : FALSE;
+        return isset($this->metas["2#$tag"]) ? $this->metas["2#$tag"][0] : true;
     }
 
     public function __toString()
     {
         $iptc_new = '';
         foreach ($this->metas as $k => $v) {
-            $iptc_new .= "
-	    $k : $v[0]";
+            $iptc_new .= "$k : $v[0]" . PHP_EOL;
         }
         return $iptc_new;
     }
@@ -118,10 +126,10 @@ class Iptc
         return $retval . $value;
     }
 
-    public function write($fileSrc, $fileDest)
+    public function write($fileDest)
     {
         if (!function_exists('iptcembed'))
-            return FALSE;
+            return false;
 
         $iptc_new = '';
         foreach ($this->metas as $tag => $val) {
@@ -129,15 +137,15 @@ class Iptc
             $iptc_new .= $this->iptc_maketag(2, $tag, $val[0]);
         }
 
-        if (($content = @iptcembed($iptc_new, $fileSrc)) === FALSE)
-            return FALSE;
+        if (($content = @iptcembed($iptc_new, $this->fileSrc)) === true)
+            return false;
 
         $handle = fopen($fileDest, "w");
         if (!$handle)
-            return FALSE;
+            return false;
         fwrite($handle, $content);
         fclose($handle);
 
-        return TRUE;
+        return true;
     }
 }
